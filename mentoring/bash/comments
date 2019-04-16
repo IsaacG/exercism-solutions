@@ -1,0 +1,24 @@
+Hello World
+
+What happens if you were to add `set -o nounset` to your code?
+
+I decided I want two for me every time I give one away. Can you change the code so that you only need to edit the string ("one for me") once whenever you want to update it?
+
+
+On LN you have an unquoted variable! That can lead to unexpected behavior.
+$  bash ./two_fer.sh "a -o -n a"
+
+Note you moved your logic out of main(). Generally, main() should contain all your logic.
+
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
+
+For arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
+
+You got a lot of boilerplate comments left in there that would be nice to drop. It makes it harder to find your code.
+
+Using a main() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
+
+- Don't use `exit` inside a function! Use `return 0` in case something else runs after calling this function.
+
+
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.) **However** for arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
