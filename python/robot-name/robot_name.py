@@ -10,7 +10,7 @@ class Robot(object):
     self.set_name()
 
   def set_name(self):
-    random.seed(time.time())
+    random.seed()
     self.name = ''.join(
         random.sample(string.ascii_uppercase, 2) + random.sample(string.digits, 3))
 
