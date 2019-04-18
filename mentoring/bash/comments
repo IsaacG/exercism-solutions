@@ -4,7 +4,6 @@ What happens if you were to add `set -o nounset` to your code?
 
 I decided I want two for me every time I give one away. Can you change the code so that you only need to edit the string ("one for me") once whenever you want to update it?
 
-
 On LN you have an unquoted variable! That can lead to unexpected behavior.
 $  bash ./two_fer.sh "a -o -n a"
 
@@ -24,6 +23,8 @@ Prefer to avoid using `exit` inside a function! Use `return 0` in case something
 In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.) **However** for arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
+
+You got a number of unquoted variable expansions that ought to get fixed.
 
 Raindrops
 ---------
