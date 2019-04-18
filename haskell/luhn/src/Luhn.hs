@@ -5,7 +5,7 @@ import Data.Text as T
 
 -- Drop non-digits
 clean :: Text -> Text
-clean a = T.filter (\x -> isDigit x) a
+clean a = T.filter isDigit a
 
 -- Get even-length strings
 pad :: Text -> Text
