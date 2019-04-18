@@ -1,11 +1,7 @@
-Hello World
+Generic
+-------
 
 What happens if you were to add `set -o nounset` to your code?
-
-I decided I want two for me every time I give one away. Can you change the code so that you only need to edit the string ("one for me") once whenever you want to update it?
-
-On LN you have an unquoted variable! That can lead to unexpected behavior.
-$  bash ./two_fer.sh "a -o -n a"
 
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 
@@ -19,21 +15,30 @@ Using a main() is good practice; it encapsulates a chunk of logic in one functio
 
 Prefer to avoid using `exit` inside a function! Use `return 0` in case something else runs after calling this function.
 
-
 In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.) **However** for arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
 
 You got a number of unquoted variable expansions that ought to get fixed.
 
+You got an odd mix of [ and $(( going on. In bash, you can use [[ for strings and (( for numbers. `if (( $n % 3 == 0 )); then ...`
+
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
+
+
+Hello World
+-----------
+
+I decided I want two for me every time I give one away. Can you change the code so that you only need to edit the string ("one for me") once whenever you want to update it?
+
+On LN you have an unquoted variable! That can lead to unexpected behavior.
+$  bash ./two_fer.sh "a -o -n a"
+
+
 Raindrops
 ---------
 
 Interestingly, you quoted the strings `Pl?ng` (which don't actually benefit much from it) but failed to quote your variable expansion. Variable expansions should *always* be quoted.
-
-You got an odd mix of [ and $(( going on. In bash, you can use [[ for strings and (( for numbers. `if (( $n % 3 == 0 )); then ...`
-
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
 
 Consider what would happen if you ran the command below. Can you fix that echo line somehow?
 ```
