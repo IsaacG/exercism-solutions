@@ -1,17 +1,17 @@
 Generic
 -------
 
-What happens if you were to add `set -o nounset` to your code?
+Using a main() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
+
+What happens if you were to add `set -o nounset` to your code and call it without any args?
+
+For arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
 
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 
 In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
 
-For arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
-
 You got a lot of boilerplate comments left in there that would be nice to drop. It makes it harder to find your code.
-
-Using a main() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
 
 Prefer to avoid using `exit` inside a function! Use `return 0` in case something else runs after calling this function.
 
@@ -25,6 +25,7 @@ You got an odd mix of [ and $(( going on. In bash, you can use [[ for strings an
 
 In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
 
+Note the most portable way (and common way) to define a function is without the `function` keyword. eg `main () { ...`
 
 Hello World
 -----------
@@ -46,3 +47,17 @@ $ bash raindrops.sh "-e foo"
 ```
 
 
+Leap
+----
+
+You got a lot of logic in your test. Can you split the logic across multiple statements?
+
+Your code doesn't let me check if year 600 and 800 are leap years :(
+
+LN got a messy combination of `[[` and `((` and `$((`. You should be able to solve this with just `((` and without any nesting.
+
+
+Reverse
+-------
+
+What happens here and can you fix it without breaking the logic? `$ bash reverse.sh 'bor\ed e-'
