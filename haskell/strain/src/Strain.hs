@@ -1,5 +1,7 @@
 module Strain (keep, discard) where
 
+-- Reimplement `filter`
+
 discard :: (a -> Bool) -> [a] -> [a]
 discard p xs = keep (\x -> not (p x)) xs
 
