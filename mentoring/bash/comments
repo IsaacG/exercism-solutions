@@ -9,13 +9,13 @@ For arithmetic operations, prefer (( over [[. (( is an arithmetic operation whil
 
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways.
 
 You got a lot of boilerplate comments left in there that would be nice to drop. It makes it harder to find your code.
 
 Prefer to avoid using `exit` inside a function! Use `return 0` in case something else runs after calling this function.
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.) **However** for arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. **However** for arithmetic operations, prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
 
@@ -23,9 +23,11 @@ You got a number of unquoted variable expansions that ought to get fixed.
 
 You got an odd mix of [ and $(( going on. In bash, you can use [[ for strings and (( for numbers. `if (( $n % 3 == 0 )); then ...`
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. (For POSIX sh, stick to the [ operator.)
+In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways.
 
 Note the most portable way (and common way) to define a function is without the `function` keyword. eg `main () { ...`
+
+Avoid using all-caps variable names. Those are used by the shell for internal things like PWD and SECONDS. Overriding them can lead to odd behaviors.
 
 Hello World
 -----------
