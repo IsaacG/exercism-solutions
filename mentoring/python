@@ -1,0 +1,5 @@
+
+Raindrops
+---------
+From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
+From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
