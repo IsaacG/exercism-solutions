@@ -1,7 +1,7 @@
 Generic
 -------
 
-Using a main() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
+Using a function() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
 
 What happens if you were to add `set -o nounset` to your code and call it without any args?
 
@@ -28,6 +28,10 @@ In bash, prefer [[ over [. It's more powerful and less likely to act in unexpect
 Note the most portable way (and common way) to define a function is without the `function` keyword. eg `main () { ...`
 
 Avoid using all-caps variable names. Those are used by the shell for internal things like PWD and SECONDS. Overriding them can lead to odd behaviors.
+
+Can you use a pattern over a regex here? Patterns tend to be simpler and cheaper to use. Simpler solutions tend to be better than more complex ones.
+
+Note other ways to do accumulations include `(( sum += n ))` and `declare -i sum=1; sum+=n`.
 
 Hello World
 -----------
