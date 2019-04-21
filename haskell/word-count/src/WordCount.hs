@@ -10,17 +10,17 @@ import Data.Char
 wCount :: [String] -> [(String, Int)] -> [(String, Int)]
 wCount (s:xs) c =
   (:)
-    (s, length . filter ((==) s) $ s:xs)
-    $ wCount (filter ((/=) s) xs) c
+    (s, length . filter (s ==) $ s:xs)
+    $ wCount (filter (s /=) xs) c
 wCount [] c = c
 
 -- Drop chars unless alpha, digit or "'"
 clean :: String -> String
-clean s = map toLower . map (\x -> if (isAlpha x || isDigit x || x == '\'') then x else ' ') $ s
+clean = map (toLower . \x -> if isAlpha x || isDigit x || x == '\'' then x else ' ')
 
 -- Unwrap wrapping single quotes from around a word
 wClean :: [String] -> [String]
-wClean xs = map (\x -> if ('\'' == (head x) && '\'' == (last x)) then (tail . init $ x) else x) xs
+wClean = map (\x -> if '\'' == head x && '\'' == last x then tail . init $ x else x)
 
 wordCount :: String -> [(String, Int)]
 wordCount xs = wCount (wClean . words . clean $ xs) []
