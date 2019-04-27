@@ -5,7 +5,6 @@ isPangran () {
   for c in {A..Z}; do
     [[ $w = *$c* ]] || return 1
   done
-  return 0
 }
 boolRC () { (( $? == 0 )) && echo true || echo false; }
 
