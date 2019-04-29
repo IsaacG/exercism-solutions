@@ -10,7 +10,7 @@ word_count () {
     w=${w##*([[:punct:]])}
     w=${w%%*([[:punct:]])}
     [[ $w ]] || continue
-    [[ -n ${count[$w]} ]] && count[$w]=$(( ${count[$w]} + 1 )) || count[$w]=1
+    (( 'count[$w]'++ ))
   done
 
   for w in "${!count[@]}"; do
