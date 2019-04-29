@@ -10,28 +10,42 @@ module BST
     , toList
     ) where
 
-data BST a = Dummy deriving (Eq, Show)
-
-bstLeft :: BST a -> Maybe (BST a)
-bstLeft tree = error "You need to implement this function."
-
-bstRight :: BST a -> Maybe (BST a)
-bstRight tree = error "You need to implement this function."
-
-bstValue :: BST a -> Maybe a
-bstValue tree = error "You need to implement this function."
+-- Trees are made of nodes which each got a value and a right/left tree.
+-- Use a record to get bstValue/bstLeft/bstRight for free.
+data BST a = BST {
+  bstValue :: Maybe a,
+  bstLeft  :: Maybe (BST a),
+  bstRight :: Maybe (BST a)
+} deriving (Eq, Show)
 
 empty :: BST a
-empty = error "You need to implement this function."
+empty = BST Nothing Nothing Nothing
 
+-- foldl -> start with an empty tree -> reduce: insert elements
 fromList :: Ord a => [a] -> BST a
-fromList xs = error "You need to implement this function."
+fromList xs = foldl (\t v -> insert v t) empty xs
+
+-- Insert an element into a (Maybe BST), always returning a (Just BST)
+maybeNew :: Ord a => a -> Maybe (BST a) -> Maybe (BST a)
+maybeNew x Nothing = Just ( BST (Just x) Nothing Nothing )
+maybeNew x (Just y) = Just ( insert x y )
 
 insert :: Ord a => a -> BST a -> BST a
-insert x tree = error "You need to implement this function."
+insert x (BST Nothing l r)  = BST (Just x) l r
+insert x (BST (Just v) l r)
+  | x <= v = BST (Just v) (maybeNew x l) r
+  | otherwise = BST (Just v) l (maybeNew x r)
 
-singleton :: a -> BST a
-singleton x = error "You need to implement this function."
+-- Tree with one element. Insert element into empty tree.
+singleton :: Ord a => a -> BST a
+singleton x = insert x empty
+
+maybeToList :: Maybe(BST a) -> [a]
+maybeToList Nothing = []
+maybeToList (Just (BST Nothing _ _)) = []
+maybeToList (Just (BST (Just x) l r)) = (maybeToList l) ++ [x] ++ (maybeToList r)
 
 toList :: BST a -> [a]
-toList tree = error "You need to implement this function."
+toList x = maybeToList (Just x)
+
+-- vim:expandtab:ts=2:sw=2
