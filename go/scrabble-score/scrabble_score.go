@@ -32,6 +32,7 @@ var value = map[rune]int{
 	'Z': 10,
 }
 
+// Score a Scrabble word.
 func Score(w string) int {
 	score := 0
 	for _, r := range strings.ToUpper(w) {
