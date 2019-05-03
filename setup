@@ -94,6 +94,7 @@ etest () {
 }
 
 submit () {
+  [[ -n "$(exercise)" ]] || return 1
   exercism submit "$(src)"
 }
 
