@@ -75,3 +75,9 @@ Reverse
 -------
 
 What happens here and can you fix it without breaking the logic? `$ bash reverse.sh 'bor\ed e-'
+
+
+Grains
+------
+
+- Can you solve this without resorting to external tools like `bc`?
