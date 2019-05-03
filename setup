@@ -1,0 +1,100 @@
+#! /bin/bash
+# source me!
+# source ~/exercism/setup
+#
+#
+# Helpful commands:
+# - init;edit  => adds a vimrc/template and opens the src/test in your editor
+# - submit     => exercism submit "$(src)"
+# - etest      => language specific testing
+#
+
+shopt -s extglob
+unset TMOUT
+
+gitac () {
+  if [[ $PWD != */exercism ]]; then
+    echo "Not in the root" >&2
+    return 1
+  fi
+  git status -s | while IFS=' /' read _ l p; do
+    git add $l/$p
+    git commit -m "${l^}: Solve ${p^}"
+  done
+}
+
+lang () {
+  if [[ $PWD != */exercism/* ]]; then
+    echo "Not in exercism" >&2
+    return 1
+  fi
+  l="${PWD#*/exercism/}"
+  echo "${l%/*}"
+}
+
+exercise () {
+  if [[ $PWD != */exercism/*/* ]]; then
+    echo "Not in exercism exercise" >&2
+    return 1
+  fi
+  e="${PWD##*/}"
+  echo "${e//-/_}"
+}
+
+src () {
+  case "$(lang)" in
+    python) echo "$(exercise).py" ;;
+    bash) echo "$(exercise).sh" ;;
+    go) echo "$(exercise).go" ;;
+    haskell) f=$(exercise); echo "src/${f^}.hs" ;;
+  esac
+}
+
+tst () {
+  case "$(lang)" in
+    python) echo "$(exercise)_test.py" ;;
+    bash) echo "$(exercise)_test.sh" ;;
+    go) echo "$(exercise)_test.go" ;;
+    haskell) f=$(exercise); echo "test/${f^}.hs" ;;
+  esac
+}
+
+comment () {
+  case "$(lang)" in
+    python) echo "#" ;;
+    bash) echo "#" ;;
+    go) echo "//" ;;
+    haskell) echo "--" ;;
+  esac
+}
+
+init () {
+  [[ -n "$(exercise)" ]] || return 1
+  ll=$(tail -n1 "$(src)" 2>/dev/null)
+  if [[ $ll = *vim:* ]]; then
+    echo "Already initialized" >&2
+    return 1
+  fi
+  printf '\n\n%s vim:ts=2:sw=2:expandtab\n' "$(comment)" >> "$(src)"
+}
+
+edit () {
+  [[ -n "$(exercise)" ]] || return 1
+  vim -p "$(src)" "$(tst)"
+}
+
+etest () {
+  [[ -n "$(exercise)" ]] || return 1
+  case "$(lang)" in
+    python) pytest "$(tst)";;
+    bash) bats "$(tst)";;
+    go) go test -v --bench . --benchmem;;
+    haskell) stack test
+  esac
+}
+
+submit () {
+  exercism submit "$(src)"
+}
+
+# vim:ts=2:sw=2:expandtab
