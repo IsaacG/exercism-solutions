@@ -1,1 +1,0 @@
-git status -s | while IFS=' /' read _ l p; do git add $l/$p; git commit -m "${l^}: Solve ${p^}"; done
