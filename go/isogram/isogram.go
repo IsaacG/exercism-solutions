@@ -10,15 +10,15 @@ import (
 
 // IsIsogram determines if a string is an isogram.
 func IsIsogram(s string) bool {
-	found := make(map[rune]struct{})
+	found := make(map[rune]bool)
 	for _, r := range strings.ToUpper(s) {
 		if !unicode.IsLetter(r) {
 			continue
 		}
-		if _, ok := found[r]; ok {
+		if found[r] {
 			return false
 		}
-		found[r] = struct{}{}
+		found[r] = true
 	}
 	return true
 }
