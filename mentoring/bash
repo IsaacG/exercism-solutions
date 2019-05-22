@@ -5,17 +5,17 @@ Using a function() is good practice; it encapsulates a chunk of logic in one fun
 
 What happens if you were to add `set -o nounset` to your code and call it without any args?
 
-For arithmetic operations (numbers), prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
+For arithmetic operations (numbers), prefer `((` over `[[`. `((` is an arithmetic operation while [[ is used for strings.
 
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways.
+In bash, prefer `[[` over `[`. It's more powerful and less likely to act in unexpected ways.
 
 You got a lot of boilerplate comments left in there that would be nice to drop. It makes it harder to find your code.
 
 Prefer to avoid using `exit` inside a function! Use `return 0` in case something else runs after calling this function.
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways. **However** for arithmetic operations (numbers), prefer (( over [[. (( is an arithmetic operation while [[ is used for strings.
+In bash, prefer `[[` over `[`. It's more powerful and less likely to act in unexpected ways. **However** for arithmetic operations (numbers ie *here*), prefer `((` over `[[`. `((` is an arithmetic operation while `[[` is used for strings.
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
 
@@ -44,7 +44,7 @@ Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; t
 Hello World
 -----------
 
-I decided I want two for me every time I give one away. Can you change the code so that you only need to edit the string ("one for me") once whenever you want to update it?
+Can you solve this in a way that doesn't have a mostly duplicated output string? Duplication in code is a hassle to maintain as any change needs to be applied across multiple locations.
 
 On LN you have an unquoted variable! That can lead to unexpected behavior.
 $  bash ./two_fer.sh "a -o -n a"
