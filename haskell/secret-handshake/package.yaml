@@ -3,6 +3,7 @@ version: 1.2.0.6
 
 dependencies:
   - base
+  - bits
 
 library:
   exposed-modules: SecretHandshake
