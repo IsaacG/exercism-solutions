@@ -55,7 +55,7 @@ tst () {
     python) echo "$(exercise)_test.py" ;;
     bash) echo "$(exercise)_test.sh" ;;
     go) echo "$(exercise)_test.go" ;;
-    haskell) f=$(exercise); echo "test/${f^}.hs" ;;
+    haskell) f=$(exercise); echo "test/Tests.hs" ;;
   esac
 }
 
@@ -76,6 +76,9 @@ init () {
     return 1
   fi
   printf '\n\n%s vim:ts=2:sw=2:expandtab\n' "$(comment)" >> "$(src)"
+  if [[ $(lang) == bash ]]; then
+    cat ../tmpl > "$(src)"
+  fi
 }
 
 edit () {
