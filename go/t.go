@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./isbn-verifier"
+	"./luhn"
 	"fmt"
 )
 
 func main() {
-	fmt.Printf("IsValidISBN(3-598-21507-X) %v\n", isbn.IsValidISBN("3-598-21507-X"))
+	fmt.Printf("%r", luhn.Valid("059"))
 }
