@@ -1,0 +1,32 @@
+// Package luhn checks if a number satisfies the Luhn requirements.
+package luhn
+
+import (
+	"strconv"
+	"strings"
+)
+
+// Valid checks is the string s contains a valid Luhn number, wherein every other digit is doubled and the sum must be divisible by 10.
+func Valid(s string) bool {
+	s = strings.ReplaceAll(s, " ", "")
+	if len(s) <= 1 {
+		return false
+	}
+	var sum int
+	flip := len(s)%2 == 0
+	for _, c := range s {
+		v, err := strconv.Atoi(string(c))
+		if err != nil {
+			return false
+		}
+		if flip {
+			v *= 2
+			if v > 9 {
+				v -= 9
+			}
+		}
+		sum += v
+		flip = !flip
+	}
+	return sum%10 == 0
+}
