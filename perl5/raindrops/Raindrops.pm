@@ -1,16 +1,18 @@
 package Raindrops;
 use strict;
 use warnings;
+use feature qw(signatures);
 use Exporter 'import';
 our @EXPORT_OK = qw(raindrop);
 
-sub raindrop {
-  my ($number) = @_;
+sub raindrop ($number) {
   my $out = "";
-  $out .= "Pling" if ($number % 3 == 0);
-  $out .= "Plang" if ($number % 5 == 0);
-  $out .= "Plong" if ($number % 7 == 0);
-  return $out ? $out : $number;
+  my @sounds = (["Pling", 3], ["Plang", 5], ["Plong", 7]);
+  foreach my $pair (@sounds) {
+    my ($sound, $factor) = @$pair;
+    $out .= $sound if ($number % $factor == 0);
+  }
+  return $out || $number;
 }
 
 1;
