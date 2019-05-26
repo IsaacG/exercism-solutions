@@ -5,7 +5,6 @@ use bigint;
 use feature qw/signatures/;
 use Exporter 'import';
 our @EXPORT_OK = qw(grains_on_square total_grains);
-use Math::BigInt;
 
 sub grains_on_square ($square) {
   die "Bad square $square" if $square < 1 or $square > 64;
