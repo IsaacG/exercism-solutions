@@ -41,12 +41,19 @@ exercise () {
   echo "${e//-/_}"
 }
 
+camel () {
+  local f="${1//_/ }" w x
+  read -r -a w <<< "$f"
+  for x in "${w[@]}"; do printf '%s' "${x^}"; done
+}
+
 src () {
   case "$(lang)" in
     python) echo "$(exercise).py" ;;
     bash) echo "$(exercise).sh" ;;
     go) echo "$(exercise).go" ;;
-    haskell) f=$(exercise); echo "src/${f^}.hs" ;;
+    haskell) f=$(exercise); echo "src/$(camel "$f").hs" ;;
+    perl5) f=$(exercise); echo "$(camel "$f").pm" ;;
   esac
 }
 
@@ -56,6 +63,7 @@ tst () {
     bash) echo "$(exercise)_test.sh" ;;
     go) echo "$(exercise)_test.go" ;;
     haskell) f=$(exercise); echo "test/Tests.hs" ;;
+    perl5) echo "$(exercise).t" ;;
   esac
 }
 
@@ -65,6 +73,7 @@ comment () {
     bash) echo "#" ;;
     go) echo "//" ;;
     haskell) echo "--" ;;
+    perl5) echo "#" ;;
   esac
 }
 
@@ -92,7 +101,8 @@ etest () {
     python) pytest "$(tst)";;
     bash) bats "$(tst)";;
     go) go test -v --bench . --benchmem;;
-    haskell) stack test
+    haskell) stack test;;
+    perl5) prove .;;
   esac
 }
 
