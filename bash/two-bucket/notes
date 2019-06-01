@@ -1,0 +1,50 @@
+Given two unit (no fractions) buckets of sizes A, B we can
+have at most max(A, B) unique volumes.
+
+We need to iterate through a series of steps where at each
+step we arrive at a new volume.
+
+## Initial approach:
+
+With two buckets, to get from one volume to another we start
+with an empty bucket and a bucket with volume V_1.
+1.  Optionally transfer the existing water from one bucket
+    to another (if it can hold it with room to spare).
+    * This gives us two branches to explore, with different
+      results following.
+    * At this stage we got two buckets, one empty (a) and
+      the other partially filled (b).
+2.  Fill the empty bucket A.
+3.  Pour the now-full bucket A into the partially filled
+    bucket B.
+4a. If B is full, empty it out, leaving A partially filled
+    with V_2.
+4b. If B is not full, A is empty, leaving us with B
+    partially filled with V_2.
+    * If V_2 is our target, we are done (maybe without
+      needing to empty a full bucket).
+5.  We have now "explored" what volumes we can derive,
+    starting with V_1. Mark V_1 as explored.
+6.  If V_2 was previously explored, do nothing. If it was
+    not explored, add it to the list of volumes to explore.
+7.  We can now repeat this process with each volume in the
+    to_explore list.
+
+The problem starts us out with one bucket, A, full and the
+other, B, empty. Assume that we never want to empty the
+initial bucket and fill the other. This means we can
+consider that volume=0 and volume=B are not volumes to
+explore, ie can be pre-marked as explored.
+
+
+## Updates on that approach.
+
+1. I've had to drop my assumption about not exploring
+   volume=0 and volume=B
+2. I've had to add an explicit check for the "start with
+   bucket two" case, ie "if bucket1 if filled and bucket2
+   is empty, skip". It's in the problem definition.
+3. In the original step 1, I've assumed I only need to
+   attempt pouring from one bucket to another if it would
+   fully fit in the second bucket. This assumption was
+   incorrect and had to be handled.
