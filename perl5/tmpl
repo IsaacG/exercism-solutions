@@ -1,0 +1,13 @@
+package Anagram;
+use strict;
+use warnings;
+use Exporter 'import';
+use feature qw(signatures);
+our @EXPORT_OK = qw(match);
+
+sub hey {
+}
+
+1;
+
+# vim:ts=2:sw=2:expandtab
