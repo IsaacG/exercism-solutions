@@ -5,7 +5,7 @@ Using a function() is good practice; it encapsulates a chunk of logic in one fun
 
 What happens if you were to add `set -o nounset` to your code and call it without any args?
 
-For arithmetic operations (numbers), prefer `((` over `[[`. `((` is an arithmetic operation while [[ is used for strings.
+For arithmetic operations (numbers), prefer `((` over `[[`. `((` is an arithmetic operation while `[[` is used for strings.
 
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 
