@@ -8,8 +8,8 @@ library:
   exposed-modules: Pangram
   source-dirs: src
   ghc-options: -Wall
-  # dependencies:
-  # - foo       # List here the packages you
+  dependencies:
+  - containers
   # - bar       # want to use in your solution.
 
 tests:
