@@ -37,6 +37,8 @@ Note that `echo $(something) == something` and `a=$(echo b) == a=b`.
 
 `seq` is a non-standard tool that can output anything (eg "one two three"). It's also an external binary which isn't needed when bash can do the job itself! Prefer `for ((i = 1; i <= 10; i++)); do`
 
+Don't forget to quote your variable expansions!
+
 Other accumulator options: `local -i total; total+=1;` and `(( total += 1 ))`. Pick whichever looks the nicest to you.
 
 Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; then` and `for ...; do`
