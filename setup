@@ -79,6 +79,7 @@ comment () {
 
 init () {
   [[ -n "$(exercise)" ]] || return 1
+  [[ $(lang) = "go" ]] && return
   ll=$(tail -n1 "$(src)" 2>/dev/null)
   if [[ $ll = *vim:* ]]; then
     echo "Already initialized" >&2
@@ -100,7 +101,7 @@ etest () {
   case "$(lang)" in
     python) pytest "$(tst)";;
     bash) bats "$(tst)";;
-    go) go test -v --bench . --benchmem;;
+    go) golint && go test -v --bench . --benchmem;;
     haskell) stack test;;
     perl5) prove .;;
   esac
