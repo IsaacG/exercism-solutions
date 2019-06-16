@@ -43,6 +43,11 @@ Other accumulator options: `local -i total; total+=1;` and `(( total += 1 ))`. P
 
 Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; then` and `for ...; do`
 
+The variable `$@` refers to all the arguments combined. If you want to access just the first argument, do so using `$1`. It's clearer and more precise.
+
+The best way to test the number of arguments is to test that *number* directly. bash provides a `$#` variable which expands to the number of arguments provided.
+
+
 Hello World
 -----------
 
@@ -51,6 +56,10 @@ Can you solve this in a way that doesn't have a mostly duplicated output string?
 On LN you have an unquoted variable! That can lead to unexpected behavior.
 $  bash ./two_fer.sh "a -o -n a"
 
+
+Error Handling
+--------------
+Ideally, you want to test for, and handle, the error conditions first. This puts the test and handling close to each other. This also allows you to then write the rest of your code without having to wrap it in the error testing.
 
 Raindrops
 ---------
