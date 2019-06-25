@@ -47,6 +47,12 @@ The variable `$@` refers to all the arguments combined. If you want to access ju
 
 The best way to test the number of arguments is to test that *number* directly. bash provides a `$#` variable which expands to the number of arguments provided.
 
+bash supports appends with a `+=` ie `foo+=bar`
+
+Another way to test for non-digit that doesn't involve a regexp is to use a pattern: `[[ $input = *[^[:digit:]]* ]]`
+
+bash has a built-in test shortcut specifically to check if a string is empty: `[[ -z $var ]]`. (Also see `-n`.)
+
 
 Hello World
 -----------
@@ -70,6 +76,8 @@ Consider what would happen if you ran the command below. Can you fix that echo l
 ```
 $ bash raindrops.sh "-e foo"
 ```
+
+Note for simple cases, you can use the short-circuited `and`/`or` operators in place of an `if`. ie `(( some test )) && do_something`
 
 
 Leap
