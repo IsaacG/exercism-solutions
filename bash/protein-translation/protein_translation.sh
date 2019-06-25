@@ -3,7 +3,7 @@
 translate () {
   (( $# == 1 )) || exit 1
   out=()
-  for ((i=0; i+2 < ${#1}; i+=3)); do
+  for ((i=0; i < ${#1}; i+=3)); do
     case "${1:i:3}" in
       AUG) out+=(Methionine);;
       UUU|UUC) out+=(Phenylalanine);;
