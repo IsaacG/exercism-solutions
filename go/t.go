@@ -1,10 +1,11 @@
 package main
 
 import (
-	"./luhn"
+	"./linked-list"
 	"fmt"
 )
 
 func main() {
-	fmt.Printf("%r", luhn.Valid("059"))
+	l := linkedlist.NewList([]interface{}{1, 2, 3, 4})
+	fmt.Printf("%s\n", l)
 }
