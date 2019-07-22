@@ -39,6 +39,8 @@ Note that `echo $(something) == something` and `a=$(echo b) == a=b`.
 
 Don't forget to quote your variable expansions!
 
+Another way to test for an integer without resorting to a regexp is to use a pattern: `[[ $1 = *[^[:digit:]]* ]]`
+
 Other accumulator options: `local -i total; total+=1;` and `(( total += 1 ))`. Pick whichever looks the nicest to you.
 
 Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; then` and `for ...; do`
@@ -52,6 +54,8 @@ bash supports appends with a `+=` ie `foo+=bar`
 Another way to test for non-digit that doesn't involve a regexp is to use a pattern: `[[ $input = *[^[:digit:]]* ]]`
 
 bash has a built-in test shortcut specifically to check if a string is empty: `[[ -z $var ]]`. (Also see `-n`.)
+
+`((` and `$((` are nearly the same thing. There's never any need to nest one within the other as you're already in the arithmetic context.
 
 
 Hello World
