@@ -47,11 +47,11 @@ func addDraw(t *tally) {
 }
 
 func writeHeader(w io.Writer) {
-	io.WriteString(w, fmt.Sprintf("%-30s | %2s | %2s | %2s | %2s | %2s\n", "Team", "MP", "W", "D", "L", "P"))
+	fmt.Fprintf(w, "%-30s | %2s | %2s | %2s | %2s | %2s\n", "Team", "MP", "W", "D", "L", "P")
 }
 
 func writeTally(w io.Writer, t *tally) {
-	io.WriteString(w, fmt.Sprintf("%-30s | %2d | %2d | %2d | %2d | %2d\n", t.name, t.played, t.won, t.draw, t.lost, t.points))
+	fmt.Fprintf(w, "%-30s | %2d | %2d | %2d | %2d | %2d\n", t.name, t.played, t.won, t.draw, t.lost, t.points)
 }
 
 // Tally tallies scores.
@@ -70,9 +70,6 @@ func Tally(r io.Reader, w io.Writer) error {
 		if len(fields) != 3 {
 			return fmt.Errorf("line does not contain three fields: %s", line)
 		}
-		if fields[2] != "win" && fields[2] != "draw" && fields[2] != "loss" {
-			return errors.New("invalid match result")
-		}
 
 		teamA, teamB, result := fields[0], fields[1], fields[2]
 		if _, ok := score[teamA]; !ok {
@@ -81,15 +78,19 @@ func Tally(r io.Reader, w io.Writer) error {
 		if _, ok := score[teamB]; !ok {
 			score[teamB] = &tally{name: teamB}
 		}
-		if result == "win" {
+
+		switch result {
+		case "win":
 			addWin(score[teamA])
 			addLoss(score[teamB])
-		} else if result == "loss" {
+		case "loss":
 			addLoss(score[teamA])
 			addWin(score[teamB])
-		} else {
+		case "draw":
 			addDraw(score[teamA])
 			addDraw(score[teamB])
+		default:
+			return errors.New("invalid match result")
 		}
 	}
 
