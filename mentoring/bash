@@ -47,7 +47,7 @@ Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; t
 
 The variable `$@` refers to all the arguments combined. If you want to access just the first argument, do so using `$1`. It's clearer and more precise.
 
-The best way to test the number of arguments is to test that *number* directly. bash provides a `$#` variable which expands to the number of arguments provided.
+The best way to test the number of arguments is to test that *number* directly (vs the contents of `$1`). bash provides a `$#` variable which expands to the number of arguments provided.
 
 bash supports appends with a `+=` ie `foo+=bar`
 
@@ -57,6 +57,8 @@ bash has a built-in test shortcut specifically to check if a string is empty: `[
 
 `((` and `$((` are nearly the same thing. There's never any need to nest one within the other as you're already in the arithmetic context.
 
+Never include user-input in the first argument to printf! Doing so allows for format string attacks. See https://en.wikipedia.org/wiki/Uncontrolled_format_string . Instead, printf 'Foo %s\n' "$var".
+
 
 Hello World
 -----------
@@ -65,6 +67,8 @@ Can you solve this in a way that doesn't have a mostly duplicated output string?
 
 On LN you have an unquoted variable! That can lead to unexpected behavior.
 $  bash ./two_fer.sh "a -o -n a"
+
+The exercise says to test if there is an argument provided or not. What if I wanted to call the script with "" as my arg?
 
 
 Error Handling
