@@ -100,7 +100,7 @@ etest () {
   [[ -n "$(exercise)" ]] || return 1
   case "$(lang)" in
     python) pytest "$(tst)";;
-    bash) bats "$(tst)";;
+    bash) BATS_RUN_SKIPPED=true bats "$(tst)";;
     go) golint && go test -v --bench . --benchmem;;
     haskell) stack test;;
     perl5) prove .;;
