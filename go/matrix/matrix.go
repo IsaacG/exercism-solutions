@@ -18,7 +18,7 @@ func New(in string) (*Matrix, error) {
 	var cols = -1
 	for _, line := range strings.Split(in, "\n") {
 		row := make([]int, 0)
-		for _, val := range strings.Split(strings.TrimSpace(line), " ") {
+		for _, val := range strings.Fields(line) {
 			i, err := strconv.Atoi(val)
 			if err != nil {
 				return nil, err
