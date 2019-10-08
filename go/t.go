@@ -1,11 +1,10 @@
 package main
 
 import (
-	"./linked-list"
+	"./matching-brackets"
 	"fmt"
 )
 
 func main() {
-	l := linkedlist.NewList([]interface{}{1, 2, 3, 4})
-	fmt.Printf("%s\n", l)
+	fmt.Printf("%s\n", brackets.Bracket("[]"))
 }
