@@ -1,43 +1,43 @@
 Generic
 -------
 
-Using a function() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
-
-What happens if you were to add `set -o nounset` to your code and call it without any args?
-
 For arithmetic operations (numbers), prefer `((` over `[[`. `((` is an arithmetic operation while `[[` is used for strings.
 
-Note you moved your logic out of main(). Generally, main() should contain all your logic.
+In bash, prefer `[[` over `[`. It's more powerful and less likely to act in unexpected ways. For arithmetic operations (numbers), prefer `((` over `[[`. `((` is an arithmetic operation while `[[` is used for strings.
 
-In bash, prefer `[[` over `[`. It's more powerful and less likely to act in unexpected ways.
+bash has a built-in test shortcut specifically to check if a string is empty: `[[ -z $var ]]`. (Also see `-n`.)
+
+Avoid using all-caps variable names. Those are used by the shell for internal things like PWD and SECONDS. Overriding them can lead to odd behaviors.
+
+The best way to test the number of arguments is to test that *number* directly (vs the contents of `$1`). bash provides a `$#` variable which expands to the number of arguments provided.
+
+Imagine you had a command that took an optional argument and replaced it with a default value when not supplied. You determined that you want to set that value to "" so you take the time to add "" to your command. Then imagine that the command simply ignored your input. How would you feel? I'd be mightily irked. At that point, the command is doing input validation and choosing to ignore certain inputs, not simply replacing optional inputs with default values.
 
 You got a lot of boilerplate comments left in there that would be nice to drop. It makes it harder to find your code.
 
-Prefer to avoid using `exit` inside a function! Use `return 0` in case something else runs after calling this function.
+Generally speaking, prefer `return` to `exit` inside of a function. If you source this code and try to run the function, you don't want the function to close your shell!
 
-In bash, prefer `[[` over `[`. It's more powerful and less likely to act in unexpected ways. **However** for arithmetic operations (numbers ie *here*), prefer `((` over `[[`. `((` is an arithmetic operation while `[[` is used for strings.
+Don't forget to quote your variable expansions!
+
+bash supports appends with a `+=` ie `foo+=bar`
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
 
 You got a number of unquoted variable expansions that ought to get fixed.
 
+Other counter options include `(( count++ ))` or `declare -i count; count+=1`. Pick whichever looks the nicest to you.
+
 You got an odd mix of [ and $(( going on. In bash, you can use [[ for strings and (( for numbers. `if (( $n % 3 == 0 )); then ...`
 
-In bash, prefer [[ over [. It's more powerful and less likely to act in unexpected ways.
-
 Note the most portable way (and common way) to define a function is without the `function` keyword. eg `main () { ...`
-
-Avoid using all-caps variable names. Those are used by the shell for internal things like PWD and SECONDS. Overriding them can lead to odd behaviors.
 
 Can you use a pattern over a regex here? Patterns tend to be simpler and cheaper to use. Simpler solutions tend to be better than more complex ones.
 
 Note other ways to do accumulations include `(( sum += n ))` and `declare -i sum=1; sum+=n`.
 
-Note that `echo $(something) == something` and `a=$(echo b) == a=b`.
+Note that `echo $(command)` is simpler and better written as `command` and `a=$(echo b)` and `a=b`.
 
 `seq` is a non-standard tool that can output anything (eg "one two three"). It's also an external binary which isn't needed when bash can do the job itself! Prefer `for ((i = 1; i <= 10; i++)); do`
-
-Don't forget to quote your variable expansions!
 
 Another way to test for an integer without resorting to a regexp is to use a pattern: `[[ $1 = *[^[:digit:]]* ]]`
 
@@ -47,18 +47,19 @@ Typically people put the `if`|`for` and `then`|`do` on the same line. `if ...; t
 
 The variable `$@` refers to all the arguments combined. If you want to access just the first argument, do so using `$1`. It's clearer and more precise.
 
-The best way to test the number of arguments is to test that *number* directly (vs the contents of `$1`). bash provides a `$#` variable which expands to the number of arguments provided.
-
-bash supports appends with a `+=` ie `foo+=bar`
-
 Another way to test for non-digit that doesn't involve a regexp is to use a pattern: `[[ $input = *[^[:digit:]]* ]]`
-
-bash has a built-in test shortcut specifically to check if a string is empty: `[[ -z $var ]]`. (Also see `-n`.)
 
 `((` and `$((` are nearly the same thing. There's never any need to nest one within the other as you're already in the arithmetic context.
 
 Never include user-input in the first argument to printf! Doing so allows for format string attacks. See https://en.wikipedia.org/wiki/Uncontrolled_format_string . Instead, printf 'Foo %s\n' "$var".
 
+In general, avoid `exit` inside functions. Imagine how irksome it would be if you ran a command and that command closed your terminal for you. Instead, prefer `return`.
+
+Using a function() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
+
+Note you moved your logic out of main(). Generally, main() should contain all your logic.
+
+What happens if you were to add `set -o nounset` to your code and call it without any args?
 
 Hello World
 -----------
@@ -70,10 +71,13 @@ $  bash ./two_fer.sh "a -o -n a"
 
 The exercise says to test if there is an argument provided or not. What if I wanted to call the script with "" as my arg?
 
+This code passes multiple arguments to `echo` and relies on `echo` choosing how to join those args together. It's generally better practice for your code to specify and control the whitespace by passing a single string to `echo`, ie by building a single string, eg "Some $value here."
 
 Error Handling
 --------------
 Ideally, you want to test for, and handle, the error conditions first. This puts the test and handling close to each other. This also allows you to then write the rest of your code without having to wrap it in the error testing.
+
+In the non-error case, what's the exit status? Why? How or what sets it?
 
 Raindrops
 ---------
@@ -85,7 +89,7 @@ Consider what would happen if you ran the command below. Can you fix that echo l
 $ bash raindrops.sh "-e foo"
 ```
 
-Note for simple cases, you can use the short-circuited `and`/`or` operators in place of an `if`. ie `(( some test )) && do_something`
+Note for simple cases, you can use the short-circuited `and`/`or` operators in place of an `if`. ie `(( some test )) && do_something`. This is very much so a personal preference thing, though. Some people like this approach, others really don't.
 
 
 Leap
@@ -111,3 +115,7 @@ Grains
 
 Exit status:
 https://exercism.io/mentor/solutions/17290ab99bb64c3796440621d7ee309a?iteration_idx=1#discussion-post-422912
+
+
+Does this pass all the unit tests? If yes, it's not catching the exit status properly. Make sure you're using bats-core v1.1.0 from homebrew (https://github.com/bats-core/bats-core) and not https://github.com/sstephenson/bats
+
