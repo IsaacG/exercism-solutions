@@ -15,10 +15,10 @@ main () {
 
   declare -i count
   for (( i = 0; i < ${#a}; i++ )); do
-    [[ ${a:i:1} == ${b:i:1} ]] || count+=1
+    [[ ${a:i:1} == "${b:i:1}" ]] || count+=1
   done
 
-  printf '%d' "$count"
+  printf '%d\n' "$count"
 }
 
 main "$@"

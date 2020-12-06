@@ -5,7 +5,7 @@ boolRC () { (( $? == 0 )) && echo true || echo false; }
 Gs () {
   export TZ=UTC
   birth=$(date +%s -d "$1")
-  date -d "@$((birth + 10**9))" | tr -s ' '
+  date -d "@$((birth + 10**9))" +%FT%T
 }
 
 (( $# == 1 )) || exit 1

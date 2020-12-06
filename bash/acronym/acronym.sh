@@ -12,12 +12,16 @@ withCoreTools () {
 
 main () {
   local acr
-
-  # Split into word/array, translating - to ' '
-  read -a words <<< "${1//-/ }"
-  # Accumulate the first char of each word
+  
+  # "-" is treated like a space.
+  in="${1//-/ }"
+  # Everything else is droppped.
+  in="${in//[!a-zA-Z ]/}"
+  # Split into word array.
+  read -a words <<< "$in"
+  # Accumulate the first char of each word.
   for i in "${words[@]}"; do acr+="${i:0:1}"; done
-  # Print out the uppercased result
+  # Print out the uppercased result.
   printf '%s\n' "${acr^^}"
 }
 
