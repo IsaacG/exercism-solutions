@@ -23,7 +23,7 @@ bash supports appends with a `+=` ie `foo+=bar`
 
 You seem to have lost your shebang on the top line. This means if you `chmod +x` your script, you can't control what shell is used to run it!
 
-You got a number of unquoted variable expansions that ought to get fixed.
+You got an unquoted variable expansion! Always quote your expansions!
 
 Other counter options include `(( count++ ))` or `declare -i count; count+=1`. Pick whichever looks the nicest to you.
 
@@ -64,6 +64,8 @@ What happens if you were to add `set -o nounset` to your code and call it withou
 Hello World
 -----------
 
+`"$@"` is the *list* or arguments. It ought to only be used when you are expecting multiple words. If you want to access a single word/argument, do so directly using `"$1"`. If you want all the arguments joined together into one string, use `"$*"`.
+
 Can you solve this in a way that doesn't have a mostly duplicated output string? Duplication in code is a hassle to maintain as any change needs to be applied across multiple locations.
 
 On LN you have an unquoted variable! That can lead to unexpected behavior.
@@ -76,6 +78,9 @@ This code passes multiple arguments to `echo` and relies on `echo` choosing how 
 Error Handling
 --------------
 Ideally, you want to test for, and handle, the error conditions first. This puts the test and handling close to each other. This also allows you to then write the rest of your code without having to wrap it in the error testing.
+
+Note once the error is handled, the "main" block of your code can be after the `fi` and un-nested vs nested inside an `else` in the error handling code. This allows you to separate error handling code from the main logic of your program.
+
 
 In the non-error case, what's the exit status? Why? How or what sets it?
 
