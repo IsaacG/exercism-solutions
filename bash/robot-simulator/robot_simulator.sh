@@ -19,7 +19,6 @@ die () { echo "$1"; exit 1; }
 main () {
   local x=${1:-0} y=${2:-0} d=${3:-north}
   [[ -v 'right[$d]' ]] || die "invalid direction"
-
   if (( $# == 4 )); then
     o=$4
     for (( i = 0; i < ${#o}; i++ )); do
