@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
 
+# local version: 1.7.1.0
+
 # parsing and numbers
 @test numbers_only {
-    #skip
+    #[[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 3 4 5
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 3 4 5" ]]
 }
 
 # addition
 @test addition_ok {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 +
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "3" ]]
 }
 
 @test addition_no_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 +
 END
@@ -30,7 +32,7 @@ END
 }
 
 @test addition_one_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 +
 END
@@ -40,16 +42,16 @@ END
 
 # subtraction
 @test subtraction_ok {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 3 4 -
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "-1" ]]
 }
 
 @test subtraction_no_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 -
 END
@@ -58,7 +60,7 @@ END
 }
 
 @test subtraction_one_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 -
 END
@@ -68,16 +70,16 @@ END
 
 # multiplication
 @test multiplication_ok {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 2 4 *
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "8" ]]
 }
 
 @test multiplication_no_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 *
 END
@@ -86,7 +88,7 @@ END
 }
 
 @test multiplication_one_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 *
 END
@@ -96,25 +98,25 @@ END
 
 # division
 @test division_ok {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 12 4 /
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "3" ]]
 }
 
 @test division_int_result {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 15 4 /
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "3" ]]
 }
 
 @test division_no_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 /
 END
@@ -123,7 +125,7 @@ END
 }
 
 @test division_one_args {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 /
 END
@@ -132,7 +134,7 @@ END
 }
 
 @test division_by_zero {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 2 0 /
 END
@@ -142,43 +144,43 @@ END
 
 # combined arithmetic
 @test add_and_subtract {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 + 4 -
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "-1" ]]
 }
 @test multiply_and_divide {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 2 4 * 3 /
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "2" ]]
 }
 
 # dup
 @test dup_1 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 42 dup
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "42 42" ]]
 }
 
 @test dup_2 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 dup
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 2" ]]
 }
 
 @test dup_empty {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 dup
 END
@@ -188,25 +190,25 @@ END
 
 # drop
 @test drop_1 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 42 drop
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "" ]]
 }
 
 @test drop_2 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 drop
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1" ]]
 }
 
 @test drop_empty {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 drop
 END
@@ -216,25 +218,25 @@ END
 
 # swap
 @test swap_1 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 swap
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "2 1" ]]
 }
 
 @test swap_2 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 3 swap
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 3 2" ]]
 }
 
 @test swap_empty {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 swap
 END
@@ -243,7 +245,7 @@ END
 }
 
 @test swap_1arg {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 swap
 END
@@ -253,25 +255,25 @@ END
 
 # over
 @test over_1 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 over
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 1" ]]
 }
 
 @test over_2 {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 3 over
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 3 2" ]]
 }
 
 @test over_empty {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 over
 END
@@ -280,7 +282,7 @@ END
 }
 
 @test over_1arg {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 over
 END
@@ -290,70 +292,70 @@ END
 
 # user-defined words
 @test macro_with_builtin {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : dup-twice dup dup ;
 1 dup-twice
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 1 1" ]]
 }
 
 @test macro_maintain_order {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : countup 1 2 3 ;
 countup
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 3" ]]
 }
 
 @test macro_can_override_macro {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo dup ;
 : foo swap ;
 1 2 foo
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "2 1" ]]
 }
 
 @test macro_can_override_builtin {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : swap dup ;
 1 swap
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 1" ]]
 }
 
 @test macro_can_override_operator {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : + * ;
 3 4 +
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "12" ]]
 }
 
 @test macro_expand_in_macro_definition {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo 5 ;
 : bar foo ;
 : foo 6 ;
 bar foo
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "5 6" ]]
 }
 
 @test macro_empty_definition {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo ;
 END
@@ -362,18 +364,18 @@ END
 }
 
 @test macro_expand_in_macro_redefinition {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo 10 ;
 : foo foo 1 + ;
 foo
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "11" ]]
 }
 
 @test macro_cannot_redefine_numbers {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : 1 2 ;
 END
@@ -382,7 +384,7 @@ END
 }
 
 @test macro_undefined {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 foo
 END
@@ -391,7 +393,7 @@ END
 }
 
 @test macro_missing_semicolon {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo 1
 foo
@@ -403,57 +405,57 @@ END
 
 # case insensitivity
 @test case_dup {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 DUP Dup dup
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 1 1 1" ]]
 }
 
 @test case_drop {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 3 4 DROP DrOp drop
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1" ]]
 }
 
 @test case_swap {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 SWAP 3 Swap 4 swap
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "2 3 4 1" ]]
 }
 
 @test case_over {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 1 2 OVER Over over
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 2 1 2 1" ]]
 }
 
 @test case_macro_names {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : foo dup ;
 1 FOO Foo foo
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 1 1 1" ]]
 }
 
 @test case_macro_definitions {
-    # skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
     run bash forth.sh <<END
 : SWAP DUP Dup dup ;
 1 swap
 END
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "1 1 1 1" ]]
 }

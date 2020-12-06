@@ -4,9 +4,10 @@ If you want to build something using a Raspberry Pi, you'll probably use _resist
 
 * Each resistor has a resistance value.
 * Resistors are small - so small in fact that if you printed the resistance value on them, it would be hard to read.
-To get around this problem, manufacturers print color-coded bands onto the resistors to denote their resistance values. Each band acts as a digit of a number. For example, if they printed a brown band (value 1) followed by a green band (value 5), it would translate to the number 15.
+To get around this problem, manufacturers print color-coded bands onto the resistors to denote their resistance values. Each band has a position and a numeric value. For example, if they printed a brown band (value 1) followed by a green band (value 5), it would translate to the number 15.
 
-In this exercise, you are going to create a helpful program so that you don't have to remember the values of the bands. The program will take two colors as input, and output the correct number.
+In this exercise you are going to create a helpful program so that you don't have to remember the values of the bands. The program will take color names as input and output a two digit number, even if the input is more than two colors!
+
 
 The band colors are encoded as follows:
 
@@ -21,6 +22,11 @@ The band colors are encoded as follows:
 - Grey: 8
 - White: 9
 
+From the example above:
+brown-green should return 15
+brown-green-violet should return 15 too, ignoring the third color.
+
+
 
 Run the tests with:
 
@@ -28,7 +34,15 @@ Run the tests with:
 bats resistor_color_duo_test.sh
 ```
 
-After the first test(s) pass, continue by commenting out or removing the `skip` annotations prepending other tests.
+After the first test(s) pass, continue by commenting out or removing the
+`[[ $BATS_RUN_SKIPPED == true ]] || skip` 
+annotations prepending other tests.
+
+To run all tests, including the ones with `skip` annotations, run:
+
+```bash
+BATS_RUN_SKIPPED=true bats resistor_color_duo_test.sh
+```
 
 ## Source
 
@@ -36,13 +50,25 @@ Maud de Vries, Erik Schierboom [https://github.com/exercism/problem-specificatio
 
 
 ## External utilities
-`Bash` is a language to write scripts that works closely with various system utilities,
-like [`sed`](https://www.gnu.org/software/sed/), [`awk`](https://www.gnu.org/software/gawk/), [`date`](https://www.gnu.org/software/coreutils/manual/html_node/date-invocation.html) and even other programming languages, like [`Python`](https://www.python.org/).
-This track does not restrict the usage of these utilities, and as long as your solution is portable
-between systems and does not require installing third party applications, feel free to use them to solve the exercise.
+`Bash` is a language to write "scripts" -- programs that can call
+external tools, such as
+[`sed`](https://www.gnu.org/software/sed/),
+[`awk`](https://www.gnu.org/software/gawk/),
+[`date`](https://www.gnu.org/software/coreutils/manual/html_node/date-invocation.html)
+and even programs written in other programming languages, 
+like [`Python`](https://www.python.org/).
+This track does not restrict the usage of these utilities, and as long
+as your solution is portable between systems and does not require
+installation of third party applications, feel free to use them to solve
+the exercise.
 
-For an extra challenge, if you would like to have a better understanding of the language,
-try to re-implement the solution in pure `Bash`, without using any external tools.
+For an extra challenge, if you would like to have a better understanding
+of the language, try to re-implement the solution in pure `Bash`,
+without using any external tools. Note that there are some types of
+problems that bash cannot solve, such as performing floating point
+arithmetic and manipulating dates: for those, you must call out to an
+external tool.
 
 ## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+It's possible to submit an incomplete solution so you can see how others
+have completed the exercise.

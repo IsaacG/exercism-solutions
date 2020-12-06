@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# local version: 1.4.0.0
+
 # Your bash program should be able to accept input
 # 1. via standard input, OR
 # 2. as a filename given on the cmd line.
@@ -10,7 +12,7 @@ setup()    { export INPUT_FILE=$( mktemp ); }
 teardown() { rm -f "$INPUT_FILE"; }
 
 @test "just the header if no input" {
-    #[[ $BATS_RUN_SKIPPED = true ]] || skip
+    #[[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 INPUT
@@ -22,12 +24,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "a win is three points, a loss is zero points" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     cat <<INPUT >"$INPUT_FILE"
 Allegoric Alaskans;Blithering Badgers;win
@@ -41,12 +43,12 @@ EXPECTED
 )
 
     run bash tournament.sh "$INPUT_FILE"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "a win can also be expressed as a loss" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Blithering Badgers;Allegoric Alaskans;loss
@@ -61,12 +63,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "a different team can win" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Blithering Badgers;Allegoric Alaskans;win
@@ -81,12 +83,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "a draw is one point each" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Allegoric Alaskans;Blithering Badgers;draw
@@ -101,12 +103,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "There can be more than one match" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Allegoric Alaskans;Blithering Badgers;win
@@ -122,12 +124,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "There can be more than one winner" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Allegoric Alaskans;Blithering Badgers;loss
@@ -143,12 +145,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "There can be more than two teams" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Allegoric Alaskans;Blithering Badgers;win
@@ -166,12 +168,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "typical input" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Allegoric Alaskans;Blithering Badgers;win
@@ -193,12 +195,12 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "incomplete competition (not all pairs have played)" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     cat <<INPUT > "$INPUT_FILE"
 Allegoric Alaskans;Blithering Badgers;loss
@@ -217,12 +219,12 @@ EXPECTED
 )
 
     run bash tournament.sh "$INPUT_FILE"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
 
 @test "ties broken alphabetically" {
-    [[ $BATS_RUN_SKIPPED = true ]] || skip
+    [[ $BATS_RUN_SKIPPED == "true" ]] || skip
 
     input=$( cat <<INPUT
 Courageous Californians;Devastating Donkeys;win
@@ -244,6 +246,6 @@ EXPECTED
 )
 
     run bash tournament.sh  <<< "$input"
-    [[ $status -eq 0 ]]
+    (( status == 0 ))
     [[ $output == "$expected" ]]
 }
