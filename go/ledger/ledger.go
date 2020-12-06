@@ -2,7 +2,6 @@
 package ledger
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strconv"
@@ -21,25 +20,25 @@ type Entry struct {
 type Ledger []Entry
 
 var localeConfig = map[string]struct {
-	header     []string
-	dateFormat string
-	tSep       string
-	curFormatP string
-	curFormatN string
+	header                 []string
+	dateFormat             string
+	thousandsSeparator     string
+	positiveCurrencyFormat string
+	negativeCurrencyFormat string
 }{
 	"nl-NL": {
-		header:     []string{"Datum", "Omschrijving", "Verandering"},
-		dateFormat: "02-01-2006",
-		tSep:       ".",
-		curFormatP: "%s %s,%02d ",
-		curFormatN: "%s %s,%02d-",
+		header:                 []string{"Datum", "Omschrijving", "Verandering"},
+		dateFormat:             "02-01-2006",
+		thousandsSeparator:     ".",
+		positiveCurrencyFormat: "%s %s,%02s ",
+		negativeCurrencyFormat: "%s %s,%02s-",
 	},
 	"en-US": {
-		header:     []string{"Date", "Description", "Change"},
-		dateFormat: "01/02/2006",
-		tSep:       ",",
-		curFormatP: "%s%s.%02d ",
-		curFormatN: "(%s%s.%02d)",
+		header:                 []string{"Date", "Description", "Change"},
+		dateFormat:             "01/02/2006",
+		thousandsSeparator:     ",",
+		positiveCurrencyFormat: "%s%s.%s ",
+		negativeCurrencyFormat: "(%s%s.%s)",
 	},
 }
 
@@ -48,49 +47,35 @@ var currencies = map[string]string{
 	"USD": "$",
 }
 
-func (a Ledger) Len() int      { return len(a) }
-func (a Ledger) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-
 // Less orders the ledger by date > description > change
-func (a Ledger) Less(i, j int) bool {
-	if a[i].Date != a[j].Date {
-		return a[i].Date < a[j].Date
-	}
-	if a[i].Description != a[j].Description {
-		return a[i].Description < a[j].Description
-	}
-	return a[i].Change < a[j].Change
-}
-
-type chanMsg struct {
-	i int
-	s string
-	e error
-}
-
 func formatCurrency(locale, currency string, cents int) string {
-	format := localeConfig[locale].curFormatP
+	format := localeConfig[locale].positiveCurrencyFormat
 	if cents < 0 {
 		cents = -cents
-		format = localeConfig[locale].curFormatN
+		format = localeConfig[locale].negativeCurrencyFormat
 	}
-	var parts []string
-	dollars := strconv.Itoa(cents / 100)
-	cents = cents % 100
+	centsStr := fmt.Sprintf("%02d", cents%100)
+	parts := chunk(cents / 100)
 
-	o := len(dollars) % 3
+	return fmt.Sprintf(format, currencies[currency], strings.Join(parts, localeConfig[locale].thousandsSeparator), centsStr)
+}
+
+func chunk(d int) []string {
+	var parts []string
+	num := strconv.Itoa(d)
+
+	o := len(num) % 3
 	if o == 0 {
 		o = 3
 	}
 
-	for i := 0; i < len(dollars); i += o {
+	for i := 0; i < len(num); i += o {
 		if i != 0 {
 			o = 3
 		}
-		parts = append(parts, dollars[i:i+o])
+		parts = append(parts, num[i:i+o])
 	}
-
-	return fmt.Sprintf(format, currencies[currency], strings.Join(parts, localeConfig[locale].tSep), cents)
+	return parts
 }
 
 func truncate(s, cont string, l int) string {
@@ -117,12 +102,12 @@ func formatEntry(e Entry, locale, currency string) (string, error) {
 func FormatLedger(currency string, locale string, entries []Entry) (string, error) {
 	// Validation.
 	if _, ok := currencies[currency]; !ok {
-		return "", errors.New("invalid currency")
+		return "", fmt.Errorf("invalid currency: %s", currency)
 	}
 
 	l, ok := localeConfig[locale]
 	if !ok {
-		return "", errors.New("unknown locale")
+		return "", fmt.Errorf("unknown locale: %s", locale)
 	}
 
 	// Make a copy and sort it.
@@ -130,24 +115,25 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	for _, e := range entries {
 		entriesCopy = append(entriesCopy, e)
 	}
-	sort.Sort(entriesCopy)
-
-	// Parallelism, always a great idea
-	co := make(chan chanMsg)
-	for i, et := range entriesCopy {
-		go func(i int, entry Entry) {
-			s, err := formatEntry(entry, locale, currency)
-			co <- chanMsg{i: i, s: s, e: err}
-		}(i, et)
-	}
-	ss := make([]string, len(entriesCopy))
-	for range entriesCopy {
-		v := <-co
-		if v.e != nil {
-			return "", v.e
+	sort.Slice(entriesCopy, func(i, j int) bool {
+		if entriesCopy[i].Date != entriesCopy[j].Date {
+			return entriesCopy[i].Date < entriesCopy[j].Date
 		}
-		ss[v.i] = v.s
+		if entriesCopy[i].Description != entriesCopy[j].Description {
+			return entriesCopy[i].Description < entriesCopy[j].Description
+		}
+		return entriesCopy[i].Change < entriesCopy[j].Change
+	})
+
+	ss := make([]string, len(entriesCopy))
+	for i, et := range entriesCopy {
+		s, err := formatEntry(et, locale, currency)
+		if err != nil {
+			return "", err
+		}
+		ss[i] = s
 	}
+
 	header := fmt.Sprintf("%-10s | %-25s | %s\n", l.header[0], l.header[1], l.header[2])
 	return header + strings.Join(ss, ""), nil
 }
