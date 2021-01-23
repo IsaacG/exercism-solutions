@@ -14,3 +14,5 @@ Do you need to specify a separator for your per-line [`str.split`](https://docs.
 Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Something to think about :)
 Which of these do you find easier to read? `[int(i) for i in mylist]` or `list(map(int, mylist))`?
 This solution maintains two copies of the data. If the data is large, that can be expensive. Can you solve this without maintaining two copies of the data?
+Could a list comprehension by used for `column()`?
+In general, if you're ranging over an index in Python, you're doing something wrong. Consider ranging over the elements of the list (and using `results.append()`) or a list comprehension.
