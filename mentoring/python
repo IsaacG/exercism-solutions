@@ -11,7 +11,7 @@ You might want to use a linter. Typically, the `[` and `]` are not padded with s
 If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, it's nice to catch it early and up front.
 Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
 Do you need to specify a separator for your per-line [`str.split`](https://docs.python.org/3/library/stdtypes.html#str.split) call?
-Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Something to think about :)
+Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
 Which of these do you find easier to read? `[int(i) for i in mylist]` or `list(map(int, mylist))`?
 This solution maintains two copies of the data. If the data is large, that can be expensive. Can you solve this without maintaining two copies of the data?
 Could a list comprehension by used for `column()`?
