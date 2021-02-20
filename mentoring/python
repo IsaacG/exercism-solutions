@@ -17,3 +17,4 @@ This solution maintains two copies of the data. If the data is large, that can b
 Could a list comprehension by used for `column()`?
 Whenever you find yourself reaching for `for i in range(len(thing))`, ask yourself if you can use `for t in thing` instead. Often, that's sufficient. If you absolutely need the index, there is the `enumerate()` function. If you *only* need the index and not the actual value, only then is `range()` the right approach.
 This solution combines functions that act on lists with list comprehensions. Could you solve this with the consistent use of just list comprehensions?
+[Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
