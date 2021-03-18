@@ -20,3 +20,11 @@ This solution combines functions that act on lists with list comprehensions. Cou
 [Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
 It's good practice to use a variable for just one purpose. It makes static type checking possible and keeps the logic clean since one variable isn't used for unrelated things. `self.matrix` is used to store two distinct data types.
 Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
+List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
+```
+out = []
+for a in b:
+    out.append(func(a))
+# vs
+out = [func(a) for a in b]
+```
