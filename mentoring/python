@@ -8,7 +8,7 @@ From a scalability perspective, can you avoid the (relatively) costly repeated s
 Matrix
 ------
 You might want to use a linter. Typically, the `[` and `]` are not padded with spaces.
-If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, it's nice to catch it early and up front.
+If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
 Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
 Do you need to specify a separator for your per-line [`str.split`](https://docs.python.org/3/library/stdtypes.html#str.split) call?
 Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
@@ -21,6 +21,7 @@ This solution combines functions that act on lists with list comprehensions. Cou
 It's good practice to use a variable for just one purpose. It makes static type checking possible and keeps the logic clean since one variable isn't used for unrelated things. `self.matrix` is used to store two distinct data types.
 Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
 `self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
+Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
 List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
 ```
 out = []
@@ -29,3 +30,31 @@ for a in b:
 # vs
 out = [func(a) for a in b]
 ```
+
+
+Protein Translation
+-------------------
+The [`range`](https://docs.python.org/3/library/functions.html#func-range) function takes a `step` parameter which is useful for doing things like counting by 3s. That might be well suited for your `for` loop.
+Is there any particular reason you're using `dict.get(key)` over the more traditional `dict[key]` lookup?
+Note you can drop the `else` inside your loop and unindent the `list.append()`.
+The translation dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+What's the purpose of having a default value for this function? Is the default a useful value?
+Is there a reason for the `dict.get()` vs a regular lookup?
+Using a data type as part of the variable name is typically considered an anti-pattern.
+Does it make sense to store lists in your codons dictionary vs just string entries?
+Recursion is fun and cool ... but not actually very efficient. Could a regular loop be used here?
+Per the instructions, there are three STOP proteins. STOP isn't meant as the catch-all.
+`textwrap.wrap()` is a cute way to chunk the text. However, [more_itertools.chunked](https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.chunked) is a bit better matched for this.
+Note how you got two distinct `return` points from this function. It might make more sense to simply break out of the loop when you're done and have a single return point. One return means less points to keep in sync.
+The dict is the sort of data that typically lives in a module-level constant vs a function var. There's no need to create a new copy of the dict every time the function is ran!
+A formatter tool might be worth running; there ought to be spaces around your `+` operator.
+Rather than building the dict one entry at a time, you can define the dict all in one go. There's no need to have the dict name repeated so many times or to perform a whole lot of updates
+Do you need a `try-except` to indirectly check if 'STOP' is in the list or can you check in a direct and explicit manner?
+The Pythonic way to generate a list from an iterable is with list comprehensions.
+Rather than ranging over each index and checking if it's a valid value, [`range()`](https://docs.python.org/3/library/functions.html#func-range) does support a step, letting you count by 3!
+This solution iterates over the data two times, building two lists of data. Do you need two iterations or can you solve this in a single pass?
+Python supports list slicing and string slicing. You can access a substring (or sub-list) using `str[start : end]`
+For a cleaner way to chunk up the codon string, check out [more_itertools.chunked](https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.chunked).
+Do you need a regex for this? Regexes are a pretty heavy tool for splitting up a string.
+The power of dictionaries lives in their fast hash-based lookups. If you are looping over all the elements of a dictionary, you are using them as a list of tuples and you miss out on their main advantage. Can you construct a mapping from codon to protein to use for fast (and simple) lookups?
+
