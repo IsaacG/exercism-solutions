@@ -10,7 +10,7 @@ From a scalability perspective, can you avoid the (relatively) costly repeated s
 
 Matrix
 ------
-You might want to use a linter. Typically, the `[` and `]` are not padded with spaces.
+You might want to use a linter/formatter. Typically, the `[` and `]` are not padded with spaces.
 If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
 Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
 Do you need to specify a separator for your per-line [`str.split`](https://docs.python.org/3/library/stdtypes.html#str.split) call?
@@ -73,5 +73,5 @@ A cleaner way to get 3 random digits would be `f"{random.randint(0, 999):03}"`
 [`random.choices()`](https://docs.python.org/3/library/random.html#random.choices) might be a better fit than `random.choice` for this.
 Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
 In general, dunder-methods (double-underscore) should not be directly called when it can be helped. They are for internal use. Prefer instead to have `__init__` call -reset()`.
-
+You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/string.html#string.ascii_uppercase) useful here.
 
