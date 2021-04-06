@@ -77,3 +77,19 @@ Your name generating function is recursive. Recursive functions are fun and neat
 In general, dunder-methods (double-underscore) should not be directly called when it can be helped. They are for internal use. Prefer instead to have `__init__` call -reset()`.
 You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/string.html#string.ascii_uppercase) useful here.
 You can call `join()` fewer times by replacing `"".join(a) + "".join(b)` with `"".join(a + b)`
+How well does this code scale if we decided to double the length of the robot name? Or make it 30 chars?
+
+Pangram
+-------
+[`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase) might be useful here.
+Suppose the input sentence is 100,000 characters long. Is it necessary to loop through each character to solve this?
+Do you need to call `lower()` once for every character in the `sentence`? Function calls are cheap but not free.
+Is it always necessary to loop through every letter to determine whether a sentence is a pangram?
+Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) and [`all()`](https://docs.python.org/3/library/functions.html#all) that might be helpful here.
+Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
+
+return set(sentence.lower()).issuperset(string.ascii_lowercase)
+return all(s in sentence.lower() for s in string.ascii_lowercase)
+return len(c for c in sentence.lower() if c.isalpha()) == 26
+
+
