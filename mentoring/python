@@ -87,6 +87,7 @@ Do you need to call `lower()` once for every character in the `sentence`? Functi
 Is it always necessary to loop through every letter to determine whether a sentence is a pangram?
 Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) and [`all()`](https://docs.python.org/3/library/functions.html#all) that might be helpful here.
 Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
+Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
 
 return set(sentence.lower()).issuperset(string.ascii_lowercase)
 return all(s in sentence.lower() for s in string.ascii_lowercase)
