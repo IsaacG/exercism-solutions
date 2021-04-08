@@ -6,6 +6,8 @@ Raindrops
 ---------
 From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
 From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
+This solution has two `return` points. Fewer `return` points makes for easier code readability since the code flows from the same start to the same end. Could you refactor the end bit so there is only one `return`?
+Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
 
 
 Matrix
