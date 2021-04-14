@@ -77,7 +77,7 @@ You can get a random letter using `random.choice(string.ascii_uppercase)`
 Lines N, M are duplicate code. You can reduce code duplication by calling `reset()` in your `__init__()`
 A `set()` is ideal for maintaining an unordered set of non-repeating items. Checking membership and removing items is more efficient than in a `list`.
 Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
-If I created 100,000 robots, does this code ensure each robot will have a unique name?
+If I created 100,000 robots, does this code ensure each robot will have a unique name?  If you're not familiar with it, you should take a look at [The Birthday Problem](https://en.wikipedia.org/wiki/Birthday_problem).
 Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
 A cleaner way to get 3 random digits would be `f"{random.randint(0, 999):03}"`
 [`random.choices()`](https://docs.python.org/3/library/random.html#random.choices) might be a better fit than `random.choice` for this.
