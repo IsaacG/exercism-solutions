@@ -13,6 +13,9 @@ Raindrops
 From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
 From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
 This solution has two `return` points. Fewer `return` points makes for easier code readability since the code flows from the same start to the same end. Could you refactor the end bit so there is only one `return`?
+Lines N-M could be reduced to a single line with a ternary operator or with the `or` keyword.
+Python has a `+=` operator that can be used for string append.
+The Pythonic way to test for an empty string/sequence is: `if not result: ...`
 For a more compact and less repetitive solution you can use tuples or a dictionary for the data and a generator to loop over the data to build the sound.
 
 
