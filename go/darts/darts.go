@@ -14,6 +14,7 @@ var scores = []scoreLine{
 	{-1, 10},
 }
 
+// Score returns the dart score for a given coordinate.
 func Score(x, y float64) int {
 	distance := math.Sqrt(math.Pow(x, 2) + math.Pow(y, 2))
 	for _, line := range scores {
