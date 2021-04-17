@@ -7,6 +7,7 @@ General
 I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
 If you want to go the extra step, type annotation is worth adding to your code!
 Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
+This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
 
 Raindrops
 ---------
@@ -104,4 +105,10 @@ return set(sentence.lower()).issuperset(string.ascii_lowercase)
 return all(s in sentence.lower() for s in string.ascii_lowercase)
 return len(c for c in sentence.lower() if c.isalpha()) == 26
 
-
+RNA Transcription
+-----------------
+For a more compact solution you can use a generator to loop over the data to build the DNA pieces then combine then with a `"".join()`.
+If you want to go the extra step, type annotation is worth adding to your code!
+The translation dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
+Every time you do a string append, Python has to create a brand new string and discard the old string. This isn't a big deal when it's a small string or a small number of appends. However, when you do this a lot of times with a larger string, it can get expensive. Appending to an array, on the other hand, is relatively cheap. You can use an array to build a string by parts then something like `"\n".join(parts)` or `"".join(parts)` to combine them (using a more descriptive variable name than `parts` ideally).
