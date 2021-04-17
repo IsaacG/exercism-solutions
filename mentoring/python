@@ -8,6 +8,7 @@ I enjoy helping mentor students on Exercism and occasionally I'll help out on IR
 If you want to go the extra step, type annotation is worth adding to your code!
 Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
 This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
+`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
 
 Raindrops
 ---------
