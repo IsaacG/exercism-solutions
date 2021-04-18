@@ -1,9 +1,6 @@
 General
 -------
-This code mixes `camelCase` and `snake_case`.
-
-General
--------
+There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
 I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
 If you want to go the extra step, type annotation is worth adding to your code!
 Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
@@ -19,6 +16,7 @@ Lines N-M could be reduced to a single line with a ternary operator or with the 
 Python has a `+=` operator that can be used for string append.
 The Pythonic way to test for an empty string/sequence is: `if not result: ...`
 For a more compact and less repetitive solution you can use tuples or a dictionary for the data and a generator to loop over the data to build the sound.
+What sound does `15` produce? What steps did you take in your head to solve that? Do you need to explicitly consider every combination of factors to solve that?
 
 
 Matrix
@@ -100,6 +98,7 @@ Do you need to call `lower()` once for every character in the `sentence`? Functi
 Is it always necessary to loop through every letter to determine whether a sentence is a pangram?
 Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) and [`all()`](https://docs.python.org/3/library/functions.html#all) that might be helpful here.
 Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
+Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
 
 return set(sentence.lower()).issuperset(string.ascii_lowercase)
