@@ -50,6 +50,13 @@ High Scores
 For your top_three function, would the builtin `sorted()` function make this easier?
 ```
 
+### Extras
+```text
+If you want to go the extra step, type annotation is worth adding to your code!
+Docstrings aren't required here but they are nice to have - both for the module and functions.
+```
+
+
 
 Matrix
 ------
