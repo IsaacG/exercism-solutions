@@ -4,6 +4,7 @@
 
 * [General](#general)
 * [Raindrops](#raindrops)
+* [High Scores](#high-scores)
 * [Matrix](#matrix)
 * [Protein Translation](#protein-translation)
 * [Robot Name](#robot-name)
@@ -42,6 +43,13 @@ This solution tests all the factors two times. Do you need to test the factors m
 f-strings are fabulous for string formatting. If you just want to convert an `int` to a `str`, the builtin `str()` function works quite well.
 Is it necessary to handle every single combination of factors to solve this exercise? Try to think how you'd solve what sound "15" makes in your head.
 ```
+
+High Scores
+-----------
+```text
+For your top_three function, would the builtin `sorted()` function make this easier?
+```
+
 
 Matrix
 ------
