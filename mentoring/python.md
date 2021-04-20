@@ -1,5 +1,6 @@
 General
 -------
+```text
 There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
 I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
 If you want to go the extra step, type annotation is worth adding to your code!
@@ -11,9 +12,11 @@ Submitting the test file is not necessary ... and makes reviewing your solution 
 Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
 Type checking is best done with the builtin `isinstance()` method.
 That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+```
 
 Raindrops
 ---------
+```text
 From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
 From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
 This solution has two `return` points. Fewer `return` points makes for easier code readability since the code flows from the same start to the same end. Could you refactor the end bit so there is only one `return`?
@@ -25,10 +28,11 @@ What sound does `15` produce? What steps did you take in your head to solve that
 This solution tests all the factors two times. Do you need to test the factors more than once?
 f-strings are fabulous for string formatting. If you just want to convert an `int` to a `str`, the builtin `str()` function works quite well.
 Is it necessary to handle every single combination of factors to solve this exercise? Try to think how you'd solve what sound "15" makes in your head.
-
+```
 
 Matrix
 ------
+```text
 You might want to use a linter/formatter. Typically, the `[` and `]` are not padded with spaces.
 If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
 Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
@@ -46,18 +50,23 @@ Having single-statement functions is usually a bit of a red flag, especially if 
 Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
 It's best to create your iterables where you use them, i.e. inside the `for x in iterable`. This keeps the logic local to where it's used and makes the code easier to read.
 Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
-List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
 ```
+
+```text
+List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
+\`\`\`
 out = []
 for a in b:
     out.append(func(a))
 # vs
 out = [func(a) for a in b]
+\`\`\`
 ```
 
 
 Protein Translation
 -------------------
+```text
 The [`range`](https://docs.python.org/3/library/functions.html#func-range) function takes a `step` parameter which is useful for doing things like counting by 3s. That might be well suited for your `for` loop.
 Is there any particular reason you're using `dict.get(key)` over the more traditional `dict[key]` lookup?
 Note you can drop the `else` inside your loop and unindent the `list.append()`.
@@ -78,9 +87,11 @@ Python supports list slicing and string slicing. You can access a substring (or 
 For a cleaner way to chunk up the codon string, check out [more_itertools.chunked](https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.chunked).
 Do you need a regex for this? Regexes are a pretty heavy tool for splitting up a string.
 The power of dictionaries lives in their fast hash-based lookups. If you are looping over all the elements of a dictionary, you are using them as a list of tuples and you miss out on their main advantage. Can you construct a mapping from codon to protein to use for fast (and simple) lookups?
+```
 
 Robot Name
 ----------
+```text
 You can get a random letter using `random.choice(string.ascii_uppercase)`
 Lines N, M are duplicate code. You can reduce code duplication by calling `reset()` in your `__init__()`
 A `set()` is ideal for maintaining an unordered set of non-repeating items. Checking membership and removing items is more efficient than in a `list`.
@@ -94,9 +105,11 @@ In general, dunder-methods (double-underscore) should not be directly called whe
 You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/string.html#string.ascii_uppercase) useful here.
 You can call `join()` fewer times by replacing `"".join(a) + "".join(b)` with `"".join(a + b)`
 How well does this code scale if we decided to double the length of the robot name? Or make it 30 chars?
+```
 
 Pangram
 -------
+```text
 [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase) might be useful here.
 Suppose the input sentence is 100,000 characters long. Is it necessary to loop through each character to solve this?
 Do you need to call `lower()` once for every character in the `sentence`? Function calls are cheap but not free.
@@ -105,16 +118,23 @@ Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) an
 Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
 Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
+```
 
+## Solutions
+
+```python
 return set(sentence.lower()).issuperset(string.ascii_lowercase)
 return all(s in sentence.lower() for s in string.ascii_lowercase)
 return len(c for c in sentence.lower() if c.isalpha()) == 26
+```
 
 RNA Transcription
 -----------------
+```text
 For a more compact solution you can use a generator to loop over the data to build the DNA pieces then combine then with a `"".join()`.
 If you want to go the extra step, type annotation is worth adding to your code!
 Every time you do a string append, Python has to create a brand new string and discard the old string. This isn't a big deal when it's a small string or a small number of appends. However, when you do this a lot of times with a larger string, it can get expensive. Appending to an array, on the other hand, is relatively cheap. You can use an array to build a string by parts then something like `"\n".join(parts)` or `"".join(parts)` to combine them (using a more descriptive variable name than `parts` ideally).
 Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
 `[f(a) for a in b]` iterates through `b` to create a list. You are then passing this list to `str.join()` which iterates through that list to build a string and discards that list. You can avoid that extra middle step of building and storing a list by passing a generator to `str.join()` instead and having `str.join()` process the elements of that iterator directly! You can do this either by doing `str.join(f(a) for a in b)` or `generator = (f(a) for a in b); str.join(generator)`
 For a more compact and less repetitive solution you can build a translation map (typically done with a `dict` though [`str.maketrans()`](https://docs.python.org/3/library/stdtypes.html#str.maketrans) is also an option). That way you don't need to have another `if` for each letter.
+```
