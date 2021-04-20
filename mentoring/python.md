@@ -1,0 +1,120 @@
+General
+-------
+There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
+I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
+If you want to go the extra step, type annotation is worth adding to your code!
+Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
+This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
+`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
+Using a data type as part of the variable name is typically considered an anti-pattern. Prefer describing what the variable represents or is used for.
+Submitting the test file is not necessary ... and makes reviewing your solution more difficult.
+Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
+Type checking is best done with the builtin `isinstance()` method.
+That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+
+Raindrops
+---------
+From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
+From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
+This solution has two `return` points. Fewer `return` points makes for easier code readability since the code flows from the same start to the same end. Could you refactor the end bit so there is only one `return`?
+Lines N-M could be reduced to a single line with a ternary operator or with the `or` keyword.
+Python has a `+=` operator which is perfect for `int` incrementing or `str` appending.
+The Pythonic way to test for an empty string/sequence is: `if not result: ...`
+For a more compact and less repetitive solution you can use tuples or a dictionary for the data and a generator to loop over the data to build the sound.
+What sound does `15` produce? What steps did you take in your head to solve that? Do you need to explicitly consider every combination of factors to solve that?
+This solution tests all the factors two times. Do you need to test the factors more than once?
+f-strings are fabulous for string formatting. If you just want to convert an `int` to a `str`, the builtin `str()` function works quite well.
+Is it necessary to handle every single combination of factors to solve this exercise? Try to think how you'd solve what sound "15" makes in your head.
+
+
+Matrix
+------
+You might want to use a linter/formatter. Typically, the `[` and `]` are not padded with spaces.
+If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
+Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
+Do you need to specify a separator for your per-line [`str.split`](https://docs.python.org/3/library/stdtypes.html#str.split) call?
+Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
+Which of these do you find easier to read? `[int(i) for i in mylist]` or `list(map(int, mylist))`?
+This solution maintains two copies of the data. If the data is large, that can be expensive. Can you solve this without maintaining two copies of the data?
+Could a list comprehension by used for `column()`?
+Whenever you find yourself reaching for `for i in range(len(thing))`, ask yourself if you can use `for t in thing` instead. Often, that's sufficient. If you absolutely need the index, there is the `enumerate()` function. If you *only* need the index and not the actual value, only then is `range()` the right approach. In this case, you shouldn't actually need the index at all!
+This solution combines functions that act on lists with list comprehensions. Could you solve this with the consistent use of just list comprehensions?
+[Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
+It's good practice to use a variable for just one purpose. It makes static type checking possible and keeps the logic clean since one variable isn't used for unrelated things. `self.matrix` is used to store two distinct data types.
+Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
+`self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
+Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
+It's best to create your iterables where you use them, i.e. inside the `for x in iterable`. This keeps the logic local to where it's used and makes the code easier to read.
+Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
+List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
+```
+out = []
+for a in b:
+    out.append(func(a))
+# vs
+out = [func(a) for a in b]
+```
+
+
+Protein Translation
+-------------------
+The [`range`](https://docs.python.org/3/library/functions.html#func-range) function takes a `step` parameter which is useful for doing things like counting by 3s. That might be well suited for your `for` loop.
+Is there any particular reason you're using `dict.get(key)` over the more traditional `dict[key]` lookup?
+Note you can drop the `else` inside your loop and unindent the `list.append()`.
+What's the purpose of having a default value for this function? Is the default a useful value?
+Is there a reason for the `dict.get()` vs a regular lookup?
+Does it make sense to store lists in your codons dictionary vs just string entries?
+Recursion is fun and cool ... but not actually very efficient. Could a regular loop be used here?
+Per the instructions, there are three STOP proteins. STOP isn't meant as the catch-all.
+`textwrap.wrap()` is a cute way to chunk the text. However, [more_itertools.chunked](https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.chunked) is a bit better matched for this.
+Note how you got two distinct `return` points from this function. It might make more sense to simply break out of the loop when you're done and have a single return point. One return means less points to keep in sync.
+A formatter tool might be worth running; there ought to be spaces around your `+` operator.
+Rather than building the dict one entry at a time, you can define the dict all in one go. There's no need to have the dict name repeated so many times or to perform a whole lot of updates
+Do you need a `try-except` to indirectly check if 'STOP' is in the list or can you check in a direct and explicit manner?
+The Pythonic way to generate a list from an iterable is with list comprehensions.
+Rather than ranging over each index and checking if it's a valid value, [`range()`](https://docs.python.org/3/library/functions.html#func-range) does support a step, letting you count by 3!
+This solution iterates over the data two times, building two lists of data. Do you need two iterations or can you solve this in a single pass?
+Python supports list slicing and string slicing. You can access a substring (or sub-list) using `str[start : end]`
+For a cleaner way to chunk up the codon string, check out [more_itertools.chunked](https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.chunked).
+Do you need a regex for this? Regexes are a pretty heavy tool for splitting up a string.
+The power of dictionaries lives in their fast hash-based lookups. If you are looping over all the elements of a dictionary, you are using them as a list of tuples and you miss out on their main advantage. Can you construct a mapping from codon to protein to use for fast (and simple) lookups?
+
+Robot Name
+----------
+You can get a random letter using `random.choice(string.ascii_uppercase)`
+Lines N, M are duplicate code. You can reduce code duplication by calling `reset()` in your `__init__()`
+A `set()` is ideal for maintaining an unordered set of non-repeating items. Checking membership and removing items is more efficient than in a `list`.
+Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
+If I created 100,000 robots, does this code ensure each robot will have a unique name?  If you're not familiar with it, you should take a look at [The Birthday Problem](https://en.wikipedia.org/wiki/Birthday_problem).
+Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
+A cleaner way to get 3 random digits would be `f"{random.randint(0, 999):03}"`
+[`random.choices()`](https://docs.python.org/3/library/random.html#random.choices) might be a better fit than `random.choice` for this.
+Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
+In general, dunder-methods (double-underscore) should not be directly called when it can be helped. They are for internal use. Prefer instead to have `__init__` call -reset()`.
+You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/string.html#string.ascii_uppercase) useful here.
+You can call `join()` fewer times by replacing `"".join(a) + "".join(b)` with `"".join(a + b)`
+How well does this code scale if we decided to double the length of the robot name? Or make it 30 chars?
+
+Pangram
+-------
+[`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase) might be useful here.
+Suppose the input sentence is 100,000 characters long. Is it necessary to loop through each character to solve this?
+Do you need to call `lower()` once for every character in the `sentence`? Function calls are cheap but not free.
+Is it always necessary to loop through every letter to determine whether a sentence is a pangram?
+Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) and [`all()`](https://docs.python.org/3/library/functions.html#all) that might be helpful here.
+Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
+Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
+Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
+
+return set(sentence.lower()).issuperset(string.ascii_lowercase)
+return all(s in sentence.lower() for s in string.ascii_lowercase)
+return len(c for c in sentence.lower() if c.isalpha()) == 26
+
+RNA Transcription
+-----------------
+For a more compact solution you can use a generator to loop over the data to build the DNA pieces then combine then with a `"".join()`.
+If you want to go the extra step, type annotation is worth adding to your code!
+Every time you do a string append, Python has to create a brand new string and discard the old string. This isn't a big deal when it's a small string or a small number of appends. However, when you do this a lot of times with a larger string, it can get expensive. Appending to an array, on the other hand, is relatively cheap. You can use an array to build a string by parts then something like `"\n".join(parts)` or `"".join(parts)` to combine them (using a more descriptive variable name than `parts` ideally).
+Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
+`[f(a) for a in b]` iterates through `b` to create a list. You are then passing this list to `str.join()` which iterates through that list to build a string and discards that list. You can avoid that extra middle step of building and storing a list by passing a generator to `str.join()` instead and having `str.join()` process the elements of that iterator directly! You can do this either by doing `str.join(f(a) for a in b)` or `generator = (f(a) for a in b); str.join(generator)`
+For a more compact and less repetitive solution you can build a translation map (typically done with a `dict` though [`str.maketrans()`](https://docs.python.org/3/library/stdtypes.html#str.maketrans) is also an option). That way you don't need to have another `if` for each letter.
