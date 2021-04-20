@@ -1,3 +1,16 @@
+# Python Mentoring Snippets
+
+## TOC
+
+* [General](#general)
+* [Raindrops](#raindrops)
+* [Matrix](#matrix)
+* [Protein Translation](#protein-translation)
+* [Robot Name](#robot-name)
+* [Pangram](#pangram)
+* [RNA Transcription](#rna-transcription)
+
+
 General
 -------
 ```text
@@ -120,7 +133,7 @@ Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
 ```
 
-## Solutions
+### Solutions
 
 ```python
 return set(sentence.lower()).issuperset(string.ascii_lowercase)
