@@ -16,16 +16,28 @@ General
 -------
 ```text
 There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
-I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
-If you want to go the extra step, type annotation is worth adding to your code!
-Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
-This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
-`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
 Using a data type as part of the variable name is typically considered an anti-pattern. Prefer describing what the variable represents or is used for.
+That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
+Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
 Submitting the test file is not necessary ... and makes reviewing your solution more difficult.
+`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
 Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
 Type checking is best done with the builtin `isinstance()` method.
-That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
+`[f(a) for a in b]` iterates through `b` to create a list. You are then passing this list to `str.join()` which iterates through that list to build a string and discards that list. You can avoid that extra middle step of building and storing a list by passing a generator to `str.join()` instead and having `str.join()` process the elements of that iterator directly! You can do this either by doing `str.join(f(a) for a in b)` or `generator = (f(a) for a in b); str.join(generator)`
+```
+
+### Extra Credit
+
+```text
+If you want to go the extra step, type annotation is worth adding to your code!
+Docstrings aren't required here but they are nice to have - both for the module and functions.
+```
+
+### Less common
+
+```text
+I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
 ```
 
 Raindrops
@@ -61,13 +73,6 @@ print(latest(scores))
 \```
 ```
 
-### Extras
-```text
-If you want to go the extra step, type annotation is worth adding to your code!
-Docstrings aren't required here but they are nice to have - both for the module and functions.
-```
-
-
 
 Matrix
 ------
@@ -76,30 +81,33 @@ You might want to use a linter/formatter. Typically, the `[` and `]` are not pad
 If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
 Python provides a [`str.splitlines`](https://docs.python.org/3/library/stdtypes.html#str.splitlines) method that you may want to consider using.
 Do you need to specify a separator for your per-line [`str.split`](https://docs.python.org/3/library/stdtypes.html#str.split) call?
-Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
 Which of these do you find easier to read? `[int(i) for i in mylist]` or `list(map(int, mylist))`?
 This solution maintains two copies of the data. If the data is large, that can be expensive. Can you solve this without maintaining two copies of the data?
-Could a list comprehension by used for `column()`?
 Whenever you find yourself reaching for `for i in range(len(thing))`, ask yourself if you can use `for t in thing` instead. Often, that's sufficient. If you absolutely need the index, there is the `enumerate()` function. If you *only* need the index and not the actual value, only then is `range()` the right approach. In this case, you shouldn't actually need the index at all!
 This solution combines functions that act on lists with list comprehensions. Could you solve this with the consistent use of just list comprehensions?
-[Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
 It's good practice to use a variable for just one purpose. It makes static type checking possible and keeps the logic clean since one variable isn't used for unrelated things. `self.matrix` is used to store two distinct data types.
 Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
-`self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
 Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
 It's best to create your iterables where you use them, i.e. inside the `for x in iterable`. This keeps the logic local to where it's used and makes the code easier to read.
-Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
 ```
 
 ```text
 List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
-\`\`\`
+``\`
 out = []
 for a in b:
     out.append(func(a))
 # vs
 out = [func(a) for a in b]
-\`\`\`
+\```
+```
+
+### Extra
+```text
+Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
+`self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
+[Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
+Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
 ```
 
 
@@ -174,6 +182,5 @@ For a more compact solution you can use a generator to loop over the data to bui
 If you want to go the extra step, type annotation is worth adding to your code!
 Every time you do a string append, Python has to create a brand new string and discard the old string. This isn't a big deal when it's a small string or a small number of appends. However, when you do this a lot of times with a larger string, it can get expensive. Appending to an array, on the other hand, is relatively cheap. You can use an array to build a string by parts then something like `"\n".join(parts)` or `"".join(parts)` to combine them (using a more descriptive variable name than `parts` ideally).
 Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
-`[f(a) for a in b]` iterates through `b` to create a list. You are then passing this list to `str.join()` which iterates through that list to build a string and discards that list. You can avoid that extra middle step of building and storing a list by passing a generator to `str.join()` instead and having `str.join()` process the elements of that iterator directly! You can do this either by doing `str.join(f(a) for a in b)` or `generator = (f(a) for a in b); str.join(generator)`
 For a more compact and less repetitive solution you can build a translation map (typically done with a `dict` though [`str.maketrans()`](https://docs.python.org/3/library/stdtypes.html#str.maketrans) is also an option). That way you don't need to have another `if` for each letter.
 ```
