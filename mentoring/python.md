@@ -53,8 +53,8 @@ When taking a list slice `foo[0:3]`, the `0` is the default start so convention 
 
 ```text
 What would the following code print out?
-\```
-scores = [3, 2, 4, 1]
+ ```
+scores = [3, 2, 1, 4]
 print(latest(scores))
 top = personal_top_three(scores)
 print(latest(scores))
