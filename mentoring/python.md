@@ -105,6 +105,10 @@ out = [func(a) for a in b]
 ### Extra
 ```text
 Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
+What does `Matrix('1\n2').row(0)` return? What *should* it return? Is this worth fixing?
+If you want to go the extra step, type annotation is worth adding to your code!
+Docstrings aren't required here but they are nice to have - both for the module and functions.
+
 `self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
 [Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
 Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
