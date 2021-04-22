@@ -62,6 +62,7 @@ High Scores
 ```text
 For your top_three function, would the builtin `sorted()` function make this easier?
 When taking a list slice `foo[0:3]`, the `0` is the default start so convention is to just omit it and prefer `foo[:3]`
+For `personal_best`, do you need to sort the entire list? Or is there a more specific [builtin function](https://docs.python.org/3/library/functions.html) that could be used?
 ```
 
 ```text
