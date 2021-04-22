@@ -21,6 +21,7 @@ That data dict is a good candidate for a module-level constant. There is not nee
 This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
 Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
 For type annotation, the `list` should be `list[int]` (for Py 3.9+) or `from typing import List; List[int]`
+Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
 Submitting the test file is not necessary ... and makes reviewing your solution more difficult.
 `Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
 Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
