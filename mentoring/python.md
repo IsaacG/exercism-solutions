@@ -96,13 +96,13 @@ It's best to create your iterables where you use them, i.e. inside the `for x in
 
 ```text
 List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
-``\`
+```a
 out = []
 for a in b:
     out.append(func(a))
 # vs
 out = [func(a) for a in b]
-\```
+```
 ```
 
 ### Extra
