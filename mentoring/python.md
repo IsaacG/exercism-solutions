@@ -102,7 +102,7 @@ for a in b:
     out.append(func(a))
 # vs
 out = [func(a) for a in b]
-```
+```a
 ```
 
 ### Extra
