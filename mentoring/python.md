@@ -87,7 +87,7 @@ Do you need to specify a separator for your per-line [`str.split`](https://docs.
 Which of these do you find easier to read? `[int(i) for i in mylist]` or `list(map(int, mylist))`?
 This solution maintains two copies of the data. If the data is large, that can be expensive. Can you solve this without maintaining two copies of the data?
 Whenever you find yourself reaching for `for i in range(len(thing))`, ask yourself if you can use `for t in thing` instead. Often, that's sufficient. If you absolutely need the index, there is the `enumerate()` function. If you *only* need the index and not the actual value, only then is `range()` the right approach. In this case, you shouldn't actually need the index at all!
-This solution combines functions that act on lists with list comprehensions. Could you solve this with the consistent use of just list comprehensions?
+This solution combines functions that act on lists (`list(map(..))`) with list comprehensions. Could you solve this with the consistent use of just list comprehensions?
 It's good practice to use a variable for just one purpose. It makes static type checking possible and keeps the logic clean since one variable isn't used for unrelated things. `self.matrix` is used to store two distinct data types.
 Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
 Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
