@@ -61,7 +61,8 @@ Is it necessary to handle every single combination of factors to solve this exer
 High Scores
 -----------
 ```text
-For your top_three function, would the builtin `sorted()` function make this easier?
+For your `top_three function`, would the builtin [`sorted()`](https://docs.python.org/3/library/functions.html#sorted) function make this easier?
+For the `personal_top_three`, would some of the optional flags to [`sorted`](https://docs.python.org/3/library/functions.html#sorted) clean up that function?
 When taking a list slice `foo[0:3]`, the `0` is the default start so convention is to just omit it and prefer `foo[:3]`
 For `personal_best`, do you need to sort the entire list? Or is there a more specific [builtin function](https://docs.python.org/3/library/functions.html) that could be used?
 ```
@@ -92,6 +93,7 @@ It's good practice to use a variable for just one purpose. It makes static type 
 Having single-statement functions is usually a bit of a red flag, especially if that function isn't called from multiple places. Is there any value in splitting out your `__init__()` into a second function other than as a way to name what a block of code is doing? Can a comment accomplish the same thing?
 Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
 It's best to create your iterables where you use them, i.e. inside the `for x in iterable`. This keeps the logic local to where it's used and makes the code easier to read.
+The data provided to the Matrix class is 2D data. This code flattens that to a 1D list then uses a bunch of logic to later extrapolate a 2D view from the 1D list. Could you simply maintain the 2D structure using, say, a list of lists and simplify the work here?
 ```
 
 ```text
