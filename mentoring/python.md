@@ -174,6 +174,7 @@ Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) an
 Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
 Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
+The counting approach works fairly well and is an acceptable solution ... but isn't the approach that people tend to take when solving for a pangram in their head. It also is `O(n)` which is slower for large inputs.
 ```
 
 ### Solutions
