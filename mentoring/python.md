@@ -195,3 +195,9 @@ Every time you do a string append, Python has to create a brand new string and d
 Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
 For a more compact and less repetitive solution you can build a translation map (typically done with a `dict` though [`str.maketrans()`](https://docs.python.org/3/library/stdtypes.html#str.maketrans) is also an option). That way you don't need to have another `if` for each letter.
 ```
+
+Word Count
+----------
+```text
+The [`collections`](https://docs.python.org/3/library/collections.html) library provides some very helpful classes to clean up this particular common pattern. Using one of those would improve this code.
+```
