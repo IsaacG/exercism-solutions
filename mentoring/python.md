@@ -110,9 +110,9 @@ out = [func(a) for a in b]
 
 ### Extra
 ```text
+If you want to go the extra step, type annotation is worth adding to your code!
 Fun fact. If someone does: `matrix.row(3)[0] = 5`, this will alter the data stored in the matrix. Conversely, if they did `matrix.column(3)[0] = 5`, this would *not* update the matrix. Making `row()` behave like `column()` is simple. The reverse is a fair bit more tricky. Something to think about :)
 What does `Matrix('1\n2').row(0)` return? What *should* it return? Is this worth fixing?
-If you want to go the extra step, type annotation is worth adding to your code!
 Docstrings aren't required here but they are nice to have - both for the module and functions.
 
 `self.matrix` contains a list of list objects. `row()` returns one of those objects. So `row(3)[0] = 5` is modifying the list that lives inside `self.matrix`. `column()`, on the other hand, copies the values from `self.matrix` into a new list object. The `int`s are copied but the list is a new list. That was, when you run `matrix.column(3)[0] = 5`, you're not actually changing anything about `self.matrix`.
@@ -151,7 +151,7 @@ Robot Name
 ```text
 You can get a random letter using `random.choice(string.ascii_uppercase)`
 Lines N, M are duplicate code. You can reduce code duplication by calling `reset()` in your `__init__()`
-A `set()` is ideal for maintaining an unordered set of non-repeating items. Checking membership and removing items is more efficient than in a `list`.
+A `set()` is ideal for maintaining an unordered set of non-repeating items. Checking membership and adding items is more efficient than in a `list`.
 Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
 If I created 100,000 robots, does this code ensure each robot will have a unique name?  If you're not familiar with it, you should take a look at [The Birthday Problem](https://en.wikipedia.org/wiki/Birthday_problem).
 Your name generating function is recursive. Recursive functions are fun and neat and sometimes very useful. However, they are often very slow and expensive (compared to, say, a loop), especially when you need to recurse many times. Is recursion needed here?
@@ -176,6 +176,7 @@ Rather than calling `.lower()` a whole lot of times inside the loop, can you cal
 Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
 The counting approach works fairly well and is an acceptable solution ... but isn't the approach that people tend to take when solving for a pangram in their head. It also is `O(n)` which is slower for large inputs.
+Python has an [`all()`](https://docs.python.org/3/library/functions.html#all) that is designed specifically to clean up patterns like this one.
 ```
 
 ### Solutions
