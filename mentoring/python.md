@@ -177,6 +177,7 @@ You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/stri
 You can call `join()` fewer times by replacing `"".join(a) + "".join(b)` with `"".join(a + b)`
 How well does this code scale if we decided to double the length of the robot name? Or make it 30 chars?
 ```
+</details>
 
 Pangram
 -------
