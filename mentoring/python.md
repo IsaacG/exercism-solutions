@@ -44,6 +44,8 @@ I enjoy helping mentor students on Exercism and occasionally I'll help out on IR
 
 Raindrops
 ---------
+<details><summary>Notes</summary>
+
 ```text
 From a scalability perspective, can you solve this in a way that doesn't mean repeating a bunch of code for every sound/factor?
 From a scalability perspective, can you avoid the (relatively) costly repeated string-append (which has to copy the entire string every time)?
@@ -57,9 +59,12 @@ This solution tests all the factors two times. Do you need to test the factors m
 f-strings are fabulous for string formatting. If you just want to convert an `int` to a `str`, the builtin `str()` function works quite well.
 Is it necessary to handle every single combination of factors to solve this exercise? Try to think how you'd solve what sound "15" makes in your head.
 ```
+</details>
 
 High Scores
 -----------
+<details><summary>Notes</summary>
+
 ```text
 For your `top_three function`, would the builtin [`sorted()`](https://docs.python.org/3/library/functions.html#sorted) function make this easier?
 For the `personal_top_three`, would some of the optional flags to [`sorted`](https://docs.python.org/3/library/functions.html#sorted) clean up that function?
@@ -76,10 +81,13 @@ top = personal_top_three(scores)
 print(latest(scores))
 \```
 ```
+</details>
 
 
 Matrix
 ------
+<details><summary>Notes</summary>
+
 ```text
 You might want to use a linter/formatter. Typically, the `[` and `]` are not padded with spaces.
 If a Matrix is constructed once then a bunch of rows and columns are read, this would convert the elements to `int()` many times. Moving that conversion to `__init__` allows you to do that just once. Additionally, if there's a non-int value, moving the conversion into `__init__` catches the data the first time it is handled versus maybe catching it lazily later in a more surprising fashion.
@@ -119,10 +127,13 @@ Docstrings aren't required here but they are nice to have - both for the module 
 [Here](https://gist.github.com/kroozo/d6cb56d64482280aecacc9a32f60b03d) is an example of how you could have both `column()` and `row()` provide mutable data backed by the same source.
 Most people wouldn't use a `classmethod` here. Those are usually used for code that is typically called from outside of a class instance. While this technically can be a `classmethod`, it's not used as one and isn't how they are typically used in the Python world.
 ```
+</details>
 
 
 Protein Translation
 -------------------
+<details><summary>Notes</summary>
+
 ```text
 The [`range`](https://docs.python.org/3/library/functions.html#func-range) function takes a `step` parameter which is useful for doing things like counting by 3s. That might be well suited for your `for` loop.
 Is there any particular reason you're using `dict.get(key)` over the more traditional `dict[key]` lookup?
@@ -145,9 +156,12 @@ For a cleaner way to chunk up the codon string, check out [more_itertools.chunke
 Do you need a regex for this? Regexes are a pretty heavy tool for splitting up a string.
 The power of dictionaries lives in their fast hash-based lookups. If you are looping over all the elements of a dictionary, you are using them as a list of tuples and you miss out on their main advantage. Can you construct a mapping from codon to protein to use for fast (and simple) lookups?
 ```
+</details>
 
 Robot Name
 ----------
+<details><summary>Notes</summary>
+
 ```text
 You can get a random letter using `random.choice(string.ascii_uppercase)`
 Lines N, M are duplicate code. You can reduce code duplication by calling `reset()` in your `__init__()`
@@ -166,6 +180,8 @@ How well does this code scale if we decided to double the length of the robot na
 
 Pangram
 -------
+<details><summary>Notes</summary>
+
 ```text
 [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase) might be useful here.
 Suppose the input sentence is 100,000 characters long. Is it necessary to loop through each character to solve this?
@@ -186,9 +202,12 @@ return set(sentence.lower()).issuperset(string.ascii_lowercase)
 return all(s in sentence.lower() for s in string.ascii_lowercase)
 return len(c for c in sentence.lower() if c.isalpha()) == 26
 ```
+</details>
 
 RNA Transcription
 -----------------
+<details><summary>Notes</summary>
+
 ```text
 For a more compact solution you can use a generator to loop over the data to build the DNA pieces then combine then with a `"".join()`.
 If you want to go the extra step, type annotation is worth adding to your code!
@@ -196,9 +215,13 @@ Every time you do a string append, Python has to create a brand new string and d
 Python is a pretty high level language with all sorts of string support. Can you come up with a solution that doesn't require someone pull out an ASCII table to read/modify?
 For a more compact and less repetitive solution you can build a translation map (typically done with a `dict` though [`str.maketrans()`](https://docs.python.org/3/library/stdtypes.html#str.maketrans) is also an option). That way you don't need to have another `if` for each letter.
 ```
+</details>
 
 Word Count
 ----------
+<details><summary>Notes</summary>
+
 ```text
 The [`collections`](https://docs.python.org/3/library/collections.html) library provides some very helpful classes to clean up this particular common pattern. Using one of those would improve this code.
 ```
+</details>
