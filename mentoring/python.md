@@ -175,6 +175,7 @@ Your name generating function is recursive. Recursive functions are fun and neat
 In general, dunder-methods (double-underscore) should not be directly called when it can be helped. They are for internal use. Prefer instead to have `__init__` call -reset()`.
 You might find [`string.ascii_uppercase`](https://docs.python.org/3/library/string.html#string.ascii_uppercase) useful here.
 You can call `join()` fewer times by replacing `"".join(a) + "".join(b)` with `"".join(a + b)`
+The purpose of classes and object oriented programming is to encapsulate all related logic in one object. If a function is only meant to be called from within an object, that code should be part of that object!
 How well does this code scale if we decided to double the length of the robot name? Or make it 30 chars?
 ```
 </details>
