@@ -102,16 +102,17 @@ Having single-statement functions is usually a bit of a red flag, especially if 
 Note your `__init__` loops over the data twice, creating two different sets of data. Constructing the results you need in one loop halves your computational costs.
 It's best to create your iterables where you use them, i.e. inside the `for x in iterable`. This keeps the logic local to where it's used and makes the code easier to read.
 The data provided to the Matrix class is 2D data. This code flattens that to a 1D list then uses a bunch of logic to later extrapolate a 2D view from the 1D list. Could you simply maintain the 2D structure using, say, a list of lists and simplify the work here?
-This transposes the *entire* matrix then selects just one row, discarding the rest of the data. Do you need to actually transpose the matrix?
+`column()` transposes the *entire* matrix then selects just one row, discarding the rest of the data. Do you need to actually transpose the matrix?
 ```
 
 ```text
 List comprehensions are the Pythonic approach to generating a list from an iterable. Can you find and replace this pattern in your code?
 ```a
+# Instead of doing this:
 out = []
 for a in b:
     out.append(func(a))
-# vs
+# Prefer this:
 out = [func(a) for a in b]
 ```a
 ```
