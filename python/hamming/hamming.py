@@ -1,18 +1,23 @@
+"""Compute the hamming distance."""
 from functools import reduce
 
-# Reduce a list of pairs by adding 1 on differing, otherwise count doesn't change.
-reduction = lambda count, pair: count if pair[0] == pair[1] else count + 1
+def reduction(count: int, strings: tuple[str, str]) -> int:
+    """Reduce a list of pairs by adding 1 on differing, otherwise count doesn't change."""
+    first, second = strings
+    return count if first == second else count + 1
 
-def distance(strand_a, strand_b):
-  if len(strand_a) != len(strand_b):
-    raise ValueError("Lengths differ")
-  d = reduce(reduction, zip(strand_a, strand_b), 0)
-  assert d == alt_distance(strand_a, strand_b)
-  return d
 
-def alt_distance(strand_a, strand_b):
-  if len(strand_a) != len(strand_b):
-    raise ValueError("Lengths differ")
-  return len([a for a, b in zip(strand_a, strand_b) if a != b])
+def distance(strand_a: str, strand_b: str) -> int:
+    """Return the hamming distance between two strings."""
+    if len(strand_a) != len(strand_b):
+        raise ValueError("Lengths differ")
+    dist = reduce(reduction, zip(strand_a, strand_b), 0)
+    alt = alt_distance(strand_a, strand_b)
+    assert dist == alt, f"{dist} != {alt}"
+    return dist
 
-# vim:ts=2:sw=2:expandtab
+def alt_distance(strand_a: str, strand_b: str) -> int:
+    """Return the hamming distance between two strings."""
+    if len(strand_a) != len(strand_b):
+        raise ValueError("Lengths differ")
+    return sum(a != b for a, b in zip(strand_a, strand_b))

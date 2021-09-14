@@ -1,21 +1,17 @@
-class Matrix(object):
+"""Convert a string matrix to an object with row- and column-wise access."""
 
-    def __init__(self, matrix_string):
-        rows = []
-        for l in matrix_string.split('\n'):
-            rows.append([int(v) for v in l.split(' ')])
-        cols = []
-        if rows:
-            for i in range(len(rows[0])):
-                cols.append([r[i] for r in rows])
 
-        self.rows = rows
-        self.cols = cols
+class Matrix:
+    """A matrix of integers."""
 
-    def row(self, index):
-        return self.rows[index - 1]
+    def __init__(self, data: str):
+        """Initialize the matrix."""
+        self.rows = [[int(element) for element in row.split()] for row in data.splitlines()]
 
-    def column(self, index):
-        return self.cols[index - 1]
+    def row(self, index: int) -> list[int]:
+        """Return one matrix row."""
+        return self.rows[index - 1].copy()
 
-# vim:ts=4:sw=4:expandtab
+    def column(self, index: int) -> list[int]:
+        """Return one matrix column."""
+        return [row[index - 1] for row in self.rows]

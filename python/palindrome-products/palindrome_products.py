@@ -1,32 +1,45 @@
-def is_palindrome(n):
-  return str(n) == str(n)[::-1]
-  
-def op_palindrome(max_factor, min_factor, op):
-  if min_factor > max_factor:
-    raise ValueError("Bad input")
+"""Find products that are palindromes and fetch the largest/smallest."""
 
-  factors = set()
-  p = None
-  for i in range(min_factor, max_factor + 1):
-    for j in range(i, max_factor + 1):
-      if p and op(i * j, p): continue
-      if not is_palindrome(i * j): continue
-      if i * j != p:
-        factors.clear()
-        p = i * j
-      factors.add((i, j))
+from typing import Callable, Optional
 
-  if p is None:
-    return p, []
-  return p, factors
+Result = tuple[Optional[int], set[tuple[int, int]]]
+
+def is_palindrome(num: int) -> bool:
+    """Return if a number is a palindrome."""
+    as_str = str(num)
+    return as_str == as_str[::-1]
 
 
-def largest_palindrome(max_factor, min_factor):
-  return op_palindrome(max_factor, min_factor, lambda x, y: x < y)
+def cmp_palindrome(max_factor: int, min_factor: int, smallest: bool) -> Result:
+    """Return the $cmp where $cmp is a largest/smallest test."""
+    if min_factor > max_factor:
+        raise ValueError("Bad input")
+
+    cmp = (lambda x, y: x > y) if smallest else (lambda x, y: x < y)
+
+    factors: set[tuple[int, int]] = set()
+    product = None
+    for i in range(min_factor, max_factor + 1):
+        for j in range(i, max_factor + 1):
+            if product and cmp(i * j, product):
+                continue
+            if not is_palindrome(i * j):
+                continue
+            if i * j != product:
+                factors.clear()
+                product = i * j
+            factors.add((i, j))
+
+    if product is None:
+        return product, set()
+    return product, factors
 
 
-def smallest_palindrome(max_factor, min_factor):
-  return op_palindrome(max_factor, min_factor, lambda x, y: x > y)
+def largest(max_factor: int, min_factor: int) -> Result:
+    """Return the smallest palindrome product and its factors."""
+    return cmp_palindrome(max_factor, min_factor, False)
 
 
-# vim:ts=2:sw=2:expandtab
+def smallest(max_factor: int, min_factor: int) -> Result:
+    """Return the smallest palindrome product and its factors."""
+    return cmp_palindrome(max_factor, min_factor, True)

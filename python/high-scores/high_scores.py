@@ -1,12 +1,13 @@
-class HighScores(object):
-    def __init__(self, scores):
-        self.scores = scores
+"""High score utilities."""
 
-    def personal_top_three(self):
-        return sorted(self.scores, reverse=True)[:3]
+def personal_top_three(scores: list[int]) -> list[int]:
+    """Return the top three."""
+    return sorted(scores, reverse=True)[:3]
 
-    def personal_best(self):
-        return max(self.scores)
+def personal_best(scores: list[int]) -> int:
+    """Return the best score."""
+    return max(scores)
 
-    def latest(self):
-        return self.scores[-1]
+def latest(scores: list[int]) -> int:
+    """Return the last score."""
+    return scores[-1]
