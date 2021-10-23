@@ -9,12 +9,11 @@ class Minefield:
     def __init__(self, data: list[str]):
         """Initialize."""
         self.height = len(data)
-        if data:
-            self.width = len(data[0])
-            if not all(len(row) == self.width for row in data):
-                raise ValueError("Invalid shape")
-        else:
-            self.width = 0
+        self.width = len(data[0]) if data else 0
+
+        if not all(len(row) == self.width for row in data):
+            raise ValueError("Invalid shape")
+
         self.data = {}
         for y, line in enumerate(data):
             for x, val in enumerate(line):
