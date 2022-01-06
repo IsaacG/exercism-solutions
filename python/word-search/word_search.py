@@ -32,13 +32,13 @@ class WordSearch:
         # Check every point as a potential match. Return the first match.
         for y in range(self.height):
             for x in range(self.width):
-                if points := self.test(x, y, word):
+                if points := self.check(x, y, word):
                     start, end = points
                     return (Point(*start), Point(*end))
         return None
 
-    def test(self, x: int, y: int, word: str) -> Optional[tuple[tuple[int, int], tuple[int, int]]]:
-        """Test to see if a word starts/ends at a given point."""
+    def check(self, x: int, y: int, word: str) -> Optional[tuple[tuple[int, int], tuple[int, int]]]:
+        """Check to see if a word starts/ends at a given point."""
         wlen = len(word) - 1
         # Check in all four directions.
         for x_mod, y_mod in DIRECTIONS:

@@ -22,9 +22,9 @@ def convert(input_grid: list[str]) -> str:
     """Return the "string" value for "display grid"."""
     # Check dimensions are well formed.
     if len(input_grid) % 4 != 0:
-        raise ValueError("Input must have 4n lines.")
+        raise ValueError("Number of input lines is not a multiple of four")
     if any(len(line) % 3 != 0 for line in input_grid):
-        raise ValueError("Input lines must have 3n chars.")
+        raise ValueError("Number of input columns is not a multiple of three")
 
     output = []
     # Process grind one "line" of text at a time.

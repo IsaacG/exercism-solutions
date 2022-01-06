@@ -36,7 +36,7 @@ def _find_matches(
                     # the file when it won't be used.
                     if opts["l"]:
                         break
-    return dict(matches)
+    return matches
 
 
 def _format_output(

@@ -61,13 +61,18 @@ class Card:
         """Return if self < other. Allows sorting."""
         return self.pips < other.pips
 
+    @classmethod
+    def from_input(cls, data: str) -> list[Card]:
+        """Return a list of Cards from exercise input."""
+        return [cls(i) for i in data.split()]
+
 
 class Hand:
     """A poker hand."""
 
-    def __init__(self, val: str):
+    def __init__(self, cards: list[Card]):
         """Initialize a Hand."""
-        self.cards = [Card(i) for i in val.split()]
+        self.cards = cards
         assert len(self.cards) == 5, "A hand must contain 5 cards."
 
         self.pips = sorted(c.pips for c in self.cards)
@@ -162,7 +167,7 @@ class Hand:
 def best_hands(hands: list[str]) -> list[str]:
     """Return the best poker hands."""
     # Map the input strings to the Hand so the inputs can be reused for returns.
-    the_hands = {i: Hand(i) for i in hands}
+    the_hands = {i: Hand(Card.from_input(i)) for i in hands}
     # Find the best hand. Hands sort from best to worst.
     best = min(the_hands.values())
     # Return all hands that would tie the best hand.

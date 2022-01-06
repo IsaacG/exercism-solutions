@@ -1,7 +1,15 @@
 """Minesweeper."""
 
-# All eight surrounding directions.
-DIRECTIONS = [(x + y * 1j) for x in (-1, 0, 1) for y in (-1, 0, 1) if x or y]
+from typing import Generator
+
+
+def neighbors(cell: complex) -> Generator[complex, None, None]:
+    """Yield all eight neighboring cells."""
+    for x in (-1, 0, 1):
+        for y in (-1, 0, 1):
+            if offset := x + y * 1j:
+                yield cell + offset
+
 
 class Minefield:
     """Minefield helper."""
@@ -26,10 +34,7 @@ class Minefield:
         cur = x + y * 1j
         if self.data[cur] == "*":
             return "*"
-        count = sum(
-            self.data[cur + offset] == "*"
-            for offset in DIRECTIONS if cur + offset in self.data
-        )
+        count = sum(self.data.get(neighbor, "") == "*" for neighbor in neighbors(cur))
         return str(count) if count else " "
 
     def convert(self) -> list[str]:

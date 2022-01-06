@@ -1,45 +1,48 @@
-"""Phone number handler."""
+import string
 
 
-class Phone:
+class PhoneNumber:
     """Phone number validator."""
 
-    def __init__(self, num: str):
+    def __init__(self, number: str):
         """Load and clean a number, validating it."""
-        # Ignore all non-digits.
-        digits = ''.join(i for i in num if i.isdigit())
+        # Raise exceptions for invalid characters.
+        for char in string.ascii_letters:
+            if char in number:
+                raise ValueError('letters not permitted')
 
-        # For an 11-digit with country code, drop the country code.
-        if len(digits) == 11 and digits.startswith('1'):
+        invalid_chars = set(string.punctuation) - set('+-().')
+        for char in invalid_chars:
+            if char in number:
+                raise ValueError('punctuations not permitted')
+
+        # Drop all non-digits.
+        digits = ''.join(i for i in number if i.isdigit())
+
+        if len(digits) > 11:
+            raise ValueError('more than 11 digits')
+
+        if len(digits) == 11:
+            if not digits.startswith('1'):
+                raise ValueError('11 digits must start with 1')
+            # For an 11-digit with country code, drop the country code.
             digits = digits[1:]
+
+        if len(digits) != 10:
+            raise ValueError('incorrect number of digits')
+
         self.number = digits
-        self.validate()
+        self.area_code = digits[0:3]
+        self.exchange = digits[3:6]
+        self.subscriber = digits[6:10]
 
-    def validate(self) -> None:
-        """Validate the number."""
-        if len(self.number) != 10:
-            raise ValueError('Invalid number')
-
-        for invalid in ('0', '1'):
-            for check in (self.area_code, self.exchange):
-                if check.startswith(invalid):
-                    raise ValueError('Invalid number')
-
-    @property
-    def area_code(self) -> str:
-        """Return the area code (leading 3 digits)."""
-        return self.number[0:3]
-
-    @property
-    def exchange(self) -> str:
-        """Return the exchange (3 digits after the area code)."""
-        return self.number[3:6]
-
-    @property
-    def subscriber(self) -> str:
-        """Return the subscriber (final 4 digits)."""
-        return self.number[6:10]
+        for invalid_char, char_name in (('0', 'zero'),  ('1', 'one')):
+            for part, part_name in (
+                (self.area_code, 'area code'), (self.exchange, 'exchange code')
+            ):
+                if part.startswith(invalid_char):
+                    raise ValueError(f'{part_name} cannot start with {char_name}')
 
     def pretty(self) -> str:
         """Return a pretty string of the number."""
-        return f'({self.area_code}) {self.exchange}-{self.subscriber}'
+        return f'({self.area_code})-{self.exchange}-{self.subscriber}'
