@@ -1,48 +1,49 @@
 import string
 
 
-class PhoneNumber:
-    """Phone number validator."""
+class PhoneNumber(object):
+  def __init__(self, num):
+    if any(c in num for c in string.ascii_letters):
+      raise ValueError('letters not permitted')
+    if any(c in num for c in set(string.punctuation) - set("()+-.")):
+      raise ValueError('punctuations not permitted')
+        
 
-    def __init__(self, number: str):
-        """Load and clean a number, validating it."""
-        # Raise exceptions for invalid characters.
-        for char in string.ascii_letters:
-            if char in number:
-                raise ValueError('letters not permitted')
+    # Ignore all non-digits.
+    digits = ''.join([i for i in num if i.isdigit()])
 
-        invalid_chars = set(string.punctuation) - set('+-().')
-        for char in invalid_chars:
-            if char in number:
-                raise ValueError('punctuations not permitted')
+    if len(digits) > 11:
+      raise ValueError('more than 11 digits')
+    # For an 11-digit with country code, drop the country code.
+    if len(digits) == 11:
+      if digits.startswith('1'):
+        digits = digits[1:]
+      else:
+        raise ValueError('11 digits must start with 1')
+    self.number = digits
 
-        # Drop all non-digits.
-        digits = ''.join(i for i in number if i.isdigit())
+    if len(self.number) != 10:
+      raise ValueError('incorrect number of digits')
 
-        if len(digits) > 11:
-            raise ValueError('more than 11 digits')
+    for num, name in (('0', 'zero'), ('1', 'one')):
+      for val, part in ((self.area_code, 'area'), (self.exchange, 'exchange')):
+        if val.startswith(num):
+          raise ValueError(f'{part} code cannot start with {name}')
 
-        if len(digits) == 11:
-            if not digits.startswith('1'):
-                raise ValueError('11 digits must start with 1')
-            # For an 11-digit with country code, drop the country code.
-            digits = digits[1:]
+  @property
+  def area_code(self):
+    return self.number[0:3]
 
-        if len(digits) != 10:
-            raise ValueError('incorrect number of digits')
+  @property
+  def exchange(self):
+    return self.number[3:6]
 
-        self.number = digits
-        self.area_code = digits[0:3]
-        self.exchange = digits[3:6]
-        self.subscriber = digits[6:10]
+  @property
+  def subscriber(self):
+    return self.number[6:10]
 
-        for invalid_char, char_name in (('0', 'zero'),  ('1', 'one')):
-            for part, part_name in (
-                (self.area_code, 'area code'), (self.exchange, 'exchange code')
-            ):
-                if part.startswith(invalid_char):
-                    raise ValueError(f'{part_name} cannot start with {char_name}')
+  def pretty(self):
+    return '(%s)-%s-%s' % (self.number[0:3], self.number[3:6], self.number[6:10])
 
-    def pretty(self) -> str:
-        """Return a pretty string of the number."""
-        return f'({self.area_code})-{self.exchange}-{self.subscriber}'
+
+# vim:ts=2:sw=2:expandtab

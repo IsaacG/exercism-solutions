@@ -30,6 +30,6 @@ def primes() -> Generator[int, None, None]:
 def prime(number: int) -> int:
     """Return the n'th prime."""
     if number <= 0:
-        raise ValueError("there_is_no_zeroth_prime")
+        raise ValueError("there is no zeroth prime")
     gen = primes()
     return [next(gen) for _ in range(number)][-1]

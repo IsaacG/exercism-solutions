@@ -51,8 +51,10 @@ class Properties(Obj):
   PROPVAL_RE = re.compile(r'\[.+?(?<!\\)\]', re.DOTALL)
 
   def Validate(self):
+    if self.content and '[' not in self.content:
+        raise ValueError('properties without delimiter')
     if self.content and not self.PROPS_RE.match(self.content):
-        raise ValueError('Badly formed properties.')
+        raise ValueError('property must be in uppercase')
 
   def ToSgf(self):
     properties = {}
@@ -72,7 +74,7 @@ class Properties(Obj):
 class Node(Obj):
   def Validate(self):
     if not self.content.startswith(';'):
-      raise ValueError('Malformed node')
+      raise ValueError('tree with no nodes')
 
   def Split(self):
     s = self.content[1:]
@@ -109,7 +111,7 @@ class Tree(Obj):
   def Validate(self):
     s = self.content
     if not (s.startswith('(') and s.endswith(')')):
-      raise ValueError('Malformed tree')
+      raise ValueError('tree missing')
 
   def RootNode(self):
     return Node(self.content[1:-1])

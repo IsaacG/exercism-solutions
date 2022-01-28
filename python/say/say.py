@@ -14,7 +14,7 @@ BASES = (
 def say(num):
   parts = []
   if not 0 <= num < 1e12:
-    raise ValueError('[0, 1e12)')
+    raise ValueError('input out of range')
 
   if num == 0:
     return ONES[num]

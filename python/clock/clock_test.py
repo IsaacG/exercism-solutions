@@ -1,11 +1,23 @@
 import unittest
 
-from clock import Clock
+from clock import (
+    Clock,
+)
 
-# Tests adapted from `problem-specifications//canonical-data.json` @ v2.4.0
+# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class ClockTest(unittest.TestCase):
+    # Create A String Representation
+    def test_lunch_time(self):
+        self.assertEqual(repr(Clock(12, 0)), "Clock(12, 0)")
+
+    def test_breakfast_time(self):
+        self.assertEqual(repr(Clock(6, 45)), "Clock(6, 45)")
+
+    def test_dinner_time(self):
+        self.assertEqual(repr(Clock(18, 30)), "Clock(18, 30)")
+
     # Create A New Clock With An Initial Time
     def test_on_the_hour(self):
         self.assertEqual(str(Clock(8, 0)), "08:00")

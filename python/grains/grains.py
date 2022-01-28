@@ -4,16 +4,15 @@ def sq(n):
 
 def valid(n):
   if n < 1 or n > 64:
-    raise ValueError('Invalid')
+    raise ValueError('square must be between 1 and 64')
 
 
-def on_square(n):
+def square(n):
   valid(n)
   return sq(n)
 
 
-def total_after(n):
-  valid(n)
-  return sq(n + 1) - 1
+def total():
+  return sq(64 + 1) - 1
 
 # vim:ts=2:sw=2:expandtab

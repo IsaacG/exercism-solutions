@@ -44,8 +44,8 @@ def student_ranking(student_scores: list[int], student_names: list[str]) -> list
      :return: list of strings in format ["<rank>. <student name>: <score>"].
      """
     return [
-        f"{rank + 1}. {name}: {score}"
-        for rank, (score, name) in enumerate(zip(student_scores, student_names))
+        f"{rank + 1}. {score}: {name}"
+        for rank, (name, score) in enumerate(zip(student_scores, student_names))
     ]
 
 
@@ -57,4 +57,4 @@ def perfect_score(student_info):
     for name, score in student_info:
         if score == 100:
             return [name, score]
-    return "No perfect score."
+    return []

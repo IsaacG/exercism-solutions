@@ -20,14 +20,14 @@ class Minefield:
         self.width = len(data[0]) if data else 0
 
         if not all(len(row) == self.width for row in data):
-            raise ValueError("Invalid shape")
+            raise ValueError("The board is invalid with current input.")
 
         self.data = {}
         for y, line in enumerate(data):
             for x, val in enumerate(line):
                 self.data[x + y * 1j] = val
         if not all(v in (" ", "*") for v in self.data.values()):
-            raise ValueError("Invalid char")
+            raise ValueError("The board is invalid with current input.")
 
     def val(self, x: int, y: int) -> str:
         """Return the value for one square."""

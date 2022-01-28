@@ -1,6 +1,6 @@
 #!/bin/python
 
-def prime_factors(num):
+def factors(num):
   factors = []
   divisor = 2
   
@@ -14,4 +14,3 @@ def prime_factors(num):
 
   return factors
 
-# vim:ts=2:sw=2:expandtab

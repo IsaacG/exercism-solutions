@@ -2,7 +2,7 @@ from functools import reduce
 
 reduction = lambda count, pair: count + pair[0] * pair[1]
 
-def verify(isbn):
+def is_valid(isbn):
   isbn = isbn.replace('-', '')
   if len(isbn) != 10:
     return False

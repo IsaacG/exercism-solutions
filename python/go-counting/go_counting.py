@@ -48,7 +48,7 @@ class Board:
             the owner's territories.
     """
     if not self.is_valid(x, y):
-      raise ValueError('invalid coordinates')
+      raise ValueError('Invalid coordinate')
 
     # Return early when pointing to a stone.
     if self.get(x, y) in STONES:

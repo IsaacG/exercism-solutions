@@ -1,4 +1,4 @@
-def estimate_value(budget, exchange_rate):
+def exchange_money(budget, exchange_rate):
     """
 
     :param budget: float - amount of money you are planning to exchange.
@@ -18,7 +18,7 @@ def get_change(budget, exchanging_value):
     return budget - exchanging_value
 
 
-def get_value(denomination, number_of_bills):
+def get_value_of_bills(denomination, number_of_bills):
     """
 
     :param denomination: int - the value of a bill.
@@ -48,12 +48,12 @@ def exchangeable_value(budget, exchange_rate, spread, denomination):
     :return: int - maximum value you can get
     """
     rate = exchange_rate * (1 + spread / 100)
-    val = int(estimate_value(budget, rate))
+    val = int(exchange_money(budget, rate))
     bills = get_number_of_bills(val, denomination)
-    return get_value(bills, denomination)
+    return get_value_of_bills(bills, denomination)
 
 
-def unexchangeable_value(budget, exchange_rate, spread, denomination):
+def non_exchangeable_value(budget, exchange_rate, spread, denomination):
     """
 
     :param budget: float - the amount of your money you are planning to exchange.
@@ -63,7 +63,7 @@ def unexchangeable_value(budget, exchange_rate, spread, denomination):
     :return: int - unexchangeable value
     """
     rate = exchange_rate * (1 + spread / 100)
-    val = int(estimate_value(budget, rate))
+    val = int(exchange_money(budget, rate))
     bills = get_number_of_bills(val, denomination)
-    return val - get_value(bills, denomination)
+    return val - get_value_of_bills(bills, denomination)
 

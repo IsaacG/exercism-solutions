@@ -26,7 +26,7 @@ def encode(plain_text: str, a: int, b: int) -> str:
     """Encode a string using an affine cipher."""
     # Check for shared factors.
     if math.gcd(a, LEN) != 1:
-        raise ValueError(f"a ({a}) and m ({len(LOWER)}) must be coprime")
+        raise ValueError(f"a and m must be coprime.")
 
     encoded = "".join(
         char_op(char, lambda c: a * c + b)
@@ -49,7 +49,7 @@ def decode(ciphered_text, a, b):
     """Decode a string using an affine cipher."""
     # Check for shared factors.
     if math.gcd(a, LEN) != 1:
-        raise ValueError(f"a ({a}) and m ({len(LOWER)}) must be coprime")
+        raise ValueError(f"a and m must be coprime.")
 
     m = mmi(a)
 

@@ -20,18 +20,18 @@ def BuildTree(records):
   for record in records:
     if record.record_id == 0:
       if record.parent_id != 0:
-        raise ValueError('Root node cannot have a parent')
+        raise ValueError("Node record_id should be smaller than it's parent_id.")
     elif record.record_id == record.parent_id:
-      raise ValueError('Tree is a cycle')
+      raise ValueError('Only root should have equal record and parent id.')
     if record.record_id < record.parent_id:
-      raise ValueError('Parent id must be lower than child id')
+      raise ValueError("Node record_id should be smaller than it's parent_id.")
 
     nodes[record.record_id] = Node(record.record_id)
 
   if 0 not in nodes:
-    raise ValueError('Tree must start with id 0')
+    raise ValueError('Record id is invalid or out of order.')
   if sorted(nodes.keys()) != list(range(len(nodes))):
-    raise ValueError('Tree must be continuous')
+    raise ValueError('Record id is invalid or out of order.')
 
   for record in records:
     if record.record_id == 0:

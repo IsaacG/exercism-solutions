@@ -1,6 +1,7 @@
 CMDS = ('wink', 'double blink', 'close your eyes', 'jump')
 
 def commands(number):
+  number = int(number, 2)
   c = []
   for i, j in enumerate(CMDS):
     if number & 1 << i:

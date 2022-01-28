@@ -4,8 +4,11 @@ class Clock:
   def __init__(self, hour, minute):
     self._min = (hour * 60 + minute) % DAY
 
-  def __repr__(self):
+  def __str__(self):
     return '%02d:%02d' % (self._min // 60, self._min % 60)
+
+  def __repr__(self):
+    return 'Clock(%d, %d)' % (self._min // 60, self._min % 60)
 
   def __eq__(self, other):
     return self._min == other._min

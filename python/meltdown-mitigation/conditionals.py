@@ -45,12 +45,12 @@ def fail_safe(temperature, neutrons_produced_per_second, threshold):
     :param threshold:
     :return: str one of: 'LOW', 'NORMAL', 'DANGER'
 
-    - `temperature * neutrons per second` < 40% of threshold == 'LOW'
+    - `temperature * neutrons per second` < 90% of threshold == 'LOW'
     - `temperature * neutrons per second` +/- 10% of `threshold` == 'NORMAL'
     - `temperature * neutron per second` is not in the above-stated ranges ==  'DANGER'
     """
     val = 100 * temperature * neutrons_produced_per_second / threshold
-    if val < 40:
+    if val < 90:
         return "LOW"
     elif 90 <= val <= 110:
         return "NORMAL"

@@ -15,11 +15,10 @@ class Tag(enum.Enum):
     HEADER4 = 'h4'
     HEADER5 = 'h5'
     HEADER6 = 'h6'
-    HEADER7 = 'h7'
 
 
 # Indexed headers, index matching header number.
-HEADERS = (None, Tag.HEADER1, Tag.HEADER2, Tag.HEADER3, Tag.HEADER4, Tag.HEADER5, Tag.HEADER6, Tag.HEADER7)
+HEADERS = (None, Tag.HEADER1, Tag.HEADER2, Tag.HEADER3, Tag.HEADER4, Tag.HEADER5, Tag.HEADER6)
 # Midline wraps, sorted by processing order.
 MIDLINE_WRAP = (('__', Tag.STRONG), ('_', Tag.EMPHASIS))
 
@@ -46,7 +45,7 @@ def _LineWrapper(line):
     # Default line wrapper, if none others found.
     line_wrap = Tag.PARAGRAPH
     # Determine how to wrap this line.
-    if line.startswith('#'):
+    if line.startswith('#') and not line.startswith('#' * 7):
         header, line = line.split(' ', 1)
         line_wrap = HEADERS[len(header)]
     elif line.startswith('*'):

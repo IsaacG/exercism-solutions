@@ -19,7 +19,7 @@ def color_code(color):
 
 def value(colors):
   val = 0
-  for c in colors:
+  for c in colors[:2]:
     val = val * 10 + color_code(c)
   return val
 

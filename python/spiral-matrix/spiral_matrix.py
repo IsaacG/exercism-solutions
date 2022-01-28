@@ -15,13 +15,13 @@ def spiral_matrix(size: int) -> list[list[int]]:
     board: dict[complex, int] = {}
     coord = 0 + 0j
     direction = 1 + 0j
-    edges = (-1, size)
+    edges = {-1, size}
     # Iterate through all values needed.
     for val in range(1, size ** 2 + 1):
         board[coord] = val
         # Check if we need to change directions.
         next_coord = coord + direction
-        if next_coord in board or any(p in edges for p in (next_coord.real, next_coord.imag)):
+        if next_coord in board or {next_coord.real, next_coord.imag} & edges:
             direction *= 1j
         coord += direction
 

@@ -37,7 +37,7 @@ class LinkedList:
         """Return the first node."""
         if self._head:
             return self._head
-        raise EmptyListException("No data")
+        raise EmptyListException("The list is empty.")
 
     def push(self, value):
         """Push a value to the front of the list."""
@@ -52,7 +52,7 @@ class LinkedList:
     def pop(self):
         """Pop a value from the front of the list."""
         if self._head is None:
-            raise EmptyListException("Empty")
+            raise EmptyListException("The list is empty.")
         node = self._head
         self._head = node._next
         if self._head:

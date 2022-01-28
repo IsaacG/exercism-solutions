@@ -6,16 +6,13 @@ Result = tuple[Optional[int], set[tuple[int, int]]]
 
 def is_palindrome(num: int) -> bool:
     """Return if a number is a palindrome."""
-    as_str = str(num)
-    return as_str == as_str[::-1]
+    return str(num) == str(num)[::-1]
 
 
-def cmp_palindrome(max_factor: int, min_factor: int, smallest: bool) -> Result:
+def cmp_palindrome(max_factor: int, min_factor: int, cmp: Callable[[int, int], bool]) -> Result:
     """Return the $cmp where $cmp is a largest/smallest test."""
     if min_factor > max_factor:
-        raise ValueError("Bad input")
-
-    cmp = (lambda x, y: x > y) if smallest else (lambda x, y: x < y)
+        raise ValueError("min must be <= max")
 
     factors: set[tuple[int, int]] = set()
     product = None
@@ -37,9 +34,9 @@ def cmp_palindrome(max_factor: int, min_factor: int, smallest: bool) -> Result:
 
 def largest(max_factor: int, min_factor: int) -> Result:
     """Return the smallest palindrome product and its factors."""
-    return cmp_palindrome(max_factor, min_factor, False)
+    return cmp_palindrome(max_factor, min_factor, lambda x, y: x < y)
 
 
 def smallest(max_factor: int, min_factor: int) -> Result:
     """Return the smallest palindrome product and its factors."""
-    return cmp_palindrome(max_factor, min_factor, True)
+    return cmp_palindrome(max_factor, min_factor, lambda x, y: x > y)

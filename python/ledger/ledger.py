@@ -22,6 +22,14 @@ import datetime
 SYMBOL = {'USD': '$', 'EUR': '€'}
 
 
+@dataclasses.dataclass(order=True)
+class LedgerEntry:
+    """Ledger entry."""
+    date: datetime.datetime
+    description: str
+    change: int
+
+
 @dataclasses.dataclass
 class Formatter:
     """Formatter is used to format values."""
@@ -62,6 +70,22 @@ class Formatter:
             description = description[:22] + '...'
         return description
 
+    def format_entry(self, entry: LedgerEntry, currency: str) -> str:
+        """Format one entry."""
+        date = self.format_date(entry.date)
+        description = self.format_description(entry.description)
+        change = self.format_cur(entry.change, currency)
+
+        # Combine columns.
+        return f'{date:<10} | {description:<25} | {change:>13}'
+
+    def format(self, entries: list[LedgerEntry], currency: str) -> str:
+        """Return entries formatted to a table."""
+        parts = self.headers
+        header = f'{parts[0]:<10} | {parts[1]:<25} | {parts[2]:<13}'
+        rows = [header] + [self.format_entry(entry, currency) for entry in sorted(entries)]
+        return '\n'.join(rows)
+
 
 FMT = {
     'en_US': Formatter(
@@ -81,23 +105,6 @@ FMT = {
 }
 
 
-@dataclasses.dataclass(order=True)
-class LedgerEntry:
-    """Ledger entry."""
-    date: datetime.datetime
-    description: str
-    change: int
-
-    def format(self, formatter: Formatter, currency: str) -> str:
-        """Format an entry."""
-        date = formatter.format_date(self.date)
-        description = formatter.format_description(self.description)
-        change = formatter.format_cur(self.change, currency)
-
-        # Combine columns.
-        return f'{date:<10} | {description:<25} | {change:>13}'
-
-
 def create_entry(date: str, description: str, change: int) -> LedgerEntry:
     """Return a LedgerEntry."""
     pdate = datetime.datetime.strptime(date, '%Y-%m-%d')
@@ -106,7 +113,4 @@ def create_entry(date: str, description: str, change: int) -> LedgerEntry:
 
 def format_entries(currency: str, locale: str, entries: list[LedgerEntry]) -> str:
     """Format LedgerEntry values."""
-    parts = FMT[locale].headers
-    header = f'{parts[0]:<10} | {parts[1]:<25} | {parts[2]:<13}'
-    rows = [header] + [entry.format(FMT[locale], currency) for entry in sorted(entries)]
-    return '\n'.join(rows)
+    return FMT[locale].format(entries, currency)

@@ -1,3 +1,4 @@
+import string
 import unittest
 
 from pangram import is_pangram
@@ -9,6 +10,15 @@ class PangramTest(unittest.TestCase):
 
     def test_sentence_empty(self):
         self.assertIs(is_pangram(''), False)
+
+    def test_long_a(self):
+        self.assertIs(is_pangram('a' * 1_000_000 + string.ascii_lowercase), True)
+
+    def test_long_f(self):
+        self.assertIs(is_pangram(string.ascii_lowercase + 'z' * 1_000_000), True)
+
+    def test_long_t(self):
+        self.assertIs(is_pangram(string.ascii_lowercase[2:] * 1_000_000), False)
 
     def test_recognizes_a_perfect_lower_case_pangram(self):
         self.assertIs(is_pangram('abcdefghijklmnopqrstuvwxyz'), True)
