@@ -22,7 +22,7 @@ def word_trans(word: str) -> str:
     if re.match(r"[^aeiou]*qu", word):
         pattern = r"([^aeioy]*)([aeioy].*)"
     # If the word starts with a "y", keep "y" in the start.
-    elif word[0] == "y":
+    elif word.startswith("y"):
         pattern = r"([^aeiou]*)([aeiou].*)"
     # Default is to split at the first vowel.
     else:

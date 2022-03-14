@@ -1,80 +1,67 @@
-class Node:
-    """Doubly-linked list node."""
-    def __init__(self, value):
-        self._value = value
-        self._prev = None
-        self._next = None
+"""Implement a linked list."""
+from __future__ import annotations
+from typing import Generator, Generic, Iterable, Optional, TypeVar
 
-    def value(self):
+
+class EmptyListException(Exception):
+    """Exception raised when accessing an empty list."""
+
+
+NodeVal = TypeVar("NodeVal")
+
+
+class Node(Generic[NodeVal]):
+    """Doubly-linked list node."""
+    def __init__(self, value: NodeVal, next_node: Optional[Node] = None):
+        self._value = value
+        self._next = next_node
+
+    def value(self) -> NodeVal:
+        """Return node value."""
         return self._value
 
-    def next(self):
-        return self.__next__()
-
-    def __next__(self):
+    def next(self) -> Optional[Node]:
+        """Return next node."""
         return self._next
 
 
 class LinkedList:
     """Linked list."""
-    def __init__(self, values=[]):
-        self._head = None
-        self._tail = None
+    def __init__(self, values: Iterable[NodeVal] = ()):
+        self._head: Optional[Node] = None
         # Push the items to the list. list(LinkedList([1, 2, 3])) == [3, 2, 1]
-        for v in values:
-            self.push(v)
+        for value in values:
+            self.push(value)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the list length by walking the list."""
-        node = self._head
-        count = 0
-        while node:
-            count += 1
-            node = node._next
-        return count
+        return sum(1 for _ in self)
 
-    def head(self):
+    def head(self) -> Node:
         """Return the first node."""
-        if self._head:
-            return self._head
-        raise EmptyListException("The list is empty.")
+        if self._head is None:
+            raise EmptyListException("The list is empty.")
+        return self._head
 
-    def push(self, value):
+    def push(self, value: NodeVal) -> None:
         """Push a value to the front of the list."""
-        node = Node(value)
-        node._next = self._head
-        self._head = node
-        if node._next:
-            node._next._prev = node
-        else:
-            self._tail = node
+        self._head = Node(value, self._head)
 
-    def pop(self):
+    def pop(self) -> NodeVal:
         """Pop a value from the front of the list."""
         if self._head is None:
             raise EmptyListException("The list is empty.")
         node = self._head
-        self._head = node._next
-        if self._head:
-            self._head.prev = None
-        else:
-            self._tail = None
+        self._head = node.next()
         return node.value()
 
-    def reversed(self):
+    def reversed(self) -> LinkedList:
         """Reverse a list by pushing the elements in order."""
-        ll = LinkedList()
-        for value in self:
-            ll.push(value)
-        return ll
+        return LinkedList(self)
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[NodeVal, None, None]:
         """Yield the values in the list."""
         node = self._head
         while node:
             yield node.value()
-            node = node._next
-
-
-class EmptyListException(Exception):
-    pass
+            node = node.next()

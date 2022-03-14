@@ -10,14 +10,14 @@ MASK = 0b01111111
 
 def encode_one(number: int) -> list[int]:
     """Encode one number."""
-    outs: list[int] = []
-    while number or not outs:
+    encoded: list[int] = []
+    while number or not encoded:
         # Set the MORE bit on all chunks.
-        outs.append(MORE | (number & MASK))
+        encoded.append(MORE | (number & MASK))
         number >>= 7
     # Unset MORE on the last chunk.
-    outs[0] &= MASK
-    return list(reversed(outs))
+    encoded[0] &= MASK
+    return list(reversed(encoded))
 
 
 def encode(numbers: list[int]) -> list[int]:
@@ -26,15 +26,15 @@ def encode(numbers: list[int]) -> list[int]:
 
 
 def decode(encoded: list[int]) -> list[int]:
-    """Dencode numbers."""
+    """Decode numbers."""
     if encoded[-1] & MORE:
         raise ValueError("incomplete sequence")
 
-    outs: list[int] = []
+    decoded: list[int] = []
     num = 0
     for chunk in encoded:
         num = (num << 7) | (chunk & MASK)
         if not chunk & MORE:
-            outs.append(num)
+            decoded.append(num)
             num = 0
-    return outs
+    return decoded

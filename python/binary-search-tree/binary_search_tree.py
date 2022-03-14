@@ -1,15 +1,18 @@
 """Binary Tree."""
 
 from __future__ import annotations
-from typing import Optional
+from typing import cast, Generator, Generic, Iterable, Optional, TypeVar
 
 
-class TreeNode:
+T = TypeVar("T")
+
+
+class TreeNode(Generic[T]):
     """Binary Tree Node."""
 
     def __init__(
         self,
-        data: Optional[int],
+        data: Optional[T],
         left: Optional[TreeNode] = None,
         right: Optional[TreeNode] = None
     ):
@@ -21,11 +24,11 @@ class TreeNode:
         """Return a string representation."""
         return f"TreeNode(data={self.data}, left={self.left}, right={self.right})"
 
-    def insert(self, value: int) -> None:
+    def insert(self, value: T) -> None:
         """Insert a value into the tree."""
         if self.data is None:
             self.data = value
-        elif value > self.data:
+        elif value > self.data:  # type: ignore
             if self.right is None:
                 self.right = TreeNode(None)
             self.right.insert(value)
@@ -34,33 +37,30 @@ class TreeNode:
                 self.left = TreeNode(None)
             self.left.insert(value)
 
-    def sorted(self) -> list[int]:
+    def __iter__(self) -> Generator[T, None, None]:
         """Return node values, sorted."""
-        if self.data is None:
-            return []
-        data = []
-        if self.left:
-            data.extend(self.left.sorted())
-        data.append(self.data)
-        if self.right:
-            data.extend(self.right.sorted())
-        return data
+        yield from self.left or []
+        # if self.data is None: return
+        # or this can be checked once in sorted_data() and assumed to exist here.
+        yield cast(T, self.data)
+        yield from self.right or []
 
 
-class BinarySearchTree:
+class BinarySearchTree(Generic[T]):
     """Binary Tree."""
 
-    def __init__(self, tree_data: list[int]):
+    def __init__(self, tree_data: Iterable[T]):
         """Initialize."""
-        self.root = TreeNode(None)
+        self.root: TreeNode[T] = TreeNode(None)
         for value in tree_data:
             self.root.insert(value)
-            print(f"Insert {value=} => {self.root}")
 
-    def data(self) -> TreeNode:
+    def data(self) -> TreeNode[T]:
         """Return Tree data."""
         return self.root
 
-    def sorted_data(self) -> list[int]:
+    def sorted_data(self) -> list[T]:
         """Return sorted data."""
-        return self.root.sorted()
+        if self.root.data is None:
+            return []
+        return list(self.root)

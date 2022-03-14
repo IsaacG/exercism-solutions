@@ -3,6 +3,12 @@
 import operator
 import re
 
+
+def raise_unknown() -> None:
+    """Raise an unknown error."""
+    raise ValueError("unknown operation")
+
+
 # Word problem prefix/suffix.
 PREFIX = "What is "
 SUFFIX = "?"
@@ -19,13 +25,19 @@ OPS = [
     (operator.eq, re.compile(r"(.*) equals (.*)")),
     (operator.gt, re.compile(r"(.*) is greater than (.*)")),
     (operator.lt, re.compile(r"(.*) is less than (.*)")),
+    (operator.lt, re.compile(r"(.*) is less than (.*)")),
+    (raise_unknown, re.compile(r"\d+ cubed")),
 ]
 
 
 def answer(question: str) -> int:
     """Answer a word problem."""
-    if not question.startswith(PREFIX) or not question.endswith(SUFFIX):
-        raise ValueError("bad input")
+    if not question.endswith(SUFFIX):
+        raise ValueError("syntax error")
+    if " is " not in question:
+        raise ValueError("syntax error")
+    if not question.startswith(PREFIX):
+        raise ValueError("unknown operation")
     question = question.removeprefix(PREFIX).removesuffix(SUFFIX)
     return solve(question)
 
@@ -36,5 +48,6 @@ def solve(question: str) -> int:
         return int(question)
     for operation, pattern in OPS:
         if match := pattern.fullmatch(question):
-            return operation(solve(match.group(1)), solve(match.group(2)))
-    raise ValueError("bad input")
+            operands = (solve(part) for part in match.groups())
+            return operation(*operands)
+    raise ValueError("syntax error")

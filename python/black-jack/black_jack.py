@@ -56,7 +56,7 @@ def is_blackjack(*cards: str) -> bool:
     :param card_one, card_two: str - cards dealt.
     :return: bool - if the hand is a blackjack (two cards worth 21).
     """
-    return "A" in cards and 10 in values(cards)
+    return set(values(cards)) == {1, 10}
 
 
 def can_split_pairs(*cards: str) -> bool:

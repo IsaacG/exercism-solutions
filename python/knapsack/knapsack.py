@@ -11,7 +11,7 @@ def maximum(cap: int, items: tuple[tuple[int, int]]) -> int:
             continue
         n_items = items[:i] + items[i + 1:]
         options.append(val + maximum(cap - weight, n_items))
-    return max(options) if options else 0
+    return max(options, default=0)
 
 
 def maximum_value(maximum_weight: int, items: list[dict[str, int]]) -> int:

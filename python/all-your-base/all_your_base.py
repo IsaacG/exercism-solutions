@@ -19,5 +19,6 @@ def rebase(input_base: int, digits: list[int], output_base: int) -> list[int]:
     while val:
         out.append(val % output_base)
         val //= output_base
+    out.reverse()
 
-    return list(reversed(out)) or [0]
+    return out or [0]

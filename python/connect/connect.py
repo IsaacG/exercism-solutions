@@ -33,13 +33,15 @@ class ConnectGame:
 
     def get_winner(self) -> str:
         """Return the winner for the current board, if any."""
-        # X plays along the horizonal q-axis and ) plays the r-axis.
+        # X plays along the horizonal q-axis and O plays the r-axis.
         for player, axis in [("O", 1), ("X", 0)]:
             pieces = self.pieces[player]
+
             # Start with any piece on the near edge.
             start = next((p for p in pieces if p[axis] == 0), None)
             if start is None:
                 continue
+
             # Use Dijkstra's to follow pieces across the board.
             todo = {start}
             done = set()
@@ -50,9 +52,6 @@ class ConnectGame:
                 if cur[axis] == self.max[axis]:
                     return player
                 for coord in self.neighbors(cur):
-                    if coord not in pieces:
-                        continue
-                    if coord in done:
-                        continue
-                    todo.add(coord)
+                    if coord in pieces and coord not in done:
+                        todo.add(coord)
         return ""

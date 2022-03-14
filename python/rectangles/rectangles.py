@@ -1,20 +1,21 @@
 """Rectangles Parsing."""
 
+import collections
 import itertools
 
 
 def rectangles(strings: list[str]) -> int:
     """Count all rectangles in a diagram."""
     # Map coordinates to chars.
-    elements = {
-        (x, y): char
-        for y, line in enumerate(strings) for x, char in enumerate(line)
-        if char in "+-|"
-    }
+    elements = collections.defaultdict(set)
+    for y, line in enumerate(strings):
+        for x, char in enumerate(line):
+            if char in "+-|":
+                elements[char].add((x, y))
     # Build a set of corners, horizontal and vertical pieces.
-    corners = {point for point, char in elements.items() if char == "+"}
-    horiz = {point for point, char in elements.items() if char == "-"} | corners
-    vert = {point for point, char in elements.items() if char == "|"} | corners
+    corners = elements["+"]
+    horiz = elements["-"] | elements["+"]
+    vert = elements["|"] | elements["+"]
 
     count = 0
     # For every corner pair, see if it forms a rectangle.
