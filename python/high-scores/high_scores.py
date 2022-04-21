@@ -1,13 +1,20 @@
 """High score utilities."""
 
-def personal_top_three(scores: list[int]) -> list[int]:
-    """Return the top three."""
-    return sorted(scores, reverse=True)[:3]
 
-def personal_best(scores: list[int]) -> int:
-    """Return the best score."""
-    return max(scores)
+class HighScores:
+    """HighScores."""
 
-def latest(scores: list[int]) -> int:
-    """Return the last score."""
-    return scores[-1]
+    def __init__(self, scores: list[int]):
+        self.scores = scores
+
+    def personal_top_three(self) -> list[int]:
+        """Return the top three."""
+        return sorted(self.scores, reverse=True)[:3]
+
+    def personal_best(self) -> int:
+        """Return the best score."""
+        return max(self.scores)
+
+    def latest(self) -> int:
+        """Return the last score."""
+        return self.scores[-1]
