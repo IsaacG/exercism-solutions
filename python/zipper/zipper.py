@@ -43,7 +43,8 @@ class Zipper:
     def __init__(self, tree: dict):
         """Build a Tree."""
         root = Node.from_dict(tree)
-        assert root is not None
+        if root is None:
+            raise ValueError("root needs data")
         self.root = root
         self.focus = root
 

@@ -1,5 +1,9 @@
 """Forth interpretter."""
 import operator
+import re
+
+
+NUM_RE = re.compile(r"^-?\d+$")
 
 
 class StackUnderflowError(Exception):
@@ -46,7 +50,7 @@ class Forth:
         instructions = iter(words)
         while (word := next(instructions, None)) is not None:
             # Push numbers to the stack.
-            if word.isdigit():
+            if NUM_RE.match(word):
                 self.stack.append(int(word))
                 continue
 
@@ -86,12 +90,8 @@ class Forth:
         """Parse and set user defined values."""
         # Read definition name.
         name = next(instructions)
-        # Check if the name is an int.
-        try:
-            int(name)
-        except ValueError:
-            pass
-        else:
+        # Check if the name is an int. Integers cannot be redefined.
+        if NUM_RE.match(name):
             raise ValueError("illegal operation")
         # Read instructions until a ";" is found.
         vals = []

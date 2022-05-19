@@ -4,12 +4,12 @@ import math
 import string
 import textwrap
 
+ALNUM = string.ascii_lowercase + string.digits
 
 def cipher_text(plain_text: str) -> str:
     """Encode using a Crypto Square."""
     # Remove non-alphanum chars.
-    keep = string.ascii_lowercase + string.digits
-    text = "".join(c for c in plain_text.lower() if c in keep)
+    text = "".join(c for c in plain_text.lower() if c in ALNUM)
 
     # Calculate block size.
     cols = math.ceil(math.sqrt(len(text))) or 1

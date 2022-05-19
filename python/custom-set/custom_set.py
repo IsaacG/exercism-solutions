@@ -52,4 +52,4 @@ class CustomSet:
 
     def __iter__(self):
         """Return an element generator."""
-        return (element for element in self._data)
+        return iter(self._data)
