@@ -2,7 +2,7 @@
 
 
 from __future__ import annotations
-from typing import Optional
+from typing import Generator, Optional
 
 
 class Tree:
@@ -40,11 +40,11 @@ class Tree:
                 return found
         return None
 
-    def adjacent(self) -> list[Tree]:
+    def adjacent(self) -> Generator[Tree, None, None]:
         """Return all adjacent nodes (parent + children)."""
         if self.parent:
-            return [self.parent] + self.children
-        return self.children
+            yield self.parent
+        yield from self.children
 
     def children_from(self, parent: Optional[str]) -> list[Tree]:
         """Return children of `self`, assuming parent."""

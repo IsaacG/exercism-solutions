@@ -62,5 +62,7 @@ def non_exchangeable_value(budget, exchange_rate, spread, denomination):
     :param denomination: int - the value of a single bill.
     :return: int - unexchangeable value
     """
-    return budget - exchangeable_value(budget, exchange_rate, spread, denomination)
+    rate = exchange_rate * (1 + spread / 100)
+    val = int((budget / rate) % denomination)
+    return val
 

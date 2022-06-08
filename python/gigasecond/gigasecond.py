@@ -1,5 +1,7 @@
 import datetime
 
+GIGASECOND = datetime.timedelta(seconds=int(1e9))
+
 
 def add(moment):
-    return datetime.datetime.fromtimestamp(int(moment.timestamp() + 1e9))
+    return moment + GIGASECOND

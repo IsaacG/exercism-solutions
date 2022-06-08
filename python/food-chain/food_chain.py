@@ -1,28 +1,32 @@
 """The Old Woman."""
 
-ANIMALS = ["fly", "spider", "bird", "cat", "dog", "goat", "cow", "horse"]
-SUBJECTS = ANIMALS.copy()
-SUBJECTS[1] = "spider that wriggled and jiggled and tickled inside her"
-REACTIONS = [
-    "It wriggled and jiggled and tickled inside her.",
-    "How absurd to swallow a bird!",
-    "Imagine that, to swallow a cat!",
-    "What a hog, to swallow a dog!",
-    "Just opened her throat and swallowed a goat!",
-    "I don't know how she swallowed a cow!",
-    "She's dead, of course!",
-]
+REACTIONS = {
+    "fly": "I don't know why she swallowed the fly. Perhaps she'll die.",
+    "spider": "It wriggled and jiggled and tickled inside her.",
+    "bird": "How absurd to swallow a bird!",
+    "cat": "Imagine that, to swallow a cat!",
+    "dog": "What a hog, to swallow a dog!",
+    "goat": "Just opened her throat and swallowed a goat!",
+    "cow": "I don't know how she swallowed a cow!",
+    "horse": "She's dead, of course!",
+}
+# Map verse "numbers" to specific animals.
+ANIMALS = dict(enumerate(REACTIONS, start=1))
+# Map each animal to it's food/subject, i.e. what it eats.
+SUBJECTS = dict(zip(list(REACTIONS)[1:], list(REACTIONS)))
+# Unlike all other animals, the bird does not simply eat a "spider". It is more detailed.
+SUBJECTS["bird"] = "spider that wriggled and jiggled and tickled inside her"
 
 
 def verse(num: int) -> list[str]:
     """Return one verse."""
-    out = [f"I know an old lady who swallowed a {ANIMALS[num - 1]}."]
+    out = [f"I know an old lady who swallowed a {ANIMALS[num]}."]
     if num > 1:
-        out.append(REACTIONS[num - 2])
+        out.append(REACTIONS[ANIMALS[num]])
     if num < 8:
         for i in range(num, 1, -1):
-            out.append(f"She swallowed the {ANIMALS[i - 1]} to catch the {SUBJECTS[i - 2]}.")
-        out.append("I don't know why she swallowed the fly. Perhaps she'll die.")
+            out.append(f"She swallowed the {ANIMALS[i]} to catch the {SUBJECTS[ANIMALS[i]]}.")
+        out.append(REACTIONS[ANIMALS[1]])
     return out
 
 
