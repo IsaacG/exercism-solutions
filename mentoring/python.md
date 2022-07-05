@@ -3,6 +3,7 @@
 ## TOC
 
 * [General](#general)
+* [Collatz](#collatz)
 * [Raindrops](#raindrops)
 * [High Scores](#high-scores)
 * [Matrix](#matrix)
@@ -43,6 +44,11 @@ Docstrings aren't required here but they are nice to have - both for the module 
 ```text
 I enjoy helping mentor students on Exercism and occasionally I'll help out on IRC (irc://irc.freenode.net #python,##programming). I don't take email questions, though. I prefer setting the boundaries of where and how I volunteer my skills. If you're looking for programming help, I'd suggest trying out IRC, the Python Discord server or Stack Overflow.
 ```
+
+Collatz
+-------
+
+This code essentially builds a C-style for-loop with an init, condition and increment. In general, it's best to avoid `while` loops when a `for` loop can be used.  Using a `for` in this exercise is a bit tricky... but `itertools.count()` can help make that happen!
 
 Raindrops
 ---------
