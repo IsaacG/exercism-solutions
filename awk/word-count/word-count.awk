@@ -1,6 +1,14 @@
 #!/usr/bin/env gawk -f
 
 BEGIN {
-    print "Implement this solution" > "/dev/stderr"
-    exit 1
+    FPAT = "[[:alnum:]]+('[[:alnum:]]+)?"
+}
+{
+    $0 = tolower($0)
+    for (i = 1; i <= NF; i++)
+        count[$i]++
+}
+END {
+    for (word in count)
+        printf "%s: %d\n", word, count[word]
 }

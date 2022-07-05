@@ -48,7 +48,9 @@ I enjoy helping mentor students on Exercism and occasionally I'll help out on IR
 Collatz
 -------
 
+```text
 This code essentially builds a C-style for-loop with an init, condition and increment. In general, it's best to avoid `while` loops when a `for` loop can be used.  Using a `for` in this exercise is a bit tricky... but `itertools.count()` can help make that happen!
+```
 
 Raindrops
 ---------
