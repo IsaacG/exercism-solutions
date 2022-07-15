@@ -30,6 +30,9 @@ Type checking is best done with the builtin `isinstance()` method.
 `[f(a) for a in b]` iterates through `b` to create a list. You are then passing this list to `str.join()` which iterates through that list to build a string and discards that list. You can avoid that extra middle step of building and storing a list by passing a generator to `str.join()` instead and having `str.join()` process the elements of that iterator directly! You can do this either by doing `str.join(f(a) for a in b)` or `generator = (f(a) for a in b); str.join(generator)`
 In Python, the `is` operator checks if two objects are the *same object* while `==` checks if two objects have the same *value*. `[1, 2] == [1, 2] -> True` but `[1, 2] is [1, 2] -> False`. You generally want to use `==` and only want `is` in very specific conditions.
 In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
+In languages were strings are immutable (like Python and Go), string concatenations are relatively expensive and should generally not be done in loops. Instead, string building techniques should be used, like collecting string pieces in a list then making use of `str.join()`.
+Function definitions should be separated from other expressions by exactly two blank lines.
+Regular variables are usually named using `snake_case` and module constants use `ALL_CAPS`.
 ```
 
 ### Extra Credit
