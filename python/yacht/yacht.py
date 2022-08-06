@@ -1,27 +1,24 @@
+"""Score a game of Yacht."""
 import collections
-
-def count(dice):
-  c = collections.defaultdict(int)
-  for i in dice:
-    c[i] += 1
-  return c
-
-_NUM = lambda d, n: sum([i for i in d if i == n])
-ONES = lambda d: _NUM(d, 1)
-TWOS = lambda d: _NUM(d, 2)
-THREES = lambda d: _NUM(d, 3)
-FOURS = lambda d: _NUM(d, 4)
-FIVES = lambda d: _NUM(d, 5)
-SIXES = lambda d: _NUM(d, 6)
-LITTLE_STRAIGHT = lambda d: 30 if set(d) == {1, 2, 3, 4, 5} else 0
-BIG_STRAIGHT = lambda d: 30 if set(d) == {2, 3, 4, 5, 6} else 0
-FULL_HOUSE = lambda d: sum(d) if set(count(d).values()) == {2, 3} else 0
-FOUR_OF_A_KIND = lambda d: sum([n for n, c in count(d).items() if c >= 4]) * 4
-YACHT = lambda d: 50 if len(set(d)) == 1 else 0
-CHOICE = lambda d: sum(d)
+import typing
 
 
-def score(dice, category):
-    return category(dice)
+ONES = lambda count: 1 * count[1]
+TWOS = lambda count: 2 * count[2]
+THREES = lambda count: 3 * count[3]
+FOURS = lambda count: 4 * count[4]
+FIVES = lambda count: 5 * count[5]
+SIXES = lambda count: 6 * count[6]
+LITTLE_STRAIGHT = lambda count: 30 if set(count) == {1, 2, 3, 4, 5} else 0
+BIG_STRAIGHT = lambda count: 30 if set(count) == {2, 3, 4, 5, 6} else 0
+FULL_HOUSE = lambda count: CHOICE(count) if set(count.values()) == {2, 3} else 0
+FOUR_OF_A_KIND = lambda count: 4 * count.most_common(1)[0][0] if count.most_common(1)[0][1] >= 4 else 0
+YACHT = lambda count: 50 if len(set(count)) == 1 else 0
+CHOICE = lambda count: sum(face * times for face, times in count.items())
 
-# vim:ts=2:sw=2:expandtab
+
+def score(dice: list[int], category: typing.Callable[[dict[int, int]], int]) -> int:
+    """Return the score of a "hand" in Yacht."""
+    return category(collections.Counter(dice))
+
+# vim:ts=4:sw=4:expandtab
