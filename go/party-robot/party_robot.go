@@ -19,7 +19,7 @@ func HappyBirthday(name string, age int) string {
 func AssignTable(name string, table int, neighbor, direction string, distance float64) string {
 	builder := strings.Builder{}
 	builder.WriteString(fmt.Sprintf("Welcome to my party, %s!\n", name))
-	builder.WriteString(fmt.Sprintf("You have been assigned to table %X. ", table))
+	builder.WriteString(fmt.Sprintf("You have been assigned to table %03d. ", table))
 	builder.WriteString(fmt.Sprintf("Your table is %s, exactly %.1f meters from here.\n", direction, distance))
 	builder.WriteString(fmt.Sprintf("You will be sitting next to %s.", neighbor))
 	return builder.String()

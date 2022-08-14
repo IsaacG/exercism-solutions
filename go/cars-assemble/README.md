@@ -19,6 +19,10 @@ For the sake of this exercise you will only be dealing with:
 
 - `float64`: e.g. `0.0`, `3.14`. Contains the set of all 64-bit floating-point numbers.
 
+- `uint`: e.g. `0`, `255`. An unsigned integer that is the same size as `int` (value range of: 0 through 4294967295 for 32 bits and 0 through 18446744073709551615 for 64 bits)
+
+Numbers can be converted to other numeric types through Type Conversion.
+
 ## Arithmetic Operators
 
 Go supports many standard arithmetic operators:
@@ -31,110 +35,99 @@ Go supports many standard arithmetic operators:
 | `/`      | `13 / 3 == 4`  |
 | `%`      | `13 % 3 == 1`  |
 
-For integer division, the remainder is dropped (eg. `5 / 2 == 2`).
+For integer division, the remainder is dropped (e.g. `5 / 2 == 2`).
 
 Go has shorthand assignment for the operators above (e.g. `a += 5` is short for `a = a + 5`).
 Go also supports the increment and decrement statements `++` and `--` (e.g. `a++`).
 
-## Type Conversion
+## Converting between types 
 
-In Go, assignment of a value between different types requires explicit conversion.
 Converting between types is done via a function with the name of the type to convert to.
-For example, to convert an `int` to a `float64` you would need to do the following:
+For example:
 
 ```go
 var x int = 42 // x has type int
 f := float64(x) // f has type float64 (ie. 42.0)
+var y float64 = 11.9 // y has type float64
+i := int(y) // i has type int (ie. 11)
 ```
+## Arithmetic operations on different types
 
-## If Statements
-
-Conditionals in Go are similar to conditionals in other languages.
-The underlying type of any conditional operation is the `bool` type, which can have the value of `true` or `false`.
-Conditionals are often used as flow control mechanisms to check for various conditions.
-
-For checking a particular case an `if` statement can be used, which executes its code if the underlying condition is `true` like this:
+In many languages you can perform arithmetic operations on different types of variables, but in Go this gives an error.
+For example:
 
 ```go
-var value string
+var x int = 42
 
-if value == "val" {
-    return "was val"
-}
-```
+// this line produces an error
+value := float32(2.0) * x // invalid operation: mismatched types float32 and int
 
-In scenarios involving more than one case many `if` statements can be chained together using the `else if` and `else` statements.
-
-```go
-var number int
-result := "This number is "
-
-if number > 0 {
-    result += "positive"
-} else if number < 0 {
-    result += "negative"
-} else {
-    result += "zero"
-}
+// you must convert int type to float32 before performing arithmetic operation
+value := float32(2.0) * float32(x)
 ```
 
 ## Instructions
 
-In this exercise you'll be writing code to analyze the production of an
-assembly line in a car factory. The assembly line's speed can range from `0`
-(off) to `10` (maximum).
+In this exercise you'll be writing code to analyze the production in a car factory.
 
-At its default speed (`1`), `221` cars are produced each hour. In principle,
-the production increases linearly. So with the speed set to `4`, it should
-produce `4 * 221 = 884` cars per hour. However, higher speeds increase the
-likelihood that faulty cars are produced, which then have to be discarded. 
+## 1. Calculate the number of working cars produced per hour
 
-## 1. Calculate the success rate
+The cars are produced on an assembly line. 
+The assembly line has a certain speed, that can be changed. 
+The faster the assembly line speed is, the more cars are produced. 
+However, changing the speed of the assembly line also changes the number of cars that are produced successfully, that is cars without any errors in their production.
 
-Implement a function (`SuccessRate`) to calculate the ratio of an item being created without error for a given speed.
-The following table shows how speed influences the success rate:
-
-- `0`: 0% success rate.
-- `1` - `4`: 100% success rate.
-- `5` - `8`: 90% success rate.
-- `9` - `10`: 77% success rate.
+Implement a function that takes in the number of cars produced per hour and the success rate and calculates the number of successful cars made per hour. The success rate is given as a percentage, from `0` to `100`:
 
 ```go
-rate := SuccessRate(6)
-fmt.Println(rate)
-// Output: 0.9
+CalculateWorkingCarsPerHour(1547, 90)
+// => 1392.3
 ```
 
-## 2. Calculate the production rate per hour
+**Note:** the return value should be a `float64`.
 
-Implement a function to calculate the assembly line's production rate per hour.
+## 2. Calculate the number of working cars produced per minute
+
+Implement a function that takes in the number of cars produced per hour and the success rate and calculates how many cars are successfully produced each minute:
 
 ```go
-rate := CalculateProductionRatePerHour(7)
-fmt.Println(rate)
-// Output: 1392.3
+CalculateWorkingCarsPerMinute(1105, 90)
+// => 16
 ```
 
-> Note that the value returned is of type `float64`
+**Note:** the return value should be an `int`.
 
-## 3. Calculate the number of working items produced per minute
+## 3. Calculate the cost of production 
 
-Implement a function to calculate how many cars are produced each minute:
+Each car normally costs $10,000 to produce individually, regardless of whether it is successful or not.
+But with a bit of planning, 10 cars can be produced together for $95,000.
+
+For example, 37 cars can be produced in the following way:
+37 = 3 x groups of ten + 7 individual cars
+
+So the cost for 37 cars is:
+3\*95,000+7\*10,000=355,000
+
+Implement the function `CalculateCost` that calculates the cost of producing a number of cars, regardless of whether they are successful:
 
 ```go
-rate := CalculateProductionRatePerMinute(5)
-fmt.Println(rate)
-// Output: 16
+CalculateCost(37)
+// => 355000
+
+CalculateCost(21)
+// => 200000
 ```
 
-> Note that the value returned is of type `int`.
+**Note:** the return value should be an `uint`.
 
 ## Source
 
 ### Created by
 
 - @DavyJ0nes
+- @kahgoh
 
 ### Contributed to by
 
 - @tehsphinx
+- @andrerfcsantos

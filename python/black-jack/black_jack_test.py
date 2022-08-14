@@ -51,7 +51,7 @@ class BlackJackTest(unittest.TestCase):
                 ('2', '3', 11), ('3', '6', 11), ('5', '2', 11),
                 ('8', '2', 11), ('5', '5', 11), ('Q', 'A', 1),
                 ('10', '2', 1), ('7', '8', 1), ('J', '9', 1),
-                ('K', "K", 1)]
+                ('K', 'K', 1), ('2', 'A', 1), ('A', '2', 1)]
 
         for variant, (card_one, card_two, ace_value) in enumerate(data, 1):
             with self.subTest(f'variation #{variant}', card_one=card_one, card_two=card_two, ace_value=ace_value):
@@ -59,20 +59,19 @@ class BlackJackTest(unittest.TestCase):
 
                 self.assertEqual(value_of_ace(card_one, card_two), ace_value, msg=error_msg)
 
-
     @pytest.mark.task(taskno=4)
     def test_is_blackjack(self):
         data = [
                 (('A', 'K'), True), (('10', 'A'), True),
                 (('10', '9'), False), (('A', 'A'), False),
-                (('4', '7'), False), (('9', '2'), False)]
+                (('4', '7'), False), (('9', '2'), False),
+                (('Q', 'K'), False)]
 
         for variant, (hand, blackjack) in enumerate(data, 1):
             with self.subTest(f'variation #{variant}', input=hand, output=blackjack):
-                error_msg=f'Hand {hand} {"is" if blackjack else "is not"} a blackjack.'
+                error_msg = f'Hand {hand} {"is" if blackjack else "is not"} a blackjack.'
 
-                self.assertEqual( is_blackjack(*hand), blackjack, msg=error_msg)
-
+                self.assertEqual(is_blackjack(*hand), blackjack, msg=error_msg)
 
     @pytest.mark.task(taskno=5)
     def test_can_split_pairs(self):
@@ -82,10 +81,9 @@ class BlackJackTest(unittest.TestCase):
 
         for variant, (hand, split_pairs) in enumerate(data, 1):
             with self.subTest(f'variation #{variant}', input=hand, output=split_pairs):
-                error_msg=f'Hand {hand} {"can" if split_pairs else "cannot"} be split into pairs.'
+                error_msg = f'Hand {hand} {"can" if split_pairs else "cannot"} be split into pairs.'
 
                 self.assertEqual(can_split_pairs(*hand), split_pairs, msg=error_msg)
-
 
     @pytest.mark.task(taskno=6)
     def test_can_double_down(self):

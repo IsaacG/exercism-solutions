@@ -23,10 +23,8 @@ func Quantities(layers []string) (int, float64) {
 }
 
 // AddSecretIngredient adds an ingredient to the list.
-func AddSecretIngredient(friendList, myList []string) []string {
-	want := make([]string, len(myList), len(myList)+1)
-	copy(want, myList)
-	return append(want, friendList[len(friendList)-1])
+func AddSecretIngredient(friendList, myList []string) {
+	myList[len(myList)-1] = friendList[len(friendList)-1]
 }
 
 // ScaleRecipe scales recipe amounts.

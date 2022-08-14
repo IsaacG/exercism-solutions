@@ -1,5 +1,10 @@
 # Binary Search Tree
 
+Welcome to Binary Search Tree on Exercism's Go Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Insert and search for numbers in a binary tree.
 
 When we need to represent sorted data, an array does not make a good
@@ -53,31 +58,30 @@ And if we then added 1, 5, and 7, it would look like this
      / \     / \
     1   3   5   7
 
-## Coding the solution
-
-Look for a stub file having the name binary_search_tree.go
-and place your solution code in that file.
-
-## Running the tests
-
-To run the tests run the command `go test` from within the exercise directory.
-
-If the test suite contains benchmarks, you can run these with the `--bench` and `--benchmem`
-flags:
-
-    go test -v --bench . --benchmem
-
-Keep in mind that each reviewer will run benchmarks on a different machine, with
-different specs, so the results from these benchmark tests may vary.
-
-## Further information
-
-For more detailed information about the Go track, including how to get help if
-you're having trouble, please visit the exercism.io [Go language page](http://exercism.io/languages/go/resources).
-
 ## Source
 
-Josh Cheek [https://twitter.com/josh_cheek](https://twitter.com/josh_cheek)
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @zilkey
+
+### Contributed to by
+
+- @alebaffa
+- @bitfield
+- @ekingery
+- @ferhatelmas
+- @hilary
+- @jcbwlkr
+- @kytrinyx
+- @leenipper
+- @petertseng
+- @robphoenix
+- @sebito91
+- @sjakobi
+- @tapank
+- @tleen
+- @norbs57
+
+### Based on
+
+Josh Cheek - https://twitter.com/josh_cheek

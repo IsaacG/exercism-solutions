@@ -4,13 +4,13 @@ word_count () {
   shopt -s extglob
   (( $# == 1 )) || exit 1
   local -A count
-  IFS=', ' read -ra words <<< "${1,,}"  # explicit word splitting
+  IFS=', ' read -a words <<< "${1,,}"  # explicit word splitting
   IFS=$' \t\n'
   for w in "${words[@]}"; do
     w=${w##*([[:punct:]])}
     w=${w%%*([[:punct:]])}
     [[ $w ]] || continue
-    (( 'count[$w]'++ ))
+    count[$w]=$(( ${count[$w]} + 1 ))
   done
 
   for w in "${!count[@]}"; do

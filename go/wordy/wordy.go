@@ -14,8 +14,7 @@ var operations = map[*regexp.Regexp]func(a, b int) int{
 }
 
 func solve(question string) (int, bool) {
-	v, err := strconv.Atoi(question)
-	if err == nil {
+	if v, err := strconv.Atoi(question); err == nil {
 		return v, true
 	}
 	for re, op := range operations {

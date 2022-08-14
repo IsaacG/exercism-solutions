@@ -1,19 +1,24 @@
 package binarysearchtree
 
-// SearchTreeData is a search tree.
-type SearchTreeData struct {
+// BinarySearchTree is a search tree.
+type BinarySearchTree struct {
 	data  int
-	left  *SearchTreeData
-	right *SearchTreeData
+	left  *BinarySearchTree
+	right *BinarySearchTree
 }
 
 // Bst returns a new tree.
-func Bst(d int) *SearchTreeData {
-	return &SearchTreeData{data: d}
+func Bst(d int) *BinarySearchTree {
+	return &BinarySearchTree{data: d}
+}
+
+// NewBst returns a new BinarySearchTree.
+func NewBst(data int) *BinarySearchTree {
+	return &BinarySearchTree{data: data}
 }
 
 // Insert an element into the tree.
-func (s *SearchTreeData) Insert(d int) {
+func (s *BinarySearchTree) Insert(d int) {
 	if d <= s.data {
 		if s.left != nil {
 			s.left.Insert(d)
@@ -30,7 +35,7 @@ func (s *SearchTreeData) Insert(d int) {
 }
 
 // MapString applies a string mapper to the tree.
-func (s *SearchTreeData) MapString(f func(int) string) []string {
+func (s *BinarySearchTree) MapString(f func(int) string) []string {
 	var r []string
 	if s.left != nil {
 		r = s.left.MapString(f)
@@ -45,7 +50,7 @@ func (s *SearchTreeData) MapString(f func(int) string) []string {
 }
 
 // MapInt applies an int mapper to the tree.
-func (s *SearchTreeData) MapInt(f func(int) int) []int {
+func (s *BinarySearchTree) MapInt(f func(int) int) []int {
 	var r []int
 	if s.left != nil {
 		r = s.left.MapInt(f)
@@ -57,4 +62,9 @@ func (s *SearchTreeData) MapInt(f func(int) int) []int {
 		}
 	}
 	return r
+}
+
+// SortedData returns tree data in a sorted array.
+func (s *BinarySearchTree) SortedData() []int {
+	return s.MapInt(func(d int) int { return d })
 }

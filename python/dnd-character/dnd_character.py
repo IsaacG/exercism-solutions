@@ -23,7 +23,8 @@ class Character:
 
         self.hitpoints = 10 + modifier(self.constitution)
 
-    def ability(self) -> int:
+    @staticmethod
+    def ability() -> int:
         """Roll an ability stat: 4d6 and discard the lowest die."""
         dice = sorted(random.randint(1, 6) for _ in range(4))
         return sum(dice[1:])

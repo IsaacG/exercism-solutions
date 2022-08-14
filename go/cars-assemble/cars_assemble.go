@@ -26,3 +26,15 @@ func CalculateProductionRatePerHour(speed int) float64 {
 func CalculateProductionRatePerMinute(speed int) int {
 	return int(CalculateProductionRatePerHour(speed) / 60)
 }
+
+func CalculateWorkingCarsPerMinute(prod int, success float64) int {
+	return int(CalculateWorkingCarsPerHour(prod, success) / 60.0)
+}
+
+func CalculateWorkingCarsPerHour(prod int, success float64) float64 {
+	return float64(prod) * success / 100
+}
+
+func CalculateCost(num int) uint {
+	return uint(95000*(num/10) + 10000*(num%10))
+}

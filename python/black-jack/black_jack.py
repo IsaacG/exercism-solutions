@@ -45,7 +45,10 @@ def value_of_ace(*cards: str) -> int:
     :param card_one, card_two: str - card (J, Q, K == 10, numerical value otherwise)
     :return: int - value of the upcoming ace card (either 1 or 11).
     """
-    return 1 + 10 * (sum(values(cards)) <= 10)
+    vals = values(cards)
+    if 1 in vals or sum(vals) > 10:
+        return 1
+    return 11
 
 
 def is_blackjack(*cards: str) -> bool:

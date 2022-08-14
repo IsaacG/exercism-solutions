@@ -1,13 +1,24 @@
 // Package cards does card tricks.
 package cards
 
+func FavoriteCards() []int {
+	return []int{2, 6, 9}
+}
+
+func PrependItems(slice []int, values ...int) []int {
+	cards := make([]int, len(slice)+len(values))
+	copy(cards, values)
+	copy(cards[len(values):], slice)
+	return cards
+}
+
 // GetItem retrieves an item from a slice at given position. The second return value indicates whether
 // a the given index existed in the slice or not.
-func GetItem(slice []int, index int) (int, bool) {
+func GetItem(slice []int, index int) int {
 	if index >= len(slice) || index < 0 {
-		return 0, false
+		return -1
 	}
-	return slice[index], true
+	return slice[index]
 }
 
 // SetItem writes an item to a slice at given position overwriting an existing value.

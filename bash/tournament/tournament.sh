@@ -14,7 +14,7 @@ declare -A win draw loss teams
 
 compute () {
   while IFS=';' read -r a b r; do
-    # echo $a ; echo $b; echo $r
+    [[ -n $a ]] || continue
     init "$a"
     init "$b"
     case "$r" in
