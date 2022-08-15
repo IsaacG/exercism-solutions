@@ -8,21 +8,21 @@ import (
 )
 
 // digits converts a string to a list of ints.
-func digits(s string) ([]int, error){
-	ret := make([]int, 0, len(s))
+func digits(s string) ([]int64, error){
+	ret := make([]int64, 0, len(s))
 	for _, c := range s {
 		i, err := strconv.Atoi(string(c))
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, i)
+		ret = append(ret, int64(i))
 	}
 	return ret, nil
 }
 
 // LargestSeriesProduct computers the largest product in a series.
-func LargestSeriesProduct(s string, span int) (int, error) {
-	var max int
+func LargestSeriesProduct(s string, span int) (int64, error) {
+	var max int64
 
 	// Input validation.
 	if span == 0 {
@@ -47,7 +47,7 @@ func LargestSeriesProduct(s string, span int) (int, error) {
 }
 
 // Walk a span and compute the largest product by removing the first element and adding the last.
-func lsp(s string, span int) (int, error) {
+func lsp(s string, span int) (int64, error) {
 	if len(s) < span {
 		return 0, nil
 	}
@@ -57,8 +57,8 @@ func lsp(s string, span int) (int, error) {
 		return 0, err
 	}
 
-	prod := 1
-	max := 0
+	prod := int64(1)
+	max := int64(0)
 	// Initial span.
 	for i := 0; i < span; i++ {
 		prod *= d[i]

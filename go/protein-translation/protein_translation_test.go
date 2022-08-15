@@ -1,9 +1,17 @@
 package protein
 
 import (
-	"reflect"
 	"testing"
 )
+
+func TestErrorsNotNil(t *testing.T) {
+	if ErrStop == nil {
+		t.Fatalf("FAIL: ErrStop cannot be nil")
+	}
+	if ErrInvalidBase == nil {
+		t.Fatalf("FAIL: ErrInvalidBase cannot be nil")
+	}
+}
 
 type codonCase struct {
 	input         string
@@ -133,7 +141,7 @@ var proteinTestCases = []rnaCase{
 	},
 	{
 		"UGGAGAAUUAAUGGUUU",
-		[]string{"Tryptophan"},
+		nil,
 		ErrInvalidBase,
 	},
 }
@@ -150,14 +158,35 @@ func TestProtein(t *testing.T) {
 			t.Fatalf("FAIL: RNA translation test: %s\nExpected: %s\nGot error: %q",
 				test.input, test.expected, err)
 		}
-		if !reflect.DeepEqual(actual, test.expected) {
+		if !slicesEqual(actual, test.expected) {
 			t.Fatalf("FAIL: RNA Translation test: %s\nExpected: %q\nActual %q", test.input, test.expected, actual)
 		}
 		t.Logf("PASS: RNA translation test: %s", test.input)
 	}
 }
 
+func slicesEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	if len(a) == 0 {
+		return true
+	}
+
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func BenchmarkCodon(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
 	for _, test := range codonTestCases {
 		for i := 0; i < b.N; i++ {
 			FromCodon(test.input)
@@ -166,6 +195,9 @@ func BenchmarkCodon(b *testing.B) {
 }
 
 func BenchmarkProtein(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
 	for _, test := range proteinTestCases {
 		for i := 0; i < b.N; i++ {
 			FromRNA(test.input)

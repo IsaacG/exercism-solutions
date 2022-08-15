@@ -67,7 +67,7 @@ To print the Unicode code point represented by the rune, use the `%U` formatting
 
 ```go
 myRune := '¿'
-fmt.Printf("myRune Unicdoe code point: %U\n", myRune)
+fmt.Printf("myRune Unicode code point: %U\n", myRune)
 // Output: myRune Unicode code point: U+00BF
 ```
 
@@ -94,6 +94,8 @@ for index, char := range myString {
 Since runes can be stored as 1, 2, 3, or 4 bytes, the length of a string may not always equal the number of characters in the string. Use the builtin `len` function to get the length of a string in bytes and the `utf8.RuneCountInString` function to get the number of runes in a string:
 
 ```go
+import "unicode/utf8"
+
 myString := "❗hello"
 stringLength := len(myString)
 numberOfRunes := utf8.RuneCountInString(myString)
@@ -124,20 +126,20 @@ If a log line does not contain one of the characters from the above table, retur
 
 ```go
 Application("❗ recommended search product 🔍")
-// Output: recommendation
+// => recommendation
 ```
 
 ## 2. Fix corrupted logs
 
 Due to a rare but persistent bug in the logging infrastructure, certain characters in logs can become corrupted. After spending time identifying the corrupted characters and their original value, you decide to update the log library to assist in fixing corrupted logs.
 
-Implement the `Replace` function that takes a log line, a corrupted character, and the original value and returns a modified log line that has all occurances of the corrupted character replaced with the original value.
+Implement the `Replace` function that takes a log line, a corrupted character, and the original value and returns a modified log line that has all occurrences of the corrupted character replaced with the original value.
 
 ```go
 log := "please replace '👎' with '👍'"
 
 Replace(log, '👎', '👍')
-// Output: please replace '👍' with '👍'"
+// => please replace '👍' with '👍'"
 ```
 
 ## 3. Determine if a log can be displayed
@@ -148,7 +150,7 @@ Implement the `WithinLimit` function that takes a log line and character limit a
 
 ```go
 WithinLimit("hello❗", 6)
-// Output: true
+// => true
 ```
 
 ## Source

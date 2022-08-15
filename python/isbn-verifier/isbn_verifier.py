@@ -1,20 +1,22 @@
-"""ISBN validation."""
+from functools import reduce
+
+reduction = lambda count, pair: count + pair[0] * pair[1]
+
+def is_valid(isbn):
+  isbn = isbn.replace('-', '')
+  if len(isbn) != 10:
+    return False
+  nums = list(isbn)
+  # The last character only can be 'X'. Map 'X' => 10
+  if nums[-1] == 'X':
+    nums[-1] = 10
+
+  try:
+    count = reduce(reduction, zip(map(int, nums), range(10, 0, -1)), 0)
+  except ValueError:
+    # Invalid input
+    return False
+  return count % 11 == 0
 
 
-def is_valid(isbn: str) -> bool:
-    """Return if an ISBN is valid."""
-    # Ignore dashes.
-    values = [value for value in isbn if value != "-"]
-
-    if len(values) != 10:
-        return False
-
-    # The last character (and only the last one) may be "X". Map "X" => 10
-    if values[-1] == "X":
-        values[-1] = "10"
-
-    if any(not value.isdigit() for value in values):
-        return False
-
-    total = sum(int(value) * (10 - position) for position, value in enumerate(values))
-    return total % 11 == 0
+# vim:ts=2:sw=2:expandtab

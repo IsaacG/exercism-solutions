@@ -48,7 +48,7 @@ func FromRNA(s string) ([]string, error) {
 	for i := 0; i+3 <= len(s); i += 3 {
 		p, err := FromCodon(s[i : i+3])
 		if err == ErrInvalidBase {
-			return proteins, err
+			return nil, err
 		} else if err == ErrStop {
 			return proteins, nil
 		} else {

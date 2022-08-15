@@ -1,14 +1,14 @@
 package chessboard
 
-// Rank stores if a square is occupied by a piece - this will be a slice of bools
-type Rank []bool
+// File stores if a square is occupied by a piece - this will be a slice of bools
+type File []bool
 
 // Chessboard contains a map of eight Ranks, accessed with values from 1 to 8
-type Chessboard map[int]Rank
+type Chessboard map[string]File
 
-// CountInRank returns how many squares are occupied in the chessboard,
+// CountInFile returns how many squares are occupied in the chessboard,
 // within the given rank
-func CountInRank(cb Chessboard, rank int) int {
+func CountInFile(cb Chessboard, rank string) int {
 	var count int
 	for _, occupied := range cb[rank] {
 		if occupied {
@@ -18,9 +18,9 @@ func CountInRank(cb Chessboard, rank int) int {
 	return count
 }
 
-// CountInFile returns how many squares are occupied in the chessboard,
+// CountInRank returns how many squares are occupied in the chessboard,
 // within the given file
-func CountInFile(cb Chessboard, file int) int {
+func CountInRank(cb Chessboard, file int) int {
 	if file < 1 || file > 8 {
 		return 0
 	}
@@ -48,7 +48,7 @@ func CountAll(cb Chessboard) (ret int) {
 func CountOccupied(cb Chessboard) (ret int) {
 	var count int
 	for i := range cb {
-		count += CountInRank(cb, i)
+		count += CountInFile(cb, i)
 	}
 	return count
 }

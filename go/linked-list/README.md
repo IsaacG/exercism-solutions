@@ -1,5 +1,10 @@
 # Linked List
 
+Welcome to Linked List on Exercism's Go Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Implement a doubly linked list.
 
 Like an array, a linked list is a simple linear data structure. Several
@@ -12,53 +17,64 @@ In a *doubly linked list* each node also holds a link to the previous
 node.
 
 You will write an implementation of a doubly linked list. Implement a
+Node to hold a value and pointers to the next and previous nodes. Then
+implement a List which holds references to the first and last node and
+offers an array-like interface for adding and removing items:
+
+* `push` (*insert value at back*);
+* `pop` (*remove value at back*);
+* `shift` (*remove value at front*).
+* `unshift` (*insert value at front*);
+
+To keep your implementation simple, the tests will not cover error
+conditions. Specifically: `pop` or `shift` will never be called on an
+empty list.
+
+If you want to know more about linked lists, check [Wikipedia](https://en.wikipedia.org/wiki/Linked_list).
+
+You will write an implementation of a doubly linked list. Implement a
 `Node` to hold a value and pointers to the next and previous nodes. Then
 implement a `List` which holds references to the first and last node and
 offers functions for adding and removing items.
 
-Your `Node` should have the following fields and functions:
+Your `Node` should have the following fields and methods:
 
-* `Val`: the node's value (we will use `interface{}`).
-* `Next()`: pointer to the next node.
-* `Prev()`: pointer to the previous node.
-* `First()`: pointer to the first node (head).
-* `Last()`: pointer to the last node (tail).
+* `Value`: the node's value (we will use `interface{}`).
+* `Next() *Node`: pointer to the next node.
+* `Prev() *Node`: pointer to the previous node.
 
-Your `List` should have the following fields and functions:
+You should have a function `NewList()` that creates and returns a `List`:
 
-* `First()`: pointer to the first node (head).
-* `Last()`: pointer to the last node (tail).
-* `PushBack(v interface{})`: insert value at back.
-* `PopBack() (interface{}, error)`: remove value at back.
-* `PushFront(v interface{}) `: remove value at front.
-* `PopFront() (interface{}, error)`: insert value at front.
+* `NewList(args ...interface{}) *List`: creates a new linked list preserving the order of the values.
+
+Your `List` should have the following methods:
+
+* `First() *Node`: returns a pointer to the first node (head).
+* `Last() *Node`: returns a pointer to the last node (tail).
+* `Push(v interface{})`: insert value at the back of the list.
+* `Pop() (interface{}, error)`: remove value from the back of the list.
+* `Unshift(v interface{}) `: insert value at the front of the list.
+* `Shift() (interface{}, error)`: remove value from the front of the list.
 * `Reverse()`: reverse the linked list.
-
-Instead of not covering error conditions, like calling `PopBack` or `PopFront` on an empty list,
-we will follow Go's idiomatic style and implement the error checks as well.
-
-If you want to know more about linked lists, check [Wikipedia](https://en.wikipedia.org/wiki/Linked_list).
-
-## Running the tests
-
-To run the tests run the command `go test` from within the exercise directory.
-
-If the test suite contains benchmarks, you can run these with the `--bench` and `--benchmem`
-flags:
-
-    go test -v --bench . --benchmem
-
-Keep in mind that each reviewer will run benchmarks on a different machine, with
-different specs, so the results from these benchmark tests may vary.
-
-## Further information
-
-For more detailed information about the Go track, including how to get help if
-you're having trouble, please visit the exercism.io [Go language page](http://exercism.io/languages/go/resources).
 
 ## Source
 
-Classic computer science topic
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @exklamationmark
+
+### Contributed to by
+
+- @bitfield
+- @brugnara
+- @ekingery
+- @eldorandev
+- @hilary
+- @Hiyorimi
+- @kytrinyx
+- @leenipper
+- @sebito91
+
+### Based on
+
+Classic computer science topic

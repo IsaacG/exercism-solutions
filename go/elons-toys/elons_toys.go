@@ -2,15 +2,6 @@ package elon
 
 import "fmt"
 
-// Car implements a remote controlled car.
-type Car struct {
-	speed        int
-	batteryDrain int
-
-	battery  int
-	distance int
-}
-
 // Track implements a race track.
 type Track struct {
 	distance int
@@ -37,10 +28,10 @@ func (c *Car) Drive() {
 }
 
 // CanFinish checks if a car is able to finish a certain track.
-func (c *Car) CanFinish(track Track) bool {
+func (c *Car) CanFinish(trackDistance int) bool {
 	drives := int(c.battery / c.batteryDrain)
 	distance := drives * c.speed
-	return distance >= track.distance
+	return distance >= trackDistance
 }
 
 // DisplayDistance displays the distance the car is driven.

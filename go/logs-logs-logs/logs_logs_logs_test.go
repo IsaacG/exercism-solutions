@@ -31,9 +31,19 @@ func TestApplication(t *testing.T) {
 			want: "default",
 		},
 		{
-			name: "multiple characters recommendation",
+			name: "multiple characters recommendation(1/3)",
 			log:  "❗ recommended search product 🔍",
 			want: "recommendation",
+		},
+		{
+			name: "multiple characters recommendation(2/3)",
+			log:  "🔍 search recommended product ❗",
+			want: "search",
+		},
+		{
+			name: "multiple characters recommendation(3/3)",
+			log:  "☀ weather is sunny ❗",
+			want: "weather",
 		},
 	}
 
@@ -55,21 +65,21 @@ func TestReplace(t *testing.T) {
 		want    string
 	}{
 		{
-			name:    "single occurance of replacement",
+			name:    "single occurrence of replacement",
 			log:     "❗ recommended product",
 			oldChar: '❗',
 			newChar: '?',
 			want:    "? recommended product",
 		},
 		{
-			name:    "multiple occurances of replacement",
+			name:    "multiple occurrences of replacement",
 			log:     "❗ recommended product ❗",
 			oldChar: '❗',
 			newChar: '?',
 			want:    "? recommended product ?",
 		},
 		{
-			name:    "no occurances of replacement",
+			name:    "no occurrences of replacement",
 			log:     "❗ recommended product ❗",
 			oldChar: '?',
 			newChar: '?',
@@ -108,6 +118,24 @@ func TestWithinLimit(t *testing.T) {
 		{
 			name:  "over limit",
 			log:   "exercism❗",
+			limit: 8,
+			want:  false,
+		},
+		{
+			name:  "exact limit",
+			log:   "exercism🔍",
+			limit: 9,
+			want:  true,
+		},
+		{
+			name:  "under limit",
+			log:   "exercism🔍",
+			limit: 10,
+			want:  true,
+		},
+		{
+			name:  "over limit",
+			log:   "exercism🔍",
 			limit: 8,
 			want:  false,
 		},

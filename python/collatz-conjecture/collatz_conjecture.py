@@ -5,7 +5,7 @@ import itertools
 def steps(number: int) -> int:
     """Return the number of steps required to get a number to 1."""
     if number < 1:
-        raise ValueError('Only positive numbers are allowed')
+        raise ValueError('Only positive integers are allowed')
 
     for step in itertools.count():
         if number == 1:

@@ -11,7 +11,7 @@ def largest_product(series: str, size: int) -> int:
     if not series.isdigit():
         raise ValueError("digits input must only contain digits")
     if size < 0:
-        raise ValueError("span must be greater than zero")
+        raise ValueError("span must not be negative")
 
     numbers = [int(number) for number in series]
     return max(

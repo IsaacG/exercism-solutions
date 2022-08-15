@@ -18,11 +18,6 @@ var _ fmt.Stringer = Dir(1729)
 type Command byte // valid values are 'R', 'L', 'A'
 type RU int
 type Pos struct{ Easting, Northing RU }
-
-func (p Pos) String() string {
-	return fmt.Sprintf("(%d, %d)", p.Easting, p.Northing)
-}
-
 type Rect struct{ Min, Max Pos }
 type Step2Robot struct {
 	Dir

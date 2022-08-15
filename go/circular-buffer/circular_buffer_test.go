@@ -1,19 +1,5 @@
 package circular
 
-// Implement a circular buffer of bytes supporting both overflow-checked writes
-// and unconditional, possibly overwriting, writes.
-//
-//   type Buffer
-//   func NewBuffer(size int) *Buffer
-//   func (*Buffer) ReadByte() (byte, error)
-//   func (*Buffer) WriteByte(c byte) error
-//   func (*Buffer) Overwrite(c byte)
-//   func (*Buffer) Reset() // put buffer in an empty state
-//
-// We chose the above API so that Buffer implements io.ByteReader
-// and io.ByteWriter and can be used (size permitting) as a drop in
-// replacement for anything using that interface.
-
 import (
 	"io"
 	"testing"
@@ -188,6 +174,9 @@ func TestAlternateReadAndOverwrite(t *testing.T) {
 }
 
 func BenchmarkOverwrite(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
 	c := NewBuffer(100)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -197,6 +186,9 @@ func BenchmarkOverwrite(b *testing.B) {
 }
 
 func BenchmarkWriteRead(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
 	c := NewBuffer(100)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

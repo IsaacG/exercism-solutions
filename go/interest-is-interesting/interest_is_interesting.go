@@ -1,4 +1,4 @@
-package savings
+package interest
 
 import "math"
 
@@ -6,7 +6,7 @@ import "math"
 func InterestRate(balance float64) float32 {
 	switch {
 	case balance < 0:
-		return -3.213
+		return 3.213
 	case balance < 1000:
 		return 0.5
 	case balance < 5000:

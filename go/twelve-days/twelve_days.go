@@ -42,5 +42,5 @@ func Song() string {
 	for i := 0; i < 12; i++ {
 		s[i] = Verse(i + 1)
 	}
-	return strings.Join(s, "\n") + "\n"
+	return strings.Join(s, "\n")
 }

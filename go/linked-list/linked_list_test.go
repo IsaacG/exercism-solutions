@@ -1,19 +1,3 @@
-// API:
-//
-// type Element struct
-// type List struct
-// var ErrEmptyList
-//
-// func (e *Element) Next() *Element
-// func (e *Element) Prev() *Element
-// func NewList(args ...interface{}) *List
-// func (l *List) PushFront(v interface{})
-// func (l *List) PushBack(v interface{})
-// func (l *List) PopFront() (interface{}, error)
-// func (l *List) PopBack() (interface{}, error)
-// func (l *List) Reverse() *List
-// func (l *List) First() *Element
-// func (l *List) Last() *Element
 package linkedlist
 
 import (
@@ -61,8 +45,8 @@ func checkDoublyLinkedList(t *testing.T, ll *List, expected []interface{}) {
 	// check that length and elements are correct (scan once from begin -> end)
 	elem, count, idx := ll.First(), 0, 0
 	for ; elem != nil && idx < len(expected); elem, count, idx = elem.Next(), count+1, idx+1 {
-		if elem.Val != expected[idx] {
-			t.Errorf("wrong value from %d-th element, expected= %v, got= %v", idx, expected[idx], elem.Val)
+		if elem.Value != expected[idx] {
+			t.Errorf("wrong value from %d-th element, expected= %v, got= %v", idx, expected[idx], elem.Value)
 		}
 	}
 	if !(elem == nil && idx == len(expected)) {
@@ -92,9 +76,17 @@ func checkDoublyLinkedList(t *testing.T, ll *List, expected []interface{}) {
 
 	prev := ll.First()
 	cur := ll.First().Next()
+	counter := 0
+
 	for idx := 0; cur != nil; idx++ {
 		if !(prev.Next() == cur && cur.Prev() == prev) {
 			t.Errorf("%d-th element's links is wrong", idx)
+		}
+
+		counter++
+		if counter > 100 {
+			t.Errorf("Possible infinite loop detected and stopped. Check the .Next() implementation.")
+			return
 		}
 
 		prev = cur
@@ -106,13 +98,19 @@ func checkDoublyLinkedList(t *testing.T, ll *List, expected []interface{}) {
 	}
 }
 
-// debugString prints the linked list with both node's Val, next & prev pointers.
+// debugString prints the linked list with both node's Value, next & prev pointers.
 func (ll *List) debugString() string {
 	buf := bytes.NewBuffer([]byte{'{'})
 	buf.WriteString(fmt.Sprintf("First()= %p; ", ll.First()))
 
+	counter := 0
+
 	for cur := ll.First(); cur != nil; cur = cur.Next() {
-		buf.WriteString(fmt.Sprintf("[Prev()= %p, Val= %p (%v), Next()= %p] <-> ", cur.Prev(), cur, cur.Val, cur.Next()))
+		counter++
+		if counter > 100 {
+			panic("Possible infinite loop detected and stopped. Check the .Next() implementation")
+		}
+		buf.WriteString(fmt.Sprintf("[Prev()= %p, Value= %p (%v), Next()= %p] <-> ", cur.Prev(), cur, cur.Value, cur.Next()))
 	}
 
 	buf.WriteString(fmt.Sprintf("; Last()= %p; ", ll.Last()))

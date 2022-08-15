@@ -21,7 +21,7 @@ type Person struct {
 }
 
 func (p Person) Greetings() string {
-	return fmt.Sprintf("Welcome %s !", s)
+	return fmt.Sprintf("Welcome %s !", p.Name)
 }
 
 p := Person{Name: "Bronson"}
@@ -39,7 +39,7 @@ Methods help to avoid naming conflicts - since a method is tied to a particular 
 import "math"
 
 type rect struct {
-	width, hight int
+	width, height int
 }
 func (r rect) area() int {
 	return r.width * r.height
@@ -53,7 +53,7 @@ func (c circle) area() float64 {
 }
 ```
 
-All the methods we have seen so far have a value receiver which means they on a copy of the value passed to the method, meaning that any modification done to the receiver inside the method is not visible to the caller.
+All the methods we have seen so far have a value receiver which means they will receive a copy of the value passed to the method, meaning that any modification done to the receiver inside the method is not visible to the caller.
 
 You can declare methods with pointer receivers in order to modify the value to which the receiver points.
 This is done by prefixing the type name with a `*`.
@@ -103,50 +103,49 @@ speed := 5
 batteryDrain := 2
 car := NewCar(speed, batteryDrain)
 car.Drive()
-// Output: Car{speed: 5, batteryDrain: 2, battery: 98, distance: 5}
+// car is now Car{speed: 5, batteryDrain: 2, battery: 98, distance: 5}
 ```
 
 Note: If a car's battery is below its battery drain percentage, you can't drive the car anymore.
 
 ## 2. Display the distance driven
 
-Implement a `DisplayDistance` method on `Car` to return the distance as displayed on the LED display:
+Implement a `DisplayDistance` method on `Car` to return the distance as displayed on the LED display as a `string`:
 
 ```go
 speed := 5
 batteryDrain := 2
 car := NewCar(speed, batteryDrain)
 
-car.DisplayDistance()
+fmt.Println(car.DisplayDistance())
 // Output: "Driven 0 meters"
 ```
 
 ## 3. Display the battery percentage
 
-Implement the `DisplayBattery` method on `Car` to return the distance as displayed on the LED display:
+Implement the `DisplayBattery` method on `Car` to return the battery percentage as displayed on the LED display as a `string`:
 
 ```go
 speed := 5
 batteryDrain := 2
 car := NewCar(speed, batteryDrain)
 
-car.DisplayBattery()
+fmt.Println(car.DisplayBattery())
 // Output: "Battery at 100%"
 ```
 
 ## 4. Check if a remote control car can finish a race
 
-To finish a race, a car has to be able to drive the race's distance. This means not draining its battery before having crossed the finish line. Implement the `CanFinish` function that takes a `Car` and a `Track` instance as its parameter and returns `true` if the car can finish the race; otherwise, return `false`:
+To finish a race, a car has to be able to drive the race's distance. This means not draining its battery before having crossed the finish line. Implement the `CanFinish` method that takes a `trackDistance int` as its parameter and returns `true` if the car can finish the race; otherwise, return `false`:
 
 ```go
 speed := 5
 batteryDrain := 2
 car := NewCar(speed, batteryDrain)
 
-distance := 100
-raceTrack := NewTrack(distance)
+trackDistance := 100
 
-car.CanFinish(raceTrack)
+car.CanFinish(trackDistance)
 // Output: true
 ```
 
@@ -159,3 +158,4 @@ car.CanFinish(raceTrack)
 ### Contributed to by
 
 - @oanaOM
+- @mcastorina

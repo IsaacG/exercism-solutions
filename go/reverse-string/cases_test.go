@@ -1,8 +1,9 @@
 package reverse
 
+// This is an auto-generated file. Do not change it manually. Run the generator to update the file.
+// See https://github.com/exercism/go#synchronizing-tests-and-instructions
 // Source: exercism/problem-specifications
-// Commit: 2f77985 reverse-string: apply "input" policy
-// Problem Specifications Version: 1.1.0
+// Commit: b820099 Allow prettier to format more files (#1966)
 
 type reverseTestCase struct {
 	description string
@@ -35,5 +36,10 @@ var testCases = []reverseTestCase{
 		description: "a palindrome",
 		input:       "racecar",
 		expected:    "racecar",
+	},
+	{
+		description: "an even-sized word",
+		input:       "drawer",
+		expected:    "reward",
 	},
 }

@@ -51,10 +51,11 @@ func diff(got, want string) string {
 }
 
 func TestSong(t *testing.T) {
-	var expected = ""
+	var verses []string
 	for _, test := range testCases {
-		expected += test.expected + "\n"
+		verses = append(verses, test.expected)
 	}
+	var expected = strings.Join(verses, "\n")
 	actual := Song()
 	if expected != actual {
 		t.Fatalf("Song() =\n%s\n  want:\n%s\n%s", actual, expected, diff(actual, expected))
@@ -67,5 +68,25 @@ func TestVerse(t *testing.T) {
 		if actual != test.expected {
 			t.Errorf("Twelve Days test [%d], expected [%s], actual [%s]", test.input, test.expected, actual)
 		}
+	}
+}
+
+func BenchmarkVerse(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
+	for i := 0; i < b.N; i++ {
+		for _, test := range testCases {
+			Verse(test.input)
+		}
+	}
+}
+
+func BenchmarkSong(b *testing.B) {
+	if testing.Short() {
+		b.Skip("skipping benchmark in short mode.")
+	}
+	for i := 0; i < b.N; i++ {
+		Song()
 	}
 }

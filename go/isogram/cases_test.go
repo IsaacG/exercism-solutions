@@ -1,8 +1,9 @@
 package isogram
 
+// This is an auto-generated file. Do not change it manually. Run the generator to update the file.
+// See https://github.com/exercism/go#synchronizing-tests-and-instructions
 // Source: exercism/problem-specifications
-// Commit: 7cea153 isogram: add test case with same first and last character (#1308)
-// Problem Specifications Version: 1.6.0
+// Commit: d137db1 Format using prettier (#1917)
 
 var testCases = []struct {
 	description string
@@ -50,6 +51,11 @@ var testCases = []struct {
 		expected:    true,
 	},
 	{
+		description: "hypothetical word with duplicated character following hyphen",
+		input:       "thumbscrew-jappingly",
+		expected:    false,
+	},
+	{
 		description: "isogram with duplicated hyphen",
 		input:       "six-year-old",
 		expected:    true,
@@ -67,6 +73,11 @@ var testCases = []struct {
 	{
 		description: "same first and last characters",
 		input:       "angola",
+		expected:    false,
+	},
+	{
+		description: "word with duplicated character and with two hyphens",
+		input:       "up-to-date",
 		expected:    false,
 	},
 }

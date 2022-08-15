@@ -8,7 +8,7 @@ import (
 
 // Element is an item in the List.
 type Element struct {
-	Val  interface{}
+	Value  interface{}
 	prev *Element
 	next *Element
 }
@@ -20,7 +20,7 @@ type List struct {
 }
 
 func (e Element) String() string {
-	return fmt.Sprintf("%s", e.Val)
+	return fmt.Sprintf("%s", e.Value)
 }
 
 func (l List) String() string {
@@ -52,14 +52,14 @@ func (e *Element) Prev() *Element {
 func NewList(args ...interface{}) *List {
 	l := &List{}
 	for _, e := range args {
-		l.PushBack(e)
+		l.Push(e)
 	}
 	return l
 }
 
 // PushFront pushes an element to the front of the list.
-func (l *List) PushFront(v interface{}) {
-	e := &Element{Val: v}
+func (l *List) Unshift(v interface{}) {
+	e := &Element{Value: v}
 	if l.isEmpty() {
 		l.head = e
 		l.tail = e
@@ -70,9 +70,9 @@ func (l *List) PushFront(v interface{}) {
 	l.head = e
 }
 
-// PushBack pushes an element to the back of the list.
-func (l *List) PushBack(v interface{}) {
-	e := &Element{Val: v}
+// Push pushes an element to the back of the list.
+func (l *List) Push(v interface{}) {
+	e := &Element{Value: v}
 	if l.isEmpty() {
 		l.head = e
 		l.tail = e
@@ -84,12 +84,12 @@ func (l *List) PushBack(v interface{}) {
 }
 
 // PopFront pops an element from the front of the list.
-func (l *List) PopFront() (interface{}, error) {
+func (l *List) Shift() (interface{}, error) {
 	if l.isEmpty() {
 		// Unit tests expect int(0) for the default here.
 		return int(0), ErrEmptyList
 	}
-	v := l.head.Val
+	v := l.head.Value
 	l.head = l.head.next
 	if l.head == nil {
 		l.tail = nil
@@ -100,12 +100,12 @@ func (l *List) PopFront() (interface{}, error) {
 }
 
 // PopBack pops an element from the back of the list.
-func (l *List) PopBack() (interface{}, error) {
+func (l *List) Pop() (interface{}, error) {
 	if l.isEmpty() {
 		// Unit tests expect int(0) for the default here.
 		return int(0), ErrEmptyList
 	}
-	v := l.tail.Val
+	v := l.tail.Value
 	l.tail = l.tail.prev
 	if l.tail == nil {
 		l.head = nil

@@ -1,6 +1,8 @@
 // Package prime
 package prime
 
+import "errors"
+
 var primes = []int{2}
 
 func isPrime(i int) bool {
@@ -12,9 +14,9 @@ func isPrime(i int) bool {
 	return true
 }
 
-func Nth(n int) (int, bool) {
+func Nth(n int) (int, error) {
 	if n < 1 {
-		return 0, false
+		return 0, errors.New("n must be 1 or larger")
 	}
 
 	for i := 3; len(primes) < n; i += 2 {
@@ -22,5 +24,5 @@ func Nth(n int) (int, bool) {
 			primes = append(primes, i)
 		}
 	}
-	return primes[n - 1], true
+	return primes[n - 1], nil
 }

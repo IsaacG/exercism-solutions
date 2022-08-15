@@ -3,7 +3,7 @@ package reverse
 
 import "strings"
 
-func String(s string) string {
+func Reverse(s string) string {
 	// Unpack runes into a slice of runes.
 	runes := make([]rune, 0, len(s))
 	for read := strings.NewReader(s);; {
