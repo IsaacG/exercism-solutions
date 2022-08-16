@@ -15,50 +15,85 @@ type Match struct {
 	Text       string
 }
 
-// Opts stores grep options.
-type Opts struct {
+// Formatter formats grep results.
+type Formatter struct {
 	IncludeFilename bool
-	IncludeLineNum  bool
 	OnlyFilename    bool
+	IncludeLineNum  bool
 	Invert          bool
 	FullLine        bool
 	CaseSensitive   bool
 }
 
-func getOpts(flags []string) Opts {
-	o := Opts{
-		CaseSensitive: true,
+func (f *Formatter) withFilename() {
+	f.IncludeFilename = true
+}
+
+func (f *Formatter) filenameOnly() {
+	f.OnlyFilename = true
+}
+
+func (f *Formatter) withLineNumber() {
+	f.IncludeLineNum = true
+}
+
+func (f *Formatter) invertMatch() {
+	f.Invert = true
+}
+
+func (f *Formatter) matchFullLine() {
+	f.FullLine = true
+}
+
+func (f *Formatter) caseInsensitive() {
+	f.CaseSensitive = false
+}
+
+// NewFormatter builds a formatter from flags.
+func NewFormatter(flags []string, multiFile bool) *Formatter {
+	// Defaults
+	formatter := &Formatter{
+		IncludeFilename: false,
+		OnlyFilename:    false,
+		IncludeLineNum:  false,
+		Invert:          false,
+		FullLine:        false,
+		CaseSensitive:   true,
 	}
+	// Map flags to options and apply.
 	for _, flag := range flags {
 		switch flag {
 		case "-x":
-			o.FullLine = true
+			formatter.matchFullLine()
 		case "-i":
-			o.CaseSensitive = false
+			formatter.caseInsensitive()
 		case "-l":
-			o.OnlyFilename = true
+			formatter.filenameOnly()
 		case "-n":
-			o.IncludeLineNum = true
+			formatter.withLineNumber()
 		case "-v":
-			o.Invert = true
+			formatter.invertMatch()
 		}
 	}
-	return o
+	if multiFile {
+		formatter.withFilename()
+	}
+	return formatter
 }
 
 // formatter formats results from a chan.
-func formatter(o Opts, matches <-chan Match, out chan<- []string) {
+func (f *Formatter) format(matches <-chan Match, out chan<- []string) {
 	results := []string{}
 
 	for m := range matches {
-		if o.OnlyFilename {
+		if f.OnlyFilename {
 			results = append(results, m.Filename)
 		} else {
 			parts := make([]string, 0, 3)
-			if o.IncludeFilename {
+			if f.IncludeFilename {
 				parts = append(parts, m.Filename)
 			}
-			if o.IncludeLineNum {
+			if f.IncludeLineNum {
 				parts = append(parts, strconv.Itoa(m.LineNumber))
 			}
 			parts = append(parts, m.Text)
@@ -70,17 +105,15 @@ func formatter(o Opts, matches <-chan Match, out chan<- []string) {
 
 // Search for a pattern.
 func Search(pattern string, flags, files []string) []string {
-	o := getOpts(flags)
-	o.IncludeFilename = len(files) > 1
-
-	matchChan := make(chan Match)
+	matchChan := make(chan Match, 1)
 	out := make(chan []string)
 	defer close(out)
 
 	// Format the results async.
-	go formatter(o, matchChan, out)
+	f := NewFormatter(flags, len(files) > 1)
+	go f.format(matchChan, out)
 
-	if !o.CaseSensitive {
+	if !f.CaseSensitive {
 		pattern = strings.ToLower(pattern)
 	}
 
@@ -99,20 +132,20 @@ func Search(pattern string, flags, files []string) []string {
 			line := fileScanner.Text()
 			// Match the line using various options.
 			checkLine := line
-			if !o.CaseSensitive {
+			if !f.CaseSensitive {
 				checkLine = strings.ToLower(checkLine)
 			}
 			var lineMatches bool
-			if o.FullLine {
+			if f.FullLine {
 				lineMatches = checkLine == pattern
 			} else {
 				lineMatches = strings.Contains(checkLine, pattern)
 			}
 
 			// Handle a match.
-			if lineMatches != o.Invert {
+			if lineMatches != f.Invert {
 				matchChan <- Match{filename, i, line}
-				if o.OnlyFilename {
+				if f.OnlyFilename {
 					break
 				}
 			}

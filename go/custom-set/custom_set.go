@@ -73,7 +73,7 @@ func Subset(s1, s2 Set) bool {
 
 // Equal returns if s1 is the same as s2.
 func Equal(s1, s2 Set) bool {
-	return Subset(s1, s2) && Subset(s2, s1)
+	return Subset(s1, s2) && len(s1) == len(s2)
 }
 
 // Disjoint returns if s1 and s2 are disjoint (no common elements).

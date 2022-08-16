@@ -164,6 +164,26 @@ func ValidateRobots(extent Rect, robots []Step3Robot) (map[string]*Step3Robot, s
 	return robotMap, errMsg
 }
 
+func validateMove(extent Rect, robotMap map[string]*Step3Robot, positions <-chan futureMove, results chan<- string) {
+	for f := range positions {
+		res := ""
+		if !extent.Contains(f.pos) {
+			res = "Robot attempted to walk into a wall: " + f.name
+		}
+		for otherName, other := range robotMap {
+			if otherName != f.name && other.Pos == f.pos {
+				res = "Robot " + f.name + " attempted to walk into " + otherName
+			}
+		}
+		results <- res
+	}
+}
+
+type futureMove struct {
+	name string
+	pos  Pos
+}
+
 // Room3 handles actions from multiple robots.
 func Room3(extent Rect, robots []Step3Robot, action chan Action3, report chan []Step3Robot, log chan string) {
 	defer close(report)
@@ -176,6 +196,12 @@ func Room3(extent Rect, robots []Step3Robot, action chan Action3, report chan []
 
 	// Keep track of whether any robot is still active.
 	active := len(robots)
+
+	posValidate := make(chan futureMove)
+	posResult := make(chan string)
+	defer close(posValidate)
+	defer close(posResult)
+	go validateMove(extent, robotMap, posValidate, posResult)
 
 	// Process actions.
 	for act := range action {
@@ -192,15 +218,8 @@ func Room3(extent Rect, robots []Step3Robot, action chan Action3, report chan []
 			robot.Dir = robot.Dir.Rotate(act.Act)
 		case act.Act == 'A':
 			newPos := robot.Pos.Shift(robot.Dir)
-			logMsg := ""
-			if !extent.Contains(newPos) {
-				logMsg = "Robot attempted to walk into a wall: " + act.Name
-			}
-			for otherName, other := range robotMap {
-				if otherName != act.Name && other.Pos == newPos {
-					logMsg = "Robot " + act.Name + " attempted to walk into " + otherName
-				}
-			}
+			posValidate <- futureMove{act.Name, newPos}
+			logMsg := <-posResult
 			if logMsg == "" {
 				robot.Pos = newPos
 			} else {

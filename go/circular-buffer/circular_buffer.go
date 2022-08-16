@@ -5,7 +5,6 @@ import "errors"
 
 // Buffer provides a circular buffer.
 type Buffer struct {
-	size  int
 	data  []byte
 	read  int
 	write int
@@ -13,12 +12,11 @@ type Buffer struct {
 
 // NewBuffer returns a new buffer.
 func NewBuffer(size int) *Buffer {
-	size = size + 1
-	return &Buffer{size, make([]byte, size), 0, 0}
+	return &Buffer{data: make([]byte, size + 1)}
 }
 
 func (b *Buffer) next(i int) int {
-	return (i + 1) % b.size
+	return (i + 1) % len(b.data)
 }
 
 func (b *Buffer) full() bool {
