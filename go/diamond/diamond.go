@@ -16,14 +16,12 @@ func Gen(char byte) (string, error) {
 
 	length := int(char) - A
 	rowLength := (length * 2) + 1
-	blankRow := bytes.Repeat([]byte{' '}, rowLength)
 
 	// Precompute all the rows, since we need them twice.
 	rows := make([][]byte, rowLength)
 	for i := 0; i <= length; i++ {
 		// Fill the row with spaces.
-		rows[i] = make([]byte, rowLength)
-		copy(rows[i], blankRow)
+		rows[i] = bytes.Repeat([]byte{' '}, rowLength)
 		// Insert the char on either side of center.
 		rows[i][length-i] = byte(A + i)
 		rows[i][length+i] = byte(A + i)

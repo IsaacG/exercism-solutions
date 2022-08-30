@@ -1,6 +1,8 @@
 // Package say says numbers in English.
 package say
 
+import "strings"
+
 var (
 	ones = []string{"zero", "one", "two", "three", "four", "five", "six",
 		"seven", "eight", "nine", "ten", "eleven", "twelve",
@@ -11,45 +13,51 @@ var (
 )
 
 // saySmall handles numbers under 100, i.e. with no "place" holder.
-func saySmall(n int64) string {
-	out := tens[n/10]
+func saySmall(sb *strings.Builder, n int64) {
+	sb.WriteString(tens[n/10])
 	if n%10 != 0 {
-		out += "-" + ones[n%10]
+		sb.WriteString("-" + ones[n%10])
 	}
-	return out
 }
 
 // sayLarge says a number recursively.
-func sayLarge(n int64, divisor int64, label string) string {
-	out, _ := Say(n / divisor)
-	out += " " + label
+func sayLarge(sb *strings.Builder, n int64, divisor int64, label string) {
+	sayBuilder(sb, n/divisor)
+	sb.WriteString(" " + label)
 	if r := n % divisor; r != 0 {
-		rest, _ := Say(r)
-		out += " " + rest
+		sb.WriteRune(' ')
+		sayBuilder(sb, r)
 	}
-	return out
 }
 
-// Say returns an English version of a number.
 // Algorithm from https://exercism.org/tracks/javascript/exercises/say/solutions/515ab00bc90f46b0bde3732d9317a46b
-func Say(n int64) (string, bool) {
-	if n < 0 {
-		return "", false
+func sayBuilder(sb *strings.Builder, n int64) bool {
+	if n < 0 || n >= 1_000_000_000_000 {
+		return false
 	}
 	switch {
 	case n < 20:
-		return ones[n], true
+		sb.WriteString(ones[n])
 	case n < 100:
-		return saySmall(n), true
-	case n < 1000:
-		return sayLarge(n, 100, "hundred"), true
-	case n < 1000000:
-		return sayLarge(n, 1000, "thousand"), true
-	case n < 1000000000:
-		return sayLarge(n, 1000000, "million"), true
-	case n < 1000000000000:
-		return sayLarge(n, 1000000000, "billion"), true
-	default:
+		saySmall(sb, n)
+	case n < 1_000:
+		sayLarge(sb, n, 100, "hundred")
+	case n < 1_000_000:
+		sayLarge(sb, n, 1_000, "thousand")
+	case n < 1_000_000_000:
+		sayLarge(sb, n, 1_000_000, "million")
+	case n < 1_000_000_000_000:
+		sayLarge(sb, n, 1_000_000_000, "billion")
+	}
+	return true
+}
+
+// Say returns an English version of a number.
+func Say(n int64) (string, bool) {
+	sb := &strings.Builder{}
+	if ok := sayBuilder(sb, n); !ok {
 		return "", false
+	} else {
+		return sb.String(), true
 	}
 }
