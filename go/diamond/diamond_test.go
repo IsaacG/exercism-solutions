@@ -238,3 +238,9 @@ func TestCharOutOfRangeShouldGiveError(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func BenchmarkWriteRead(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Gen('Z')
+	}
+}
