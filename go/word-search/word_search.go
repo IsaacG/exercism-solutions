@@ -2,7 +2,6 @@
 package wordsearch
 
 import (
-	"bytes"
 	"errors"
 	"sort"
 )
@@ -45,7 +44,7 @@ func (p *point) add(dir direction) {
 }
 
 // directions is all the directions we need to search in from any given start point.
-var directions = []direction{{0, 1}, {1, 0}, {1, 1}, {1, -1}, {0, -1}, {-1, 0}, {-1, -1}, {-1, 1}}
+var directions = []direction{{0, 1}, {1, 0}, {1, 1}, {1, -1}}
 
 // points returns all the starting points to search in a puzzle.
 func (b board) points() []point {
@@ -74,8 +73,18 @@ func (s solver) foundAll() bool {
 }
 
 // recordFinding records coordinates of found words if the word is in the word list.
-func (s solver) recordFinding(word string, start, end point) {
-	s.found[word] = [2][2]int{{start.i, start.j}, {end.i, end.j}}
+func (s solver) recordFinding(wordLen int, start point, dir direction) {
+	w := make([]byte, wordLen)
+	cur := start.copy()
+	for k := 0; k < wordLen; k++ {
+		w[k] = s.b.char(cur)
+		cur.add(dir)
+	}
+	word := string(w)
+	if _, ok := s.toFind[word]; !ok {
+		return
+	}
+	s.found[word] = [2][2]int{{start.i, start.j}, {cur.i - dir.i, cur.j - dir.j}}
 	delete(s.toFind, word)
 	s.toFindCounts[len(word)]--
 	if len(word) == s.wantLengths[0] && s.toFindCounts[len(word)] == 0 {
@@ -87,21 +96,15 @@ func (s solver) recordFinding(word string, start, end point) {
 func (s solver) recordWordsAt(start point) {
 	// Try creating words from start in direction.
 	for _, dir := range directions {
-		var b bytes.Buffer
 		end := start.copy()
 		for wl := 1; wl <= s.wantLengths[0]; wl++ {
 			// Stop when we get off the edge of the board.
 			if !s.b.valid(end) {
 				break
 			}
-
-			b.WriteByte(s.b.char(end))
 			if s.toFindCounts[wl] != 0 {
-				word := b.String()
-
-				if _, ok := s.toFind[word]; ok {
-					s.recordFinding(word, start, end)
-				}
+				s.recordFinding(wl, start, dir)
+				s.recordFinding(wl, end, dir.negate())
 			}
 			end.add(dir)
 		}
