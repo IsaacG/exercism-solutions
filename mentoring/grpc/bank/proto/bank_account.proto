@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package account;
+option go_package = "example.com/bank/proto";
+
+message OpenRequest {
+	int64 amount = 1;
+}
+
+message OpenResponse {
+	int64 amount = 1;
+}
+message CloseRequest {
+}
+
+message CloseResponse {
+	int64 amount = 1;
+}
+message BalanceRequest {
+}
+
+message BalanceResponse {
+	int64 amount = 1;
+}
+message DepositRequest {
+	int64 amount = 1;
+}
+
+message DepositResponse {
+	int64 amount = 1;
+}
+
+service Bank {
+	rpc Open(OpenRequest) returns (OpenResponse) {}
+	rpc Close(CloseRequest) returns (CloseResponse) {}
+	rpc GetBalance(BalanceRequest) returns (BalanceResponse) {}
+	rpc Deposit(DepositRequest) returns (DepositResponse) {}
+}
