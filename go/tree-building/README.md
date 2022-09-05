@@ -1,5 +1,10 @@
 # Tree Building
 
+Welcome to Tree Building on Exercism's Go Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Some web-forums have a tree layout, so posts are presented as a tree. However
 the posts are typically stored in a database as an unsorted set of records. Thus
 when presenting the posts to the user the tree structure has to be
@@ -23,22 +28,29 @@ root (ID: 0, parent ID: 0)
 +-- child3 (ID: 5, parent ID: 0)
 ```
 
-## Running the tests
+## Source
 
-To run the tests run the command `go test` from within the exercise directory.
+### Created by
 
-If the test suite contains benchmarks, you can run these with the `--bench` and `--benchmem`
-flags:
+- @pminten
 
-    go test -v --bench . --benchmem
+### Contributed to by
 
-Keep in mind that each reviewer will run benchmarks on a different machine, with
-different specs, so the results from these benchmark tests may vary.
-
-## Further information
-
-For more detailed information about the Go track, including how to get help if
-you're having trouble, please visit the exercism.io [Go language page](http://exercism.io/languages/go/resources).
-
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @alebaffa
+- @bitfield
+- @Daveed9
+- @devillexio
+- @dvrkps
+- @ekingery
+- @ferhatelmas
+- @hilary
+- @jeffguorg
+- @kytrinyx
+- @leenipper
+- @object88
+- @petertseng
+- @robphoenix
+- @sebito91
+- @soniakeys
+- @tbrisker
+- @tleen
