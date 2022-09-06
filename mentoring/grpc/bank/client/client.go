@@ -6,8 +6,8 @@ import (
 	"flag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"math/rand"
 	"log"
+	"math/rand"
 	"time"
 
 	pb "example.com/bank/proto"
@@ -27,7 +27,7 @@ func Open(client pb.BankClient, initialDeposit int64) {
 	if err != nil {
 		log.Printf("client.Open failed: %v", err)
 	} else {
-	log.Println("Account opened")
+		log.Println("Account opened")
 	}
 }
 
@@ -38,22 +38,22 @@ func Close(client pb.BankClient) {
 	if err != nil {
 		log.Printf("client.Close failed: %v", err)
 	} else {
-	log.Printf("Account closed; payout = %d", resp.Amount)
+		log.Printf("Account closed; payout = %d", resp.Amount)
 	}
 }
 
-func Balance(client pb.BankClient, amount int64)  {
+func Balance(client pb.BankClient, amount int64) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	resp, err := client.GetBalance(ctx, &pb.BalanceRequest{})
 	if err != nil {
 		log.Printf("client.GetBalance failed: %v", err)
 	} else {
-	log.Printf("Balance = %d", resp.Amount)
-}
+		log.Printf("Balance = %d", resp.Amount)
+	}
 }
 
-func Deposit(client pb.BankClient, amount int64)  {
+func Deposit(client pb.BankClient, amount int64) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	resp, err := client.Deposit(ctx, &pb.DepositRequest{Amount: amount})
@@ -79,7 +79,7 @@ func main() {
 	Open(client, 60)
 	for i := 0; i < 10; i++ {
 		amount := int64(rand.Intn(50))
-		if amount % 2 == 1 {
+		if amount%2 == 1 {
 			amount = -amount
 		}
 		log.Printf("Deposit %d", amount)
