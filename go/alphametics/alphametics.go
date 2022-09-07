@@ -1,3 +1,4 @@
+// Package alphametics solves alphametics puzzles.
 package alphametics
 
 import (
@@ -5,21 +6,11 @@ import (
 	"strings"
 )
 
-type Puzzle struct {
-	lhs     map[rune]int
-	rhs     map[rune]int
-	chars   []rune
-	nonZero map[rune]bool
-	maxVal  int
-}
-
-
-type values struct {
-	m       map[rune]int
-	chars   []rune
-	nonZero map[rune]bool
-}
-
+// charWeight returns a weight of each rune, used to evaluate equations.
+// "ABA + BC" has weights {'A': 101, 'B': 20, 'C': 1}.
+// By multiplying weights be char value, euqations can be evaluated quickly.
+// For example, given values {'A': 2, 'B': 3, 'C': 4}, the above equation
+// has a value of 2 * 101 + 3 * 20 + 4 * 1.
 func charWeight(words []string) map[rune]int {
 	w := map[rune]int{}
 	for _, word := range words {
@@ -33,62 +24,18 @@ func charWeight(words []string) map[rune]int {
 	return w
 }
 
-func newValues(chars []rune, nonZero map[rune]bool) *values {
-	l := len(chars)
-	v := make(map[rune]int, len(chars))
-	for i, c := range chars {
-		v[c] = l - i
-	}
-	return &values{v, chars, nonZero}
+// solver solves puzzles.
+type solver struct {
+	// Weight of runes for equation LHS - RHS = 0
+	charWeights map[rune]int
+	// List of runes to solve.
+	chars []rune
+	// Map indicating which runes cannot be zero.
+	nonZero map[rune]bool
 }
 
-func (v *values) stringMap() map[string]int {
-	sm := make(map[string]int, len(v.m))
-	for r, i := range v.m {
-		sm[string(r)] = i
-	}
-	return sm
-}
-
-func (v *values) increment() {
-	for _, c := range v.chars {
-		v.m[c]++
-		if v.m[c] != 10 {
-			break
-		}
-		if v.nonZero[c] {
-			v.m[c] = 1
-		} else {
-			v.m[c] = 0
-		}
-	}
-}
-
-func (p Puzzle) valid(v *values) bool {
-	// Check the equallity.
-	lhs := 0
-	for r, w := range p.lhs {
-		lhs += v.m[r] * w
-	}
-	rhs := 0
-	for r, w := range p.rhs {
-		rhs += v.m[r] * w
-	}
-	if lhs != rhs {
-		return false
-	}
-	// Disqualify repeating numbers.
-	vals := make(map[int]struct{}, len(v.m))
-	for _, val := range v.m {
-		vals[val] = struct{}{}
-	}
-	if len(vals) != len(v.m) {
-		return false
-	}
-	return true
-}
-
-func newPuzzle(input string) (*Puzzle, error) {
+// newSolver builds and returns a new solver.
+func newSolver(input string) (*solver, error) {
 	// Split into LHS and RHS words.
 	parts := strings.Split(input, "==")
 	if len(parts) != 2 {
@@ -111,37 +58,74 @@ func newPuzzle(input string) (*Puzzle, error) {
 	}
 
 	chars := make([]rune, 0, len(charMap))
-	maxVal := 1
 	for c := range charMap {
 		chars = append(chars, c)
-		maxVal *= 10
 	}
 
-	return &Puzzle{
-		lhs:     charWeight(words[:len(words)-1]),
-		rhs:     charWeight(words[len(words)-1:]),
-		chars:   chars,
-		nonZero: nonZero,
-		maxVal:  maxVal,
+	weights := map[rune]int{}
+	// LHS weights are positive.
+	for c, w := range charWeight(words[:len(words)-1]) {
+		weights[c] += w
+	}
+	// RHS weights are negative..
+	for c, w := range charWeight(words[len(words)-1:]) {
+		weights[c] -= w
+	}
+	return &solver{
+		chars:       chars,
+		nonZero:     nonZero,
+		charWeights: weights,
 	}, nil
 }
 
-func (p Puzzle) solve() (map[string]int, error) {
-	v := newValues(p.chars, p.nonZero)
-	for i := 0; i < p.maxVal; i++ {
-		if p.valid(v) {
-			return v.stringMap(), nil
-		}
-		v.increment()
+// recursiveSolve solves a puzzle recursively, one char at a time.
+// An equation is valid when LHS == RHS. Alternatively, LHS - RHS == 0.
+// Equations can be solved recursively by replacing one char at a time and tracking
+// the computed "balance" of LHS - RHS. When all characters are evaluated, LHS - RHS = 0
+// must be true.
+func (p solver) recursiveSolve(balance int, chars []rune, used map[int]bool) (map[string]int, bool) {
+	// Split the chars into the current char to replace and the rest to be recursively handled.
+	c, rest := chars[0], chars[1:]
+	weight := p.charWeights[c]
+	// Try using values [0..9] or [1..9] as a value for c.
+	start := 0
+	if p.nonZero[c] {
+		start = 1
 	}
-	return nil, errors.New("no solution found")
+	for i := start; i < 10; i++ {
+		if used[i] {
+			continue
+		}
+
+		used[i] = true
+		// If there are no remaining chars, check if the equation balances.
+		if len(rest) == 0 {
+			// If the equation balances, we found a solution.
+			if balance+weight*i == 0 {
+				return map[string]int{string(c): i}, true
+			}
+		} else {
+			// Check if we can find a solution with this value for c.
+			vals, ok := p.recursiveSolve(balance+weight*i, rest, used)
+			if ok {
+				vals[string(c)] = i
+				return vals, true
+			}
+		}
+		used[i] = false
+	}
+	return nil, false
 }
 
+// Solve solves an alphametics puzzle.
 func Solve(puzzle string) (map[string]int, error) {
-	p, err := newPuzzle(puzzle)
+	p, err := newSolver(puzzle)
 	if err != nil {
 		return nil, err
 	}
-	return p.solve()
-
+	solution, ok := p.recursiveSolve(0, p.chars, map[int]bool{})
+	if !ok {
+		return nil, errors.New("no solution found")
+	}
+	return solution, nil
 }
