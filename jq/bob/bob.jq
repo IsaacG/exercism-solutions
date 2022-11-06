@@ -1,20 +1,19 @@
 .heyBob
 # Strip whitespace.
 | sub("[[:space:]]*$"; "")
+| (. == "") as $silent
+| (. | test("^[^[:lower:]]*[[:upper:]][^[:lower:]]*$")) as $yelling
+| (. | endswith("?")) as $question
 | # Silence.
-  if . == ""
+  if $silent
   then "Fine. Be that way!"
-  # Yelling: uppercase, no lowercase.
-  elif . | test("^[^[:lower:]]*[[:upper:]][^[:lower:]]*$")
+  elif $yelling
   then
-    # Yelling question.
-    if . | endswith("?")
+    if $question
     then "Calm down, I know what I'm doing!"
-    # Plain yelling.
     else "Whoa, chill out!"
     end
-  # Non-yelling question.
-  elif . | endswith("?")
+  elif $question
   then "Sure."
   else "Whatever."
   end
