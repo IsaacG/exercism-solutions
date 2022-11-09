@@ -23,13 +23,9 @@ type solver struct {
 	b            *board
 	toFind       map[string]struct{}
 	toFindCounts map[int]int
-	wantLengths  []int
+	wantLengths  []int // Sorted word lengths to track the max length to look for.
 	found        map[string][2][2]int
-}
-
-// copy returns a copy of a point.
-func (p *point) copy() point {
-	return point{p.i, p.j}
+	solved       bool
 }
 
 // negate negates a point (reverses a direction).
@@ -68,14 +64,14 @@ func (b board) valid(p point) bool {
 }
 
 // foundAll returns if all the words have been found.
-func (s solver) foundAll() bool {
-	return len(s.toFind) == 0
+func (s *solver) foundAll() bool {
+	return s.solved
 }
 
 // recordFinding records coordinates of found words if the word is in the word list.
-func (s solver) recordFinding(wordLen int, start point, dir direction) {
+func (s *solver) recordFinding(wordLen int, start point, dir direction) {
 	w := make([]byte, wordLen)
-	cur := start.copy()
+	cur := start
 	for k := 0; k < wordLen; k++ {
 		w[k] = s.b.char(cur)
 		cur.add(dir)
@@ -87,23 +83,29 @@ func (s solver) recordFinding(wordLen int, start point, dir direction) {
 	s.found[word] = [2][2]int{{start.i, start.j}, {cur.i - dir.i, cur.j - dir.j}}
 	delete(s.toFind, word)
 	s.toFindCounts[len(word)]--
-	if len(word) == s.wantLengths[0] && s.toFindCounts[len(word)] == 0 {
+	// Pop off lengths once we found them all.
+	for len(s.wantLengths) != 0 && s.toFindCounts[s.wantLengths[0]] == 0 {
 		s.wantLengths = s.wantLengths[1:]
+	}
+	if len(s.wantLengths) == 0 {
+		s.solved = true
 	}
 }
 
 // recordWordsAt records all potential words with a given start point.
-func (s solver) recordWordsAt(start point) {
+func (s *solver) recordWordsAt(start point) {
 	// Try creating words from start in direction.
 	for _, dir := range directions {
-		end := start.copy()
-		for wl := 1; wl <= s.wantLengths[0]; wl++ {
+		end := start
+		for wl := 1; !s.solved && wl <= s.wantLengths[0]; wl++ {
 			// Stop when we get off the edge of the board.
 			if !s.b.valid(end) {
 				break
 			}
 			if s.toFindCounts[wl] != 0 {
 				s.recordFinding(wl, start, dir)
+			}
+			if s.toFindCounts[wl] != 0 {
 				s.recordFinding(wl, end, dir.negate())
 			}
 			end.add(dir)
@@ -115,11 +117,11 @@ func (s solver) recordWordsAt(start point) {
 func (s *solver) solve() bool {
 	for _, start := range s.b.points() {
 		s.recordWordsAt(start)
-		if s.foundAll() {
-			return true
+		if s.solved {
+			break
 		}
 	}
-	return false
+	return s.solved
 }
 
 // newSolver constructs and returns a new solver.

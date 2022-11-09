@@ -4,8 +4,7 @@
 | (. == "") as $silent
 | (. | test("^[^[:lower:]]*[[:upper:]][^[:lower:]]*$")) as $yelling
 | (. | endswith("?")) as $question
-| # Silence.
-  if $silent
+| if $silent
   then "Fine. Be that way!"
   elif $yelling
   then

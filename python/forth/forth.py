@@ -14,21 +14,41 @@ OPS = {
     "+": operator.add,
     "-": operator.sub,
     "*": operator.mul,
-    "/": operator.floordiv
+    "/": operator.floordiv,
+    
 }
+
 # Minimum stack size for these operators.
 # Anything smaller triggers a StackUnderflowError.
-MIN_STACK = {
-    "+": 2,
-    "-": 2,
-    "*": 2,
-    "/": 2,
-    "dup": 1,
-    "drop": 1,
-    "swap": 2,
-    "over": 2,
-    ":": 0,
+STACK_OPS = {
+    0: [":"],
+    1: ["dup", "drop"],
+    2: ["+", "-", "*", "/", "swap", "over"],
 }
+MIN_STACK = {
+    op: count for count, ops in STACK_OPS.items() for op in ops
+}
+
+
+class Stack(list):
+    """Stack of values."""
+
+    def dup(self):
+        self.append(self[-1])
+
+    def drop(self):
+        self.pop()
+
+    def swap(self):
+        self.insert(-1, self.pop())
+
+    def over(self):
+        self.append(self[-2])
+
+    @property
+    def ops(self):
+        ops = ["dup", "drop", "swap", "over"]
+        return {op: getattr(self, op) for op in ops}
 
 
 class Forth:
@@ -36,7 +56,7 @@ class Forth:
 
     def __init__(self):
         """Initialize."""
-        self.stack: list[int] = []
+        self.stack: Stack[int] = Stack()
         self.defs: dict[str, list[str]] = {}
 
     def eval(self, data: list[str]) -> list[int]:
@@ -66,18 +86,12 @@ class Forth:
             if len(self.stack) < MIN_STACK[word]:
                 raise StackUnderflowError("Insufficient number of items in stack")
 
+            self.alu_check(word)
             if word in "+-*/":
-                self.alu_check(word)
                 # Perform the operation using the last two values on the stack.
                 self.stack.append(OPS[word](self.stack.pop(-2), self.stack.pop(-1)))
-            elif word == "dup":
-                self.stack.append(self.stack[-1])
-            elif word == "drop":
-                self.stack.pop()
-            elif word == "swap":
-                self.stack.insert(-1, self.stack.pop())
-            elif word == "over":
-                self.stack.append(self.stack[-2])
+            elif word in self.stack.ops:
+                self.stack.ops[word]()
             elif word == ":":
                 self.parse_definition(instructions)
 

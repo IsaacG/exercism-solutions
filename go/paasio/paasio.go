@@ -20,8 +20,8 @@ type writeCounter struct {
 }
 
 type readWriteCounter struct {
-	readCounter
-	writeCounter
+	ReadCounter
+	WriteCounter
 }
 
 func NewWriteCounter(writer io.Writer) WriteCounter {
@@ -34,8 +34,8 @@ func NewReadCounter(reader io.Reader) ReadCounter {
 
 func NewReadWriteCounter(readwriter io.ReadWriter) ReadWriteCounter {
 	return &readWriteCounter{
-		readCounter{r: readwriter},
-		writeCounter{w: readwriter},
+		NewReadCounter(readwriter),
+		NewWriteCounter(readwriter),
 	}
 }
 

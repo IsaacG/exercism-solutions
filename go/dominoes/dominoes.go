@@ -4,65 +4,116 @@ package dominoes
 // Domino is a single tile with two int values.
 type Domino [2]int
 
-// Chain is a list of dominoes.
-type Chain []Domino
-
-// closes returns if a Chain makes a closed loop.
-func (c Chain) closes() bool {
-	return len(c) == 0 || c[0][0] == c[len(c)-1][1]
+// Puzzle stores state for solving a chain of dominoes.
+type Puzzle struct {
+	// Count of available tiles.
+	available map[int]map[int]int
+	// Current solution chain.
+	chain []int
+	// Store if the puzzle was solved.
+	solved bool
+	// len(input).
+	length int
 }
 
-// matches returns if a domino can be added on top of prior.
-func (d Domino) matches(prior *Domino) bool {
-	return prior == nil || prior[1] == d[0]
-}
-
-// orientations returns all domino orientations.
-func (d Domino) orientations() []Domino {
-	return []Domino{{d[0], d[1]}, {d[1], d[0]}}
-}
-
-// without returns a Chain with one element removed.
-func (c Chain) without(i int) Chain {
-	newHand := make(Chain, len(c)-1)
-	copy(newHand, c[0:i])
-	copy(newHand[i:], c[i+1:])
-	return newHand
-}
-
-// makeLine tries to build a connected line of dominoes.
-func (c Chain) makeLine(prior *Domino) []Chain {
-	switch len(c) {
-	case 0:
-		// Chain of length 0 is a valid Chain.
-		return []Chain{{}}
-	case 1:
-		if c[0].matches(prior) {
-			return []Chain{Chain{c[0]}}
-		}
-		return []Chain{}
+// NewPuzzle returns a new Puzzle for a given input.
+func NewPuzzle(input []Domino) *Puzzle {
+	l := len(input)
+	// A chain of N dominoes can be represented as N+1 values.
+	chain := make([]int, l+1)
+	// Given that we need to use all tiles and create a closed loop,
+	// we can start with any tile in any orientation and the rest must fit.
+	if l > 0 {
+		chain[0] = input[0][0]
+		chain[1] = input[0][1]
 	}
-	var lines []Chain
-	// Try using each available Domino is any orientation to build a chain.
-	for i := 0; i < len(c); i++ {
-		for _, domino := range c[i].orientations() {
-			if !domino.matches(prior) {
-				continue
+	puzzle := &Puzzle{
+		available: make(map[int]map[int]int),
+		chain:     chain,
+		solved:    false,
+		length:    l,
+	}
+	// Add all the tiles to the available tile map.
+	for i := 1; i < l; i++ {
+		puzzle.addTile(input[i][0], input[i][1])
+	}
+	return puzzle
+}
+
+// Solve a domino chain.
+func (p *Puzzle) Solve() ([]Domino, bool) {
+	// Special case: 0 tiles is considered a valid chain.
+	if p.length == 0 {
+		return []Domino{}, true
+	}
+	if p.length == 1 {
+		p.solved = p.chain[0] == p.chain[1]
+	} else {
+		p.extend(1)
+	}
+	// Construct the return chain based on the state.
+	var solution []Domino
+	if p.solved {
+		solution = make([]Domino, p.length)
+		for i := 0; i < p.length; i++ {
+			solution[i] = Domino{p.chain[i], p.chain[i+1]}
+		}
+	}
+	return solution, p.solved
+}
+
+// extend recursively extends the chain until a solution is found.
+func (p *Puzzle) extend(depth int) {
+	dNext := depth + 1
+	// Prior value in the chain.
+	prior := p.chain[depth]
+	// Is this the last tile in the chain?
+	last := dNext == p.length
+	for _, o := range p.options(prior) {
+		p.chain[dNext] = o
+		if last {
+			if o == p.chain[0] {
+				p.solved = true
+				return
 			}
-			for _, chain := range c.without(i).makeLine(&domino) {
-				lines = append(lines, append(Chain{domino}, chain...))
+		} else {
+			p.remTile(prior, o)
+			p.extend(dNext)
+			if p.solved {
+				return
 			}
+			p.addTile(prior, o)
 		}
 	}
-	return lines
 }
 
-// MakeChain returns a Domino Chain if one exists.
-func MakeChain(input []Domino) (Chain, bool) {
-	for _, chain := range Chain(input).makeLine(nil) {
-		if chain.closes() {
-			return chain, true
+func (p *Puzzle) addTile(a, b int) {
+	if _, ok := p.available[a]; !ok {
+		p.available[a] = make(map[int]int)
+	}
+	if _, ok := p.available[b]; !ok {
+		p.available[b] = make(map[int]int)
+	}
+	p.available[a][b]++
+	p.available[b][a]++
+}
+
+func (p *Puzzle) remTile(a, b int) {
+	p.available[a][b]--
+	p.available[b][a]--
+}
+
+func (p *Puzzle) options(a int) []int {
+	var o []int
+	for b, count := range p.available[a] {
+		if count != 0 {
+			o = append(o, b)
 		}
 	}
-	return nil, false
+	return o
+}
+
+// MakeChain returns a Domino chain if one exists.
+func MakeChain(input []Domino) ([]Domino, bool) {
+	return NewPuzzle(input).Solve()
 }
