@@ -88,6 +88,16 @@ class LinkedList:
         """Insert a node at the start of the list."""
         self.head.add_next(value)
 
+    def delete(self, value) -> NodeValue:
+        """Remove the first node with a matching value."""
+        cur = self.head.next
+        while cur != self.last and cur.value != value:
+            cur = cur.next
+        if cur.value != value:
+            raise ValueError("Not found")
+        cur.remove()
+        self.length -= 1
+
     @decrement
     def pop(self) -> NodeValue:
         """Pop a node from the end of the list."""

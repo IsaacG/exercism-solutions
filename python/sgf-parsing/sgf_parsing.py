@@ -1,130 +1,90 @@
-import re
+"""Parse an SGF tree."""
+from __future__ import annotations
 
-class SgfTree(object):
-  def __init__(self, properties=None, children=None):
-    self.properties = properties or {}
-    self.children = children or []
-
-  def __eq__(self, other):
-    if not isinstance(other, SgfTree):
-      return False
-    for k, v in self.properties.items():
-      if k not in other.properties:
-        return False
-      if other.properties[k] != v:
-        return False
-    for k in other.properties.keys():
-      if k not in self.properties:
-        return False
-    if len(self.children) != len(other.children):
-        return False
-    for a, b in zip(self.children, other.children):
-      if a != b:
-        return False
-    return True
-
-  def __ne__(self, other):
-    return not self == other
+import collections
+import dataclasses
 
 
-class Obj(object):
-  def __init__(self, content):
-    self.content = content
-    self.Validate()
+@dataclasses.dataclass
+class SgfTree:
+    """SGF Node."""
 
-  def __repr__(self):
-    return '%s(%s)' % (self.__class__.__name__, self.content)
-
-  def ToSgf(self):
-    raise NotImplemented
-
-  def Validate(self):
-    raise NotImplemented
+    properties: dict[str, str] = dataclasses.field(default_factory=dict)
+    children: list[SgfTree] = dataclasses.field(default_factory=list)
 
 
-class Properties(Obj):
-  # If escaped input is not allowed:
-  # PROPS_RE = re.compile(r'([A-Z]+)((?:\[\w+\])+)', re.DOTALL)
-  # PROPVAL_RE = re.compile(r'\[\w+\]', re.DOTALL)
+def parse_node(sgf: str) -> SgfTree:
+    """Parse and return a Node."""
+    if not sgf.startswith(";"):
+        raise ValueError("node must start with ';'")
 
-  PROPS_RE = re.compile(r'([A-Z]+)((?:\[.+?(?<!\\)\])+)', re.DOTALL)
-  PROPVAL_RE = re.compile(r'\[.+?(?<!\\)\]', re.DOTALL)
+    idx = 1
+    prop_key_start = idx
 
-  def Validate(self):
-    if self.content and '[' not in self.content:
+    properties = collections.defaultdict(list)
+    children = []
+
+    while idx < len(sgf):
+        match sgf[idx]:
+            case "[":
+                # Parse property values.
+                if idx == prop_key_start:
+                    raise ValueError("propery key is empty")
+                prop_key = sgf[prop_key_start:idx]
+                if not prop_key.isupper():
+                    raise ValueError('property must be in uppercase')
+
+                while idx < len(sgf):
+                    if sgf[idx] != "[":
+                        break
+
+                    # Start of the value.
+                    idx += 1
+                    prop_val_start = idx
+                    while sgf[idx] != "]":
+                        idx += 1
+                    # End of the value.
+                    prop_val = sgf[prop_val_start:idx]
+                    prop_val = prop_val.replace("\n", "n").replace("\t", "t")
+                    prop_val = prop_val.replace("\\t", " ")
+                    properties[prop_key].append(prop_val)
+
+                    idx += 1
+
+                # New property.
+                prop_key_start = idx
+            case ";":
+                # Single child.
+                child = parse_node(sgf[idx:])
+                children.append(child)
+                break
+            case "(":
+                # Multiple children.
+                children = []
+                while idx < len(sgf):
+                    if sgf[idx] != "(":
+                        break
+                    # Child start.
+                    idx += 1
+                    child_start = idx
+                    while sgf[idx] != ")":
+                        idx += 1
+                    # Child end.
+                    child = parse_node(sgf[child_start:idx])
+                    children.append(child)
+                    idx += 1
+            case _:
+                idx += 1
+
+    if idx > prop_key_start and not properties:
         raise ValueError('properties without delimiter')
-    if self.content and not self.PROPS_RE.match(self.content):
-        raise ValueError('property must be in uppercase')
-
-  def ToSgf(self):
-    properties = {}
-    for k, vals in self.PROPS_RE.findall(self.content):
-      properties[k] = self.ParseAndCleanPropVals(vals)
-    return properties
-
-  def ParseAndCleanPropVals(self, vals):
-    values = []
-    for v in self.PROPVAL_RE.findall(vals):
-      v = v[1:-1]  # Strip outer ()
-      v = v.replace('\\', '')
-      v = v.replace('\t', ' ')
-      values.append(v)
-    return values
-
-class Node(Obj):
-  def Validate(self):
-    if not self.content.startswith(';'):
-      raise ValueError('tree with no nodes')
-
-  def Split(self):
-    s = self.content[1:]
-    if '(' in s and s.index('(') < s.index(';'):
-      sep = '('
-    else:
-      sep = ';'
-    p, s, c = s.partition(sep)
-    return p, s+c
-
-  def Properties(self):
-    p, _ = self.Split()
-    return Properties(p)
-
-  def Children(self):
-    _, c = self.Split()
-    if c == '':
-      return []
-    elif c.startswith(';'):
-      return [Node(c)]
-    elif c.startswith('('):
-      # Assuming no nesting.
-      return [Node(n[1:-1]) for n in re.findall(r'\([^)]+\)', c)]
-    else:
-      raise ValueError('Badly formed children')
-
-  def ToSgf(self):
-    return SgfTree(
-        self.Properties().ToSgf(),
-        [node.ToSgf() for node in self.Children()])
+    return SgfTree(children=children, properties=dict(properties))
 
 
-class Tree(Obj):
-  def Validate(self):
-    s = self.content
-    if not (s.startswith('(') and s.endswith(')')):
-      raise ValueError('tree missing')
-
-  def RootNode(self):
-    return Node(self.content[1:-1])
-
-  def ToSgf(self):
-    return self.RootNode().ToSgf()
-    
-
-
-def parse(s):
-  """Parse an SGF Tree."""
-  return Tree(s).ToSgf()
-
-
-
-# vim:ts=2:sw=2:expandtab
+def parse(sgf: str) -> SgfTree:
+    """Parse an SGF tree."""
+    if not sgf.startswith("(") and not sgf.endswith(")"):
+        raise ValueError('tree missing')
+    if not sgf.startswith("(;"):
+        raise ValueError('tree with no nodes')
+    return parse_node(sgf.removeprefix("(").removesuffix(")"))
