@@ -32,6 +32,7 @@ In general, avoid `exit` inside functions. Imagine how irksome it would be if yo
 Using a function() is good practice; it encapsulates a chunk of logic in one function which is good practice for when things get bigger.
 Note you moved your logic out of main(). Generally, main() should contain all your logic.
 What happens if you were to add `set -o nounset` to your code and call it without any args?
+[Guard clauses](https://en.wikipedia.org/wiki/Guard_(computer_science)) should occur prior and separate from the main logic. This allows the main logic to run with all the assumptions checked and allows you to [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting).
 
 Hello World
 -----------
