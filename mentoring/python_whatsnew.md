@@ -3,24 +3,24 @@
 * 3.11
   - PEP 654: Exception Groups and except*
 * 3.10
-  - PEP 636, Structural Pattern Matching: Tutorial
+  - **PEP 636, Structural Pattern Matching (`match case`)**
   - PEP 617, Parenthesized context managers are now officially allowed.
-  - PEP 618, Add Optional Length-Checking To zip.
+  - **PEP 618, Add Optional Length-Checking To zip.**
 * 3.9
-  - PEP 584, union operators added to dict;
-  - PEP 616, string methods to remove prefixes and suffixes.
+  - **PEP 584, union operators added to dict;**
+  - **PEP 616, string methods to remove prefixes and suffixes.**
   - PEP 615, the IANA Time Zone Database is now present in the standard library in the zoneinfo module;
   - an implementation of a topological sort of a graph is now provided in the new graphlib module.
 * 3.8
-  - PEP-572 Assignment expressions, `:=`
-  - PEP-570 Positional-only parameters
-  - f-strings support = for self-documenting expressions and debugging
+  - **PEP-572 Assignment expressions, `:=`**
+  - **PEP-570 Positional-only parameters**
+  - **f-strings support = for self-documenting expressions and debugging**
 * 3.7
-  - dataclasses: PEP 557 – Data Classes
-  - the insertion-order preservation nature of dict objects has been declared to be an official part of the Python language spec.
+  - **dataclasses: PEP 557 – Data Classes**
+  - **the insertion-order preservation nature of dict objects has been declared to be an official part of the Python language spec.**
 * 3.6
-  - PEP 498, formatted string literals.
-  - PEP 515, underscores in numeric literals.
+  - **PEP 498, formatted string literals.**
+  - **PEP 515, underscores in numeric literals.**
   - secrets: PEP 506 – Adding A Secrets Module To The Standard Library.
 * 3.5
   - PEP 448, additional unpacking generalizations.
