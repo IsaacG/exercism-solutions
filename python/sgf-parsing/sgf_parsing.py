@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import collections
 import dataclasses
+import string
 
 
 @dataclasses.dataclass
@@ -11,6 +12,44 @@ class SgfTree:
 
     properties: dict[str, str] = dataclasses.field(default_factory=dict)
     children: list[SgfTree] = dataclasses.field(default_factory=list)
+
+
+def parse_property_vals(sgf: str, idx: int) -> tuple[int, list[str]]:
+    """Parse property values, returning the next index and values."""
+    values = []
+    while idx < len(sgf):
+        if sgf[idx] != "[":
+            break
+
+        # Start of the value.
+        idx += 1
+        prop_val = ""
+        while sgf[idx] != "]":
+            # \ has special SGF handling.
+            if sgf[idx] == "\\":
+                if sgf[idx:idx + 2] == "\\\n":
+                    # Newlines are removed if they come immediately after a \,
+                    # otherwise they remain as newlines.
+                    pass
+                else:
+                    # \ is the escape character. Any non-whitespace character
+                    # after \ is inserted as-is
+                    prop_val += sgf[idx + 1]
+                idx += 2
+            else:
+                prop_val += sgf[idx]
+                idx += 1
+
+        # All whitespace characters other than newline are converted to spaces.
+        for char in string.whitespace:
+            if char == "\n":
+                continue
+            prop_val = prop_val.replace(char, " ")
+
+        values.append(prop_val)
+        idx += 1
+
+    return idx, values
 
 
 def parse_node(sgf: str) -> SgfTree:
@@ -34,22 +73,8 @@ def parse_node(sgf: str) -> SgfTree:
                 if not prop_key.isupper():
                     raise ValueError('property must be in uppercase')
 
-                while idx < len(sgf):
-                    if sgf[idx] != "[":
-                        break
-
-                    # Start of the value.
-                    idx += 1
-                    prop_val_start = idx
-                    while sgf[idx] != "]":
-                        idx += 1
-                    # End of the value.
-                    prop_val = sgf[prop_val_start:idx]
-                    prop_val = prop_val.replace("\n", "n").replace("\t", "t")
-                    prop_val = prop_val.replace("\\t", " ")
-                    properties[prop_key].append(prop_val)
-
-                    idx += 1
+                idx, prop_vals = parse_property_vals(sgf, idx)
+                properties[prop_key].extend(prop_vals)
 
                 # New property.
                 prop_key_start = idx
