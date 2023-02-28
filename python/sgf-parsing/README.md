@@ -121,6 +121,7 @@ raise ValueError("tree with no nodes")
 - @crsmi
 - @Dog
 - @elyashiv
+- @IsaacG
 - @thomasjpfan
 - @tqa236
 - @yawpitch

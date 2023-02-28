@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 )
-
 // Matrix represents a matrix.
 type Matrix struct {
 	rows [][]int

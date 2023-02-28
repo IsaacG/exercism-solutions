@@ -1,27 +1,24 @@
-from itertools import permutations
+def is_triangle(func):
+    def wrap_func(sides):
+        sides = sorted(sides)
+        if 0 in sides:
+            return False
+        if max(sides) * 2 > sum(sides):
+            return False
+        return func(sides)
+    return wrap_func
 
-side_combos = ((0, 1, 2), (1, 2, 0), (2, 0, 1))
 
-def is_valid(sides):
-  return all(sides[a] <= sides[b] + sides[c]
-             for a, b, c in side_combos) and sides[0]
-
-
+@is_triangle
 def equilateral(sides):
-  if not is_valid(sides):
-    return False
-  return all(sides[a] == sides[b] for a, b, _ in side_combos)
+    return len(set(sides)) == 1
 
 
+@is_triangle
 def isosceles(sides):
-  if not is_valid(sides):
-    return False
-  return any(sides[a] == sides[b] for a, b, _ in side_combos)
+    return 1 <= len(set(sides)) <= 2
 
 
+@is_triangle
 def scalene(sides):
-  if not is_valid(sides):
-    return False
-  return not any(sides[a] == sides[b] for a, b, _ in side_combos)
-
-# vim:ts=2:sw=2:expandtab
+    return len(set(sides)) == 3

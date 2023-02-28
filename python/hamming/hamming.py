@@ -1,23 +1,9 @@
-"""Compute the hamming distance."""
-from functools import reduce
+def distance(strand_a, strand_b):
+    same = 0
+    for i in range(len(strand_a)):
+        if strand_a[i] == strand_b[i]:
+            same += 1
+    return same
 
-def reduction(count: int, strings: tuple[str, str]) -> int:
-    """Reduce a list of pairs by adding 1 on differing, otherwise count doesn't change."""
-    first, second = strings
-    return count if first == second else count + 1
 
-
-def distance(strand_a: str, strand_b: str) -> int:
-    """Return the hamming distance between two strings."""
-    if len(strand_a) != len(strand_b):
-        raise ValueError("Strands must be of equal length.")
-    dist = reduce(reduction, zip(strand_a, strand_b), 0)
-    alt = alt_distance(strand_a, strand_b)
-    assert dist == alt, f"{dist} != {alt}"
-    return dist
-
-def alt_distance(strand_a: str, strand_b: str) -> int:
-    """Return the hamming distance between two strings."""
-    if len(strand_a) != len(strand_b):
-        raise ValueError("Strands must be of equal length.")
-    return sum(a != b for a, b in zip(strand_a, strand_b))
+distance("abc", "ab")  # Note the first strand is longer than the second strand.

@@ -1,7 +1,5 @@
-def to_rna(s):
-  swaps = (('G', 'X'), ('C', 'G'), ('X', 'C'), ('A', 'U'), ('T', 'A'))
-  for x, y in swaps:
-    s = s.replace(x, y)
-  return s
+TRANSLATION = {"G": "C", "C": "G", "A": "U", "T": "A"}
 
-# vim:ts=2:sw=2:expandtab
+
+def to_rna(dna_strand: str) -> str:
+    return "".join(TRANSLATION[i] for i in dna_strand)
