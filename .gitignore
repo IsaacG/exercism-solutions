@@ -1,0 +1,7 @@
+__pycache__
+haskell
+python/**/*.md
+go/**/*.md
+.exercism
+.articles
+go.mod
