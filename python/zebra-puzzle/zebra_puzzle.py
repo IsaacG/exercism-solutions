@@ -74,6 +74,53 @@ Street = tuple[House, House, House, House, House]
 IDX_NAT, IDX_PET, IDX_COLOR, IDX_DRINK, IDX_SMOKE = list(range(5))
 
 
+def valid_house(nationality, pet, color, drink, smokes) -> bool:
+    return (
+        # The Englishman lives in the red house.
+        (nationality == ENGLISHMAN) == (color == RED)
+        # The Spaniard owns the dog.
+        and (nationality == SPANIARD) == (pet == DOG)
+        # Coffee is drunk in the green house.
+        and (drink == COFFEE) == (color == GREEN)
+        # The Ukrainian drinks tea.
+        and (nationality == UKRAINIAN) == (drink == TEA)
+        # The Old Gold smoker owns snails.
+        and (smokes == OLD_GOLD) == (pet == SNAILS)
+        # Kools are smoked in the yellow house.
+        and (smokes == KOOLS) == (color == YELLOW)
+        # The Lucky Strike smoker drinks orange juice.
+        and (smokes == LUCKY_STRIKE) == (drink == ORANGE_JUICE)
+        # The Japanese smokes Parliaments.
+        and (smokes == PARLIAMENTS) == (nationality == JAPANESE)
+    )
+
+
+def valid_street(street):
+    # Milk is drunk in the middle house. 54720 to 10944.
+    if street[2][IDX_DRINK] != MILK:
+        return False
+    # The Norwegian lives in the first house. 10944 to 2016.
+    if street[0][IDX_NAT] != NORWEGIAN:
+        return False
+    # The green house is immediately to the right of the ivory house. 2016 to 336.
+    idx = next(i for i, house in enumerate(street) if house[IDX_COLOR] == IVORY)
+    if idx == 4 or street[idx + 1][IDX_COLOR] != GREEN:
+        return False
+    # The man who smokes Chesterfields lives in the house next to the man with the fox. 336 to 120.
+    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == CHESTERFIELDS)
+    if (idx == 0 or street[idx - 1][IDX_PET] != FOX) and (idx == 4 or street[idx + 1][IDX_PET] != FOX):
+        return False
+    # Kools are smoked in the house next to the house where the horse is kept. 120 to 32.
+    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == KOOLS)
+    if (idx == 0 or street[idx - 1][IDX_PET] != HORSE) and (idx == 4 or street[idx + 1][IDX_PET] != HORSE):
+        return False
+    # The Norwegian lives next to the blue house. 32 to 1.
+    idx = next(i for i, house in enumerate(street) if house[IDX_NAT] == NORWEGIAN)
+    if (idx == 0 or street[idx - 1][IDX_COLOR] != BLUE) and (idx == 4 or street[idx + 1][IDX_COLOR] != BLUE):
+        return False
+    return True
+
+
 @functools.cache
 def solve_puzzle() -> Street:
     options = {
@@ -83,24 +130,7 @@ def solve_puzzle() -> Street:
             for color in COLORS
             for drink in DRINKS
             for smokes in SMOKES
-            if (
-                # The Englishman lives in the red house.
-                (nationality == ENGLISHMAN) == (color == RED)
-                # The Spaniard owns the dog.
-                and (nationality == SPANIARD) == (pet == DOG)
-                # Coffee is drunk in the green house.
-                and (drink == COFFEE) == (color == GREEN)
-                # The Ukrainian drinks tea.
-                and (nationality == UKRAINIAN) == (drink == TEA)
-                # The Old Gold smoker owns snails.
-                and (smokes == OLD_GOLD) == (pet == SNAILS)
-                # Kools are smoked in the yellow house.
-                and (smokes == KOOLS) == (color == YELLOW)
-                # The Lucky Strike smoker drinks orange juice.
-                and (smokes == LUCKY_STRIKE) == (drink == ORANGE_JUICE)
-                # The Japanese smokes Parliaments.
-                and (smokes == PARLIAMENTS) == (nationality == JAPANESE)
-            )
+            if valid_house(nationality, pet, color, drink, smokes)
         ]
         for nationality in NATIONALITIES
     }
@@ -110,44 +140,24 @@ def solve_puzzle() -> Street:
     # JAPANESE: 15
     # UKRAINIAN: 11
     # NORWEGIAN: 32
+    # Combinations: 11*9*15*11*32 = 522720
 
     # Find (unordered) house combinations where all values are present.
     house_combos = [
         houses
-        # Combinations: 11*9*15*11*32 = 522720
         for houses in itertools.product(*options.values())
         if functools.reduce(operator.or_, (v for house in houses for v in house)) == ALL_BITS
     ]
     # 456 combinations of possible (unordered) house collections.
 
-    found = []
     # For each valid combination of houses, they can be laid out in many (5! = 120) orders.
     # 456 combinations with 5! orderings = 54720 possibilities.
-    for houses in house_combos:
-        for street in itertools.permutations(houses):
-            # Milk is drunk in the middle house. 54720 to 10944.
-            if street[2][IDX_DRINK] != MILK:
-                continue
-            # The Norwegian lives in the first house. 10944 to 2016.
-            if street[0][IDX_NAT] != NORWEGIAN:
-                continue
-            # The green house is immediately to the right of the ivory house. 2016 to 336.
-            idx = next(i for i, house in enumerate(street) if house[IDX_COLOR] == IVORY)
-            if idx == 4 or street[idx + 1][IDX_COLOR] != GREEN:
-                continue
-            # The man who smokes Chesterfields lives in the house next to the man with the fox. 336 to 120.
-            idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == CHESTERFIELDS)
-            if (idx == 0 or street[idx - 1][IDX_PET] != FOX) and (idx == 4 or street[idx + 1][IDX_PET] != FOX):
-                continue
-            # Kools are smoked in the house next to the house where the horse is kept. 120 to 32.
-            idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == KOOLS)
-            if (idx == 0 or street[idx - 1][IDX_PET] != HORSE) and (idx == 4 or street[idx + 1][IDX_PET] != HORSE):
-                continue
-            # The Norwegian lives next to the blue house. 32 to 1.
-            idx = next(i for i, house in enumerate(street) if house[IDX_NAT] == NORWEGIAN)
-            if (idx == 0 or street[idx - 1][IDX_COLOR] != BLUE) and (idx == 4 or street[idx + 1][IDX_COLOR] != BLUE):
-                continue
-            found.append(street)
+    found = [
+        street
+        for houses in house_combos
+        for street in itertools.permutations(houses)
+        if valid_street(street)
+    ]
 
     assert len(found) == 1, len(found)
     return found[0]
