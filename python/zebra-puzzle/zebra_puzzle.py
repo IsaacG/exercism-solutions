@@ -19,104 +19,108 @@ Each of the five houses is painted a different color, and their
 inhabitants are of different national extractions, own different pets,
 drink different beverages and smoke different brands of cigarettes.
 """
+import enum
 import itertools
 import functools
 import operator
 
 
-ENGLISHMAN = 1 << 0
-SPANIARD = 1 << 1
-JAPANESE = 1 << 2
-UKRAINIAN = 1 << 3
-NORWEGIAN = 1 << 4
+class Nationality(enum.Enum):
+    ENGLISHMAN = enum.auto()
+    SPANIARD = enum.auto()
+    JAPANESE = enum.auto()
+    UKRAINIAN = enum.auto()
+    NORWEGIAN = enum.auto()
 
 NAMES = {
-    ENGLISHMAN: "Englishman",
-    SPANIARD: "Spaniard",
-    JAPANESE: "Japanese",
-    UKRAINIAN: "Ukrainian",
-    NORWEGIAN: "Norwegian",
+    Nationality.ENGLISHMAN: "Englishman",
+    Nationality.SPANIARD: "Spaniard",
+    Nationality.JAPANESE: "Japanese",
+    Nationality.UKRAINIAN: "Ukrainian",
+    Nationality.NORWEGIAN: "Norwegian",
 }
 
-DOG = 1 << 5
-FOX = 1 << 6
-SNAILS = 1 << 7
-HORSE = 1 << 8
-ZEBRA = 1 << 9
+class Pets(enum.Enum):
+    DOG = enum.auto()
+    FOX = enum.auto()
+    SNAILS = enum.auto()
+    HORSE = enum.auto()
+    ZEBRA = enum.auto()
 
-RED = 1 << 10
-IVORY = 1 << 11
-GREEN = 1 << 12
-BLUE = 1 << 13
-YELLOW = 1 << 14
 
-TEA = 1 << 15
-COFFEE = 1 << 16
-ORANGE_JUICE = 1 << 17
-MILK = 1 << 18
-WATER = 1 << 19
+class Colors(enum.Enum):
+    RED = enum.auto()
+    IVORY = enum.auto()
+    GREEN = enum.auto()
+    BLUE = enum.auto()
+    YELLOW = enum.auto()
 
-OLD_GOLD = 1 << 20
-KOOLS = 1 << 21
-LUCKY_STRIKE = 1 << 22
-PARLIAMENTS = 1 << 23
-CHESTERFIELDS = 1 << 24
-ALL_BITS = (1 << 25) - 1
 
-NATIONALITIES = {ENGLISHMAN, SPANIARD, JAPANESE, UKRAINIAN, NORWEGIAN}
-PETS = {DOG, FOX, SNAILS, HORSE, ZEBRA}
-COLORS = {RED, IVORY, GREEN, BLUE, YELLOW}
-DRINKS = {TEA, COFFEE, ORANGE_JUICE, MILK, WATER}
-SMOKES = {OLD_GOLD, KOOLS, LUCKY_STRIKE, PARLIAMENTS, CHESTERFIELDS}
+class Drinks(enum.Enum):
+    TEA = enum.auto()
+    COFFEE = enum.auto()
+    ORANGE_JUICE = enum.auto()
+    MILK = enum.auto()
+    WATER = enum.auto()
+
+
+class Smokes(enum.Enum):
+    OLD_GOLD = enum.auto()
+    KOOLS = enum.auto()
+    LUCKY_STRIKE = enum.auto()
+    PARLIAMENTS = enum.auto()
+    CHESTERFIELDS = enum.auto()
+
+
+ALL_VALUES = [set(Nationality), set(Pets), set(Colors), set(Drinks), set(Smokes)]
 
 House = tuple[int, int, int, int, int]
 Street = tuple[House, House, House, House, House]
 IDX_NAT, IDX_PET, IDX_COLOR, IDX_DRINK, IDX_SMOKE = list(range(5))
 
-
 def valid_house(nationality, pet, color, drink, smokes) -> bool:
     return (
         # The Englishman lives in the red house.
-        (nationality == ENGLISHMAN) == (color == RED)
+        (nationality == Nationality.ENGLISHMAN) == (color == Colors.RED)
         # The Spaniard owns the dog.
-        and (nationality == SPANIARD) == (pet == DOG)
+        and (nationality == Nationality.SPANIARD) == (pet == Pets.DOG)
         # Coffee is drunk in the green house.
-        and (drink == COFFEE) == (color == GREEN)
+        and (drink == Drinks.COFFEE) == (color == Colors.GREEN)
         # The Ukrainian drinks tea.
-        and (nationality == UKRAINIAN) == (drink == TEA)
+        and (nationality == Nationality.UKRAINIAN) == (drink == Drinks.TEA)
         # The Old Gold smoker owns snails.
-        and (smokes == OLD_GOLD) == (pet == SNAILS)
+        and (smokes == Smokes.OLD_GOLD) == (pet == Pets.SNAILS)
         # Kools are smoked in the yellow house.
-        and (smokes == KOOLS) == (color == YELLOW)
+        and (smokes == Smokes.KOOLS) == (color == Colors.YELLOW)
         # The Lucky Strike smoker drinks orange juice.
-        and (smokes == LUCKY_STRIKE) == (drink == ORANGE_JUICE)
+        and (smokes == Smokes.LUCKY_STRIKE) == (drink == Drinks.ORANGE_JUICE)
         # The Japanese smokes Parliaments.
-        and (smokes == PARLIAMENTS) == (nationality == JAPANESE)
+        and (smokes == Smokes.PARLIAMENTS) == (nationality == Nationality.JAPANESE)
     )
 
 
 def valid_street(street):
     # Milk is drunk in the middle house. 54720 to 10944.
-    if street[2][IDX_DRINK] != MILK:
+    if street[2][IDX_DRINK] != Drinks.MILK:
         return False
     # The Norwegian lives in the first house. 10944 to 2016.
-    if street[0][IDX_NAT] != NORWEGIAN:
+    if street[0][IDX_NAT] != Nationality.NORWEGIAN:
         return False
     # The green house is immediately to the right of the ivory house. 2016 to 336.
-    idx = next(i for i, house in enumerate(street) if house[IDX_COLOR] == IVORY)
-    if idx == 4 or street[idx + 1][IDX_COLOR] != GREEN:
+    idx = next(i for i, house in enumerate(street) if house[IDX_COLOR] == Colors.IVORY)
+    if idx == 4 or street[idx + 1][IDX_COLOR] != Colors.GREEN:
         return False
     # The man who smokes Chesterfields lives in the house next to the man with the fox. 336 to 120.
-    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == CHESTERFIELDS)
-    if (idx == 0 or street[idx - 1][IDX_PET] != FOX) and (idx == 4 or street[idx + 1][IDX_PET] != FOX):
+    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == Smokes.CHESTERFIELDS)
+    if (idx == 0 or street[idx - 1][IDX_PET] != Pets.FOX) and (idx == 4 or street[idx + 1][IDX_PET] != Pets.FOX):
         return False
     # Kools are smoked in the house next to the house where the horse is kept. 120 to 32.
-    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == KOOLS)
-    if (idx == 0 or street[idx - 1][IDX_PET] != HORSE) and (idx == 4 or street[idx + 1][IDX_PET] != HORSE):
+    idx = next(i for i, house in enumerate(street) if house[IDX_SMOKE] == Smokes.KOOLS)
+    if (idx == 0 or street[idx - 1][IDX_PET] != Pets.HORSE) and (idx == 4 or street[idx + 1][IDX_PET] != Pets.HORSE):
         return False
     # The Norwegian lives next to the blue house. 32 to 1.
-    idx = next(i for i, house in enumerate(street) if house[IDX_NAT] == NORWEGIAN)
-    if (idx == 0 or street[idx - 1][IDX_COLOR] != BLUE) and (idx == 4 or street[idx + 1][IDX_COLOR] != BLUE):
+    idx = next(i for i, house in enumerate(street) if house[IDX_NAT] == Nationality.NORWEGIAN)
+    if (idx == 0 or street[idx - 1][IDX_COLOR] != Colors.BLUE) and (idx == 4 or street[idx + 1][IDX_COLOR] != Colors.BLUE):
         return False
     return True
 
@@ -126,13 +130,13 @@ def solve_puzzle() -> Street:
     options = {
         nationality: [
             (nationality, pet, color, drink, smokes)
-            for pet in PETS
-            for color in COLORS
-            for drink in DRINKS
-            for smokes in SMOKES
+            for pet in Pets
+            for color in Colors
+            for drink in Drinks
+            for smokes in Smokes
             if valid_house(nationality, pet, color, drink, smokes)
         ]
-        for nationality in NATIONALITIES
+        for nationality in Nationality
     }
     # Options found (counts):
     # ENGLISHMAN: 11
@@ -143,11 +147,11 @@ def solve_puzzle() -> Street:
     # Combinations: 11*9*15*11*32 = 522720
 
     # Find (unordered) house combinations where all values are present.
-    house_combos = [
+    house_combos = (
         houses
         for houses in itertools.product(*options.values())
-        if functools.reduce(operator.or_, (v for house in houses for v in house)) == ALL_BITS
-    ]
+        if [set(v) for v in zip(*houses)] == ALL_VALUES
+    )
     # 456 combinations of possible (unordered) house collections.
 
     # For each valid combination of houses, they can be laid out in many (5! = 120) orders.
@@ -165,11 +169,11 @@ def solve_puzzle() -> Street:
 
 def drinks_water():
     street = solve_puzzle()
-    house = next(house for house in street if house[IDX_DRINK] == WATER)
+    house = next(house for house in street if house[IDX_DRINK] == Drinks.WATER)
     return NAMES[house[IDX_NAT]]
 
 
 def owns_zebra():
     street = solve_puzzle()
-    house = next(house for house in street if house[IDX_PET] == ZEBRA)
+    house = next(house for house in street if house[IDX_PET] == Pets.ZEBRA)
     return NAMES[house[IDX_NAT]]
