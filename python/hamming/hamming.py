@@ -1,9 +1,6 @@
-def distance(strand_a, strand_b):
-    same = 0
-    for i in range(len(strand_a)):
-        if strand_a[i] == strand_b[i]:
-            same += 1
-    return same
+"""Compute the hamming distance."""
 
-
-distance("abc", "ab")  # Note the first strand is longer than the second strand.
+def distance(strand_a: str, strand_b: str) -> int:
+    if len(strand_a) != len(strand_b):
+        raise ValueError("Strands must be of equal length.")
+    return sum(a != b for a, b in zip(strand_a, strand_b))
