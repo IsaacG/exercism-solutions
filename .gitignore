@@ -5,3 +5,4 @@ python/*/*_test.py
 .exercism
 .articles
 go.mod
+users/
