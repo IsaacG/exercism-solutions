@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/high-scores/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from high_scores import (
     HighScores,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class HighScoresTest(unittest.TestCase):
@@ -60,4 +62,18 @@ class HighScoresTest(unittest.TestCase):
         expected = [30, 50, 20, 70]
         highscores = HighScores(scores)
         highscores.personal_top_three()
+        self.assertEqual(highscores.scores, expected)
+
+    def test_latest_score_after_personal_best(self):
+        scores = [20, 70, 15, 25, 30]
+        expected = 30
+        highscores = HighScores(scores)
+        highscores.personal_best()
+        self.assertEqual(highscores.latest(), expected)
+
+    def test_scores_after_personal_best(self):
+        scores = [20, 70, 15, 25, 30]
+        expected = [20, 70, 15, 25, 30]
+        highscores = HighScores(scores)
+        highscores.personal_best()
         self.assertEqual(highscores.scores, expected)

@@ -1,6 +1,5 @@
 import unittest
 import pytest
-import random
 from lists import (
     get_rounds,
     concatenate_rounds,
@@ -12,325 +11,97 @@ from lists import (
 )
 
 
-class TestToRounds(unittest.TestCase):
+class CardGamesTest(unittest.TestCase):
 
     @pytest.mark.task(taskno=1)
-    def test_instructions_example(self):
-        round_number = 27
-        want = [27, 28, 29]
-        got = get_rounds(round_number)
+    def test_get_rounds(self):
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
+        input_vars = [0, 1, 10, 27, 99, 666]
 
-    @pytest.mark.task(taskno=1)
-    def test_zero(self):
-        round_number = 0
-        want = [0, 1, 2]
-        got = get_rounds(round_number)
+        results = [[0, 1, 2], [1, 2, 3],
+                   [10, 11, 12], [27, 28, 29],
+                   [99, 100, 101], [666, 667, 668]]
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=1)
-    def test_random_int(self):
-        round_number = random.randint(0, 100)
-        want = [round_number + i for i in range(3)]
-        got = get_rounds(round_number)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-
-class TestConcatenateRounds(unittest.TestCase):
+        for variant, (number, rounds) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Expected rounds {rounds} given the current round {number}.'
+            with self.subTest(f'variation #{variant}', input=number, output=rounds):
+                self.assertEqual(rounds, get_rounds(number), msg=error_message)
 
     @pytest.mark.task(taskno=2)
-    def test_empty(self):
-        rounds_1 = []
-        rounds_2 = []
-        want = []
+    def test_concatenate_rounds(self):
 
-        self.assertEqual(concatenate_rounds(rounds_1, rounds_2),
-            want,
-            msg=f'Expected {want} but got an incorrect result.'
-            )
+        input_vars = [([], []), ([0, 1], []), ([], [1, 2]),
+                      ([1], [2]), ([27, 28, 29], [35, 36]),
+                      ([1, 2, 3], [4, 5, 6])]
 
-    @pytest.mark.task(taskno=2)
-    def test_other(self):
-        rounds_1 = [1, 2, 3]
-        rounds_2 = [4, 5, 6]
-        want = [1, 2, 3, 4, 5, 6]
+        results = [[], [0, 1], [1, 2], [1, 2],
+                   [27, 28, 29, 35, 36],
+                   [1, 2, 3, 4, 5, 6]]
 
-        self.assertEqual(concatenate_rounds(rounds_1, rounds_2),
-                         want,
-                         msg=f'Expected {want} but got an incorrect result.'
-                         )
-
-
-class TestListContainsRound(unittest.TestCase):
+        for variant, ((rounds_1, rounds_2), rounds) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Expected {rounds} as the concatenation of {rounds_1} and {rounds_2}.'
+            with self.subTest(f'variation #{variant}', input=(rounds_1, rounds_2), output=rounds):
+                self.assertEqual(rounds, concatenate_rounds(rounds_1, rounds_2), msg=error_message)
 
     @pytest.mark.task(taskno=3)
-    def test_instructions_example_1(self):
-        rounds = [27, 28, 29, 35, 36]
-        round_number = 29
-        want = True
-        got = list_contains_round(rounds, round_number)
+    def test_list_contains_round(self):
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
+        input_vars = [([], 1), ([1, 2, 3], 0), ([27, 28, 29, 35, 36], 30),
+                      ([1], 1), ([1, 2, 3], 1), ([27, 28, 29, 35, 36], 29)]
 
-    @pytest.mark.task(taskno=3)
-    def test_instructions_example_2(self):
-        rounds = [27, 28, 29, 35, 36]
-        round_number = 30
-        want = False
-        got = list_contains_round(rounds, round_number)
+        results = [False, False, False, True, True, True]
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=3)
-    def test_empty(self):
-        rounds = []
-        round_number = 1
-        want = False
-        got = list_contains_round(rounds, round_number)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=3)
-    def test_other_true(self):
-        rounds = [1, 2, 3]
-        round_number = 2
-        want = True
-        got = list_contains_round(rounds, round_number)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=3)
-    def test_other_false(self):
-        rounds = [1, 2, 3]
-        round_number = 0
-        want = False
-        got = list_contains_round(rounds, round_number)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-
-class TestCardAverage(unittest.TestCase):
+        for variant, ((rounds, round_number), contains) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Round {round_number} {"is" if contains else "is not"} in {rounds}.'
+            with self.subTest(f'variation #{variant}', input=(rounds, round_number), output=contains):
+                self.assertEqual(contains, list_contains_round(rounds, round_number), msg=error_message)
 
     @pytest.mark.task(taskno=4)
-    def test_instructions_example(self):
-        hand = [5, 6, 7]
-        want = 6.0
-        got = card_average(hand)
+    def test_card_average(self):
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
+        input_vars = [[1], [5, 6, 7], [1, 2, 3, 4], [1, 10, 100]]
 
-    @pytest.mark.task(taskno=4)
-    def test_other(self):
-        hand = [1, 2, 3, 4]
-        want = 2.5
-        got = card_average(hand)
+        results = [1.0, 6.0, 2.5, 37.0]
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-
-class TestApproxAverageIsAverage(unittest.TestCase):
+        for variant, (hand, average) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Expected {average} as the average of {hand}.'
+            with self.subTest(f'variation #{variant}', input=hand, output=average):
+                self.assertEqual(average, card_average(hand), msg=error_message)
 
     @pytest.mark.task(taskno=5)
-    def test_instructions_example_1(self):
-        hand = [1, 2, 3]
-        want = True
-        got = approx_average_is_average(hand)
+    def test_approx_average_is_average(self):
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
+        input_vars = [[0, 1, 5], [3, 6, 9, 12, 150], [1, 2, 3, 5, 9],
+                      [2, 3, 4, 7, 8], [1, 2, 3], [2, 3, 4],
+                      [2, 3, 4, 8, 8], [1, 2, 4, 5, 8]]
 
-    @pytest.mark.task(taskno=5)
-    def test_instructions_example_2(self):
-        hand = [2, 3, 4, 8, 8]
-        want = True
-        got = approx_average_is_average(hand)
+        results = [False, False, False, False, True, True, True, True]
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=5)
-    def test_instructions_example_3(self):
-        hand = [1, 2, 3, 5, 9]
-        want = False
-        got = approx_average_is_average(hand)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=5)
-    def test_other_true(self):
-        hand = [2, 3, 4]
-        want = True
-        got = approx_average_is_average(hand)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=5)
-    def test_other_false(self):
-        hand = [2, 3, 4, 7, 8]
-        want = False
-        got = approx_average_is_average(hand)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-
-class TestAverageEvenIsAverageOdd(unittest.TestCase):
+        for variant, (hand, same) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Hand {hand} {"does" if same else "does not"} yield the same approximate average.'
+            with self.subTest(f'variation #{variant}', input=hand, output=same):
+                self.assertEqual(same, approx_average_is_average(hand), msg=error_message)
 
     @pytest.mark.task(taskno=6)
-    def test_instructions_example_1(self):
-        hand = [1, 2, 3]
-        want = True
-        got = average_even_is_average_odd(hand)
+    def test_average_even_is_average_odd(self):
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
+        input_vars = [[5, 6, 8], [1, 2, 3, 4], [1, 2, 3], [5, 6, 7], [1, 3, 5, 7, 9]]
 
-    @pytest.mark.task(taskno=6)
-    def test_instructions_example_2(self):
-        hand = [1, 2, 3, 4]
-        want = False
-        got = average_even_is_average_odd(hand)
+        results = [False, False, True, True, True]
 
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=6)
-    def test_other_true(self):
-        hand = [5, 6, 7]
-        want = True
-        got = average_even_is_average_odd(hand)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-    @pytest.mark.task(taskno=6)
-    def test_other_false(self):
-        hand = [5, 6, 8]
-        want = False
-        got = average_even_is_average_odd(hand)
-
-        self.assertEqual(
-            want,
-            got,
-            msg=f'Expected {want} but got an incorrect result: {got!r}'
-        )
-
-
-class TestMaybeDoubleLast(unittest.TestCase):
+        for variant, (hand, same) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Hand {hand} {"does" if same else "does not"} yield the same odd-even average.'
+            with self.subTest(f'variation #{variant}', input=hand, output=same):
+                self.assertEqual(same, average_even_is_average_odd(hand), msg=error_message)
 
     @pytest.mark.task(taskno=7)
-    def test_instructions_example_1(self):
-        hand = [5, 9, 11]
-        want = [5, 9, 22]
-        maybe_double_last(hand)
+    def test_maybe_double_last(self):
 
-        self.assertEqual(
-            hand,
-            want,
-            msg=f'Expected {want} but got an incorrect result: {hand!r}'
-        )
+        input_vars = [[1, 2, 11], [5, 9, 11], [5, 9, 10], [1, 2, 3]]
 
-    @pytest.mark.task(taskno=7)
-    def test_instructions_example_2(self):
-        hand = [5, 9, 10]
-        want = [5, 9, 10]
-        maybe_double_last(hand)
+        results = [[1, 2, 22], [5, 9, 22], [5, 9, 10], [1, 2, 3]]
 
-        self.assertEqual(
-            hand,
-            want,
-            msg=f'Expected {want} but got an incorrect result: {hand!r}'
-        )
-
-    @pytest.mark.task(taskno=7)
-    def test_other_doubles(self):
-        hand = [1, 2, 11]
-        want = [1, 2, 22]
-        maybe_double_last(hand)
-
-        self.assertEqual(
-            hand,
-            want,
-            msg=f'Expected {want} but got an incorrect result: {hand!r}'
-        )
-
-    @pytest.mark.task(taskno=7)
-    def test_other_no_change(self):
-        hand = [1, 2, 3]
-        want = [1, 2, 3]
-        maybe_double_last(hand)
-
-        self.assertEqual(
-            hand,
-            want,
-            msg=f'Expected {want} but got an incorrect result: {hand!r}'
-        )
+        for variant, (hand, doubled_hand) in enumerate(zip(input_vars, results), start=1):
+            error_message = f'Expected {doubled_hand} as the maybe-doubled version of {hand}.'
+            with self.subTest(f'variation #{variant}', input=hand, output=doubled_hand):
+                self.assertEqual(doubled_hand, maybe_double_last(hand), msg=error_message)

@@ -1,3 +1,7 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/robot-simulator/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from robot_simulator import (
@@ -7,8 +11,6 @@ from robot_simulator import (
     SOUTH,
     WEST,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class RobotSimulatorTest(unittest.TestCase):
@@ -141,11 +143,3 @@ class RobotSimulatorTest(unittest.TestCase):
 
         self.assertEqual(robot.coordinates, (11, 5))
         self.assertEqual(robot.direction, NORTH)
-
-    # Utility functions
-    def assertRaisesWithMessage(self, exception):
-        return self.assertRaisesRegex(exception, r".+")
-
-
-if __name__ == "__main__":
-    unittest.main()

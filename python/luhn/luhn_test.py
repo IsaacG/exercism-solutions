@@ -1,8 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/luhn/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
-from luhn import Luhn
-
-# Tests adapted from `problem-specifications//canonical-data.json` @ v1.6.1
+from luhn import (
+    Luhn,
+)
 
 
 class LuhnTest(unittest.TestCase):
@@ -26,6 +30,12 @@ class LuhnTest(unittest.TestCase):
 
     def test_invalid_credit_card(self):
         self.assertIs(Luhn("8273 1232 7352 0569").valid(), False)
+
+    def test_invalid_long_number_with_an_even_remainder(self):
+        self.assertIs(Luhn("1 2345 6789 1234 5678 9012").valid(), False)
+
+    def test_invalid_long_number_with_a_remainder_divisible_by_5(self):
+        self.assertIs(Luhn("1 2345 6789 1234 5678 9013").valid(), False)
 
     def test_valid_number_with_an_even_number_of_digits(self):
         self.assertIs(Luhn("095 245 88").valid(), True)
@@ -51,11 +61,22 @@ class LuhnTest(unittest.TestCase):
     def test_input_digit_9_is_correctly_converted_to_output_digit_9(self):
         self.assertIs(Luhn("091").valid(), True)
 
+    def test_very_long_input_is_valid(self):
+        self.assertIs(Luhn("9999999999 9999999999 9999999999 9999999999").valid(), True)
+
+    def test_valid_luhn_with_an_odd_number_of_digits_and_non_zero_first_digit(self):
+        self.assertIs(Luhn("109").valid(), True)
+
     def test_using_ascii_value_for_non_doubled_non_digit_isn_t_allowed(self):
         self.assertIs(Luhn("055b 444 285").valid(), False)
 
     def test_using_ascii_value_for_doubled_non_digit_isn_t_allowed(self):
         self.assertIs(Luhn(":9").valid(), False)
+
+    def test_non_numeric_non_space_char_in_the_middle_with_a_sum_that_s_divisible_by_10_isn_t_allowed(
+        self,
+    ):
+        self.assertIs(Luhn("59%59").valid(), False)
 
     # Additional tests for this track
 
@@ -66,7 +87,3 @@ class LuhnTest(unittest.TestCase):
         number = Luhn("055 444 285")
         self.assertIs(number.valid(), True)
         self.assertIs(number.valid(), True)
-
-
-if __name__ == "__main__":
-    unittest.main()

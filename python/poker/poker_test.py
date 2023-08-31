@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/poker/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from poker import (
     best_hands,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class PokerTest(unittest.TestCase):
@@ -71,6 +73,18 @@ class PokerTest(unittest.TestCase):
             best_hands(["JD QH JS 8D QC", "JS QS JC 2D QD"]), ["JD QH JS 8D QC"]
         )
 
+    def test_both_hands_have_two_pairs_that_add_to_the_same_value_win_goes_to_highest_pair(
+        self,
+    ):
+        self.assertEqual(
+            best_hands(["6S 6H 3S 3H AS", "7H 7S 2H 2S AC"]), ["7H 7S 2H 2S AC"]
+        )
+
+    def test_two_pairs_first_ranked_by_largest_pair(self):
+        self.assertEqual(
+            best_hands(["5C 2S 5S 4H 4C", "6S 2S 6H 7C 2C"]), ["6S 2S 6H 7C 2C"]
+        )
+
     def test_three_of_a_kind_beats_two_pair(self):
         self.assertEqual(
             best_hands(["2S 8H 2H 8D JH", "4S 5H 4C 8S 4H"]), ["4S 5H 4C 8S 4H"]
@@ -101,6 +115,11 @@ class PokerTest(unittest.TestCase):
     def test_aces_can_start_a_straight_a_2_3_4_5(self):
         self.assertEqual(
             best_hands(["4S 5H 4C 8D 4H", "4D AH 3S 2D 5C"]), ["4D AH 3S 2D 5C"]
+        )
+
+    def test_aces_cannot_be_in_the_middle_of_a_straight_q_k_a_2_3(self):
+        self.assertEqual(
+            best_hands(["2C 3D 7H 5H 2S", "QS KH AC 2D 3S"]), ["2C 3D 7H 5H 2S"]
         )
 
     def test_both_hands_with_a_straight_tie_goes_to_highest_ranked_card(self):
@@ -166,11 +185,29 @@ class PokerTest(unittest.TestCase):
             best_hands(["4S 5H 5S 5D 5C", "7S 8S 9S 6S 10S"]), ["7S 8S 9S 6S 10S"]
         )
 
-    def test_both_hands_have_straight_flush_tie_goes_to_highest_ranked_card(self):
+    def test_aces_can_end_a_straight_flush_10_j_q_k_a(self):
+        self.assertEqual(
+            best_hands(["KC AH AS AD AC", "10C JC QC KC AC"]), ["10C JC QC KC AC"]
+        )
+
+    def test_aces_can_start_a_straight_flush_a_2_3_4_5(self):
+        self.assertEqual(
+            best_hands(["KS AH AS AD AC", "4H AH 3H 2H 5H"]), ["4H AH 3H 2H 5H"]
+        )
+
+    def test_aces_cannot_be_in_the_middle_of_a_straight_flush_q_k_a_2_3(self):
+        self.assertEqual(
+            best_hands(["2C AC QC 10C KC", "QH KH AH 2H 3H"]), ["2C AC QC 10C KC"]
+        )
+
+    def test_both_hands_have_a_straight_flush_tie_goes_to_highest_ranked_card(self):
         self.assertEqual(
             best_hands(["4H 6H 7H 8H 5H", "5S 7S 8S 9S 6S"]), ["5S 7S 8S 9S 6S"]
         )
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_even_though_an_ace_is_usually_high_a_5_high_straight_flush_is_the_lowest_scoring_straight_flush(
+        self,
+    ):
+        self.assertEqual(
+            best_hands(["2H 3H 4H 5H 6H", "4D AD 3D 2D 5D"]), ["2H 3H 4H 5H 6H"]
+        )

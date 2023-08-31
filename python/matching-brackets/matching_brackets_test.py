@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/matching-brackets/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from matching_brackets import (
     is_paired,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class MatchingBracketsTest(unittest.TestCase):
@@ -47,6 +49,9 @@ class MatchingBracketsTest(unittest.TestCase):
     def test_paired_and_wrong_nested_brackets(self):
         self.assertEqual(is_paired("[({]})"), False)
 
+    def test_paired_and_wrong_nested_brackets_but_innermost_are_correct(self):
+        self.assertEqual(is_paired("[({}])"), False)
+
     def test_paired_and_incomplete_brackets(self):
         self.assertEqual(is_paired("{}["), False)
 
@@ -69,7 +74,3 @@ class MatchingBracketsTest(unittest.TestCase):
             ),
             True,
         )
-
-
-if __name__ == "__main__":
-    unittest.main()

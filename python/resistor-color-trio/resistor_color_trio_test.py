@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/resistor-color-trio/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from resistor_color_trio import (
     label,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class ResistorColorTrioTest(unittest.TestCase):
@@ -22,3 +24,18 @@ class ResistorColorTrioTest(unittest.TestCase):
 
     def test_yellow_and_violet_and_yellow(self):
         self.assertEqual(label(["yellow", "violet", "yellow"]), "470 kiloohms")
+
+    def test_blue_and_violet_and_blue(self):
+        self.assertEqual(label(["blue", "violet", "blue"]), "67 megaohms")
+
+    def test_minimum_possible_value(self):
+        self.assertEqual(label(["black", "black", "black"]), "0 ohms")
+
+    def test_maximum_possible_value(self):
+        self.assertEqual(label(["white", "white", "white"]), "99 gigaohms")
+
+    def test_first_two_colors_make_an_invalid_octal_number(self):
+        self.assertEqual(label(["black", "grey", "black"]), "8 ohms")
+
+    def test_ignore_extra_colors(self):
+        self.assertEqual(label(["blue", "green", "yellow", "orange"]), "650 kiloohms")

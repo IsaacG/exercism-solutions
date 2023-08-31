@@ -1,15 +1,22 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/crypto-square/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from crypto_square import (
     cipher_text,
 )
 
-# Tests adapted from `problem-specifications//canonical-data.json`
-
 
 class CryptoSquareTest(unittest.TestCase):
     def test_empty_plaintext_results_in_an_empty_ciphertext(self):
         value = ""
+        expected = ""
+        self.assertEqual(cipher_text(value), expected)
+
+    def test_normalization_results_in_empty_plaintext(self):
+        value = "... --- ..."
         expected = ""
         self.assertEqual(cipher_text(value), expected)
 
@@ -46,7 +53,3 @@ class CryptoSquareTest(unittest.TestCase):
         value = "If man was meant to stay on the ground, god would have given us roots."
         expected = "imtgdvs fearwer mayoogo anouuio ntnnlvt wttddes aohghn  sseoau "
         self.assertEqual(cipher_text(value), expected)
-
-
-if __name__ == "__main__":
-    unittest.main()

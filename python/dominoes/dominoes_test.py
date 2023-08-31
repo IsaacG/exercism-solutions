@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/dominoes/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from dominoes import (
     can_chain,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class DominoesTest(unittest.TestCase):
@@ -78,6 +80,11 @@ class DominoesTest(unittest.TestCase):
         output_chain = can_chain(input_dominoes)
         self.assert_correct_chain(input_dominoes, output_chain)
 
+    def test_separate_three_domino_loops(self):
+        input_dominoes = [(1, 2), (2, 3), (3, 1), (4, 5), (5, 6), (6, 4)]
+        output_chain = can_chain(input_dominoes)
+        self.refute_correct_chain(input_dominoes, output_chain)
+
     # Utility methods
 
     def normalize_dominoes(self, dominoes):
@@ -123,7 +130,3 @@ class DominoesTest(unittest.TestCase):
     def refute_correct_chain(self, input_dominoes, output_chain):
         msg = "There should be no valid chain for {}".format(input_dominoes)
         self.assertIsNone(output_chain, msg)
-
-
-if __name__ == "__main__":
-    unittest.main()

@@ -1,10 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/rectangles/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
 from rectangles import (
     rectangles,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class RectanglesTest(unittest.TestCase):
@@ -83,6 +85,18 @@ class RectanglesTest(unittest.TestCase):
             60,
         )
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_rectangles_must_have_four_sides(self):
+        self.assertEqual(
+            rectangles(
+                [
+                    "+-+ +-+",
+                    "| | | |",
+                    "+-+-+-+",
+                    "  | |  ",
+                    "+-+-+-+",
+                    "| | | |",
+                    "+-+ +-+",
+                ]
+            ),
+            5,
+        )

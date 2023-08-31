@@ -1,12 +1,13 @@
-import math
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/complex-numbers/canonical-data.json
+# File last updated on 2023-07-19
 
+import math
 import unittest
 
 from complex_numbers import (
     ComplexNumber,
 )
-
-# Tests adapted from `problem-specifications//canonical-data.json`
 
 
 class ComplexNumbersTest(unittest.TestCase):
@@ -148,6 +149,11 @@ class ComplexNumbersTest(unittest.TestCase):
             ComplexNumber(math.log(2), math.pi).exp(), ComplexNumber(-2, 0)
         )
 
+    def test_exponential_resulting_in_a_number_with_real_and_imaginary_part(self):
+        self.assertAlmostEqual(
+            ComplexNumber(math.log(2) / 2, math.pi / 4).exp(), ComplexNumber(1, 1)
+        )
+
     # Operations between real numbers and complex numbers
 
     def test_add_real_number_to_complex_number(self):
@@ -184,7 +190,3 @@ class ComplexNumbersTest(unittest.TestCase):
 
     def test_inequality_of_imaginary_part(self):
         self.assertNotEqual(ComplexNumber(1, 2), ComplexNumber(1, 1))
-
-
-if __name__ == "__main__":
-    unittest.main()

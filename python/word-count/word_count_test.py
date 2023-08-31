@@ -1,8 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/word-count/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
-from word_count import count_words
-
-# Tests adapted from `problem-specifications//canonical-data.json` @ v1.4.0
+from word_count import (
+    count_words,
+)
 
 
 class WordCountTest(unittest.TestCase):
@@ -42,8 +46,17 @@ class WordCountTest(unittest.TestCase):
 
     def test_with_apostrophes(self):
         self.assertEqual(
-            count_words("First: don't laugh. Then: don't cry."),
-            {"first": 1, "don't": 2, "laugh": 1, "then": 1, "cry": 1},
+            count_words("'First: don't laugh. Then: don't cry. You're getting it.'"),
+            {
+                "first": 1,
+                "don't": 2,
+                "laugh": 1,
+                "then": 1,
+                "cry": 1,
+                "you're": 1,
+                "getting": 1,
+                "it": 1,
+            },
         )
 
     def test_with_quotations(self):
@@ -77,6 +90,9 @@ class WordCountTest(unittest.TestCase):
             count_words(",\n,one,\n ,two \n 'three'"), {"one": 1, "two": 1, "three": 1}
         )
 
+    def test_quotation_for_word_with_apostrophe(self):
+        self.assertEqual(count_words("can, can't, 'can't'"), {"can": 1, "can't": 2})
+
     # Additional tests for this track
 
     def test_tabs(self):
@@ -105,6 +121,5 @@ class WordCountTest(unittest.TestCase):
             {"hey": 1, "my": 1, "spacebar": 1, "is": 1, "broken": 1},
         )
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_multiple_apostrophes_ignored(self):
+        self.assertEqual(count_words("''hey''"), {"hey": 1})

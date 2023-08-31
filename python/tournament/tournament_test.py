@@ -1,8 +1,12 @@
+# These tests are auto-generated with test data from:
+# https://github.com/exercism/problem-specifications/tree/main/exercises/tournament/canonical-data.json
+# File last updated on 2023-07-19
+
 import unittest
 
-from tournament import tally
-
-# Tests adapted from `problem-specifications//canonical-data.json` @ v1.4.0
+from tournament import (
+    tally,
+)
 
 
 class TournamentTest(unittest.TestCase):
@@ -137,6 +141,17 @@ class TournamentTest(unittest.TestCase):
         ]
         self.assertEqual(tally(results), table)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_ensure_points_sorted_numerically(self):
+        results = [
+            "Devastating Donkeys;Blithering Badgers;win",
+            "Devastating Donkeys;Blithering Badgers;win",
+            "Devastating Donkeys;Blithering Badgers;win",
+            "Devastating Donkeys;Blithering Badgers;win",
+            "Blithering Badgers;Devastating Donkeys;win",
+        ]
+        table = [
+            "Team                           | MP |  W |  D |  L |  P",
+            "Devastating Donkeys            |  5 |  4 |  0 |  1 | 12",
+            "Blithering Badgers             |  5 |  1 |  0 |  4 |  3",
+        ]
+        self.assertEqual(tally(results), table)
