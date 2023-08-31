@@ -38,6 +38,10 @@ def get_number_of_bills(budget, denomination):
     return int(budget / denomination)
 
 
+def get_leftover_of_bills(budget: float, denomination: int) -> float:
+    return budget % denomination
+
+
 def exchangeable_value(budget, exchange_rate, spread, denomination):
     """
 
