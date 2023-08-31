@@ -3,7 +3,6 @@ haskell
 HELP.md
 README.md
 HINTS.md
-python/*/*_test.py
 .exercism
 .articles
 go.mod
