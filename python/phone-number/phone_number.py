@@ -13,7 +13,7 @@ class PhoneNumber(object):
     digits = ''.join([i for i in num if i.isdigit()])
 
     if len(digits) > 11:
-      raise ValueError('more than 11 digits')
+      raise ValueError('must not be greater than 11 digits')
     # For an 11-digit with country code, drop the country code.
     if len(digits) == 11:
       if digits.startswith('1'):
@@ -23,7 +23,7 @@ class PhoneNumber(object):
     self.number = digits
 
     if len(self.number) != 10:
-      raise ValueError('incorrect number of digits')
+      raise ValueError('must not be fewer than 10 digits')
 
     for num, name in (('0', 'zero'), ('1', 'one')):
       for val, part in ((self.area_code, 'area'), (self.exchange, 'exchange')):
