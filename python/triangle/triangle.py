@@ -1,24 +1,18 @@
-def is_triangle(func):
-    def wrap_func(sides):
-        sides = sorted(sides)
-        if 0 in sides:
-            return False
-        if max(sides) * 2 > sum(sides):
-            return False
-        return func(sides)
-    return wrap_func
+def is_valid(sides: list[float]) -> bool:
+    """Return if a triangle is valid."""
+    return max(sides) * 2 < sum(sides) and all(sides)
 
 
-@is_triangle
-def equilateral(sides):
-    return len(set(sides)) == 1
+def equilateral(sides: list[float]) -> bool:
+    """Return if a triangle is an equilateral triangle."""
+    return is_valid(sides) and len(set(sides)) == 1
 
 
-@is_triangle
-def isosceles(sides):
-    return 1 <= len(set(sides)) <= 2
+def isosceles(sides: list[float]) -> bool:
+    """Return if a triangle is an isosceles triangle."""
+    return is_valid(sides) and len(set(sides)) < 3
 
 
-@is_triangle
-def scalene(sides):
-    return len(set(sides)) == 3
+def scalene(sides: list[float]) -> bool:
+    """Return if a triangle is a scalene triangle."""
+    return is_valid(sides) and len(set(sides)) == 3
