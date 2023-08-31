@@ -1,9 +1,9 @@
 #!/usr/bin/env gawk -f
 
 BEGIN {
-    if (! (num % 3)) out = out "Pling"
-    if (! (num % 5)) out = out "Plang"
-    if (! (num % 7)) out = out "Plong"
-    if (! out) out = num
-    print out
+    sounds[3] = "Pling"; sounds[5] = "Plang"; sounds[7] = "Plong"
+    for (factor in sounds)
+        if (num % factor == 0)
+            out = out sounds[factor]
+    print (out ? out : num)
 }
