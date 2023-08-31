@@ -1,69 +1,72 @@
-"""Solve word equations."""
+"""Solve word equations.
+
+
+Iteration 1: Recursive regex-based split and solve.
+Iteration 2: Similar to #1 with more operators.
+Iteration 3: Similar to #2 with numbers treated as an operation.
+Iteration 4: Similar to #3.
+Iteration 5: Replace recursion and regex matching with a stream parser/tokenizer/generator.
+    This approach should be significantly more efficient as there is no recursion.
+Iteration 6: Replace the generator with a single-pass regex.split().
+    This approach is simpler as there is no need to maintain an index/pointer
+    and all the splitting/tokenizing happens in a single call.
+"""
 
 import operator
 import re
 
-from typing import Callable, Generator
+from typing import Callable
 
 
 # Match a number.
-NUM_RE = re.compile(r"(-?[0-9]+)[ \?]")
+NUM_RE = re.compile(r"(-?[0-9]+)")
 # Binary (two operands) operations.
-OPS = [
-    (operator.mul, "multiplied by"),
-    (operator.truediv, "divided by"),
-    (operator.add, "plus"),
-    (operator.sub, "minus"),
-    (operator.mod, "modulus"),
-    (operator.gt, "is greater than"),
-    (operator.lt, "is less than"),
-    (operator.lt, "is less than"),
-]
+OPS = {
+    "times": operator.mul,
+    "multiplied by": operator.mul,
+    "divided by": operator.truediv,
+    "plus": operator.add,
+    "minus": operator.sub,
+    "modulus": operator.mod,
+    "is greater than": operator.gt,
+    "is less than": operator.lt,
+}
 
 
-def tokenize(question: str) -> Generator[tuple[Callable[[int, int], int], int], None, None]:
-    """Generator operator, number pairs for a given question.
+def tokenize(question: str) -> list[tuple[Callable[[int, int], int], int]]:
+    """Return pairs of operators and operands, parsed from the question.
 
-    Parse a question and yield tuple[operator, int] pairs for the input.
-    The expectation is that we start with a value of 0 and the first operation is a "0 + int".
+    The expectation is that we start with a value of 0
+    and the first operation is a "0 + int".
     """
-    # Pointer to the start of the next token.
-    position = 0
-    # The end of the question, when we stop parsing.
-    end = len(question)
-
-    def read_int():
-        """Return an int, parsed from the current position."""
-        nonlocal position
-        if match := NUM_RE.match(question[position:]):
-            position += match.end()
-            return int(match.group(1))
+    # Parse the first two words and suffix, "What is ...?"
+    if not question.startswith("What "):
+        raise ValueError("unknown operation")
+    if not question.startswith("What is "):
         raise ValueError("syntax error")
+    if not question.endswith("?"):
+        raise ValueError("syntax error")
+    question = question.removeprefix("What is ").removesuffix("?")
 
-    def read_op():
-        """Return an operator, parsed from the current position."""
-        nonlocal position
-        for oper, text in OPS:
-            if question[position:].startswith(text):
-                position += len(text) + 1
-                return oper
-        if NUM_RE.match(question[position:]):
+    # Split the question up into operations and numbers.
+    pattern = r"|".join(OPS)
+    parts = re.split(f"({pattern})", question)
+    parts = [i.strip() for i in parts]
+
+    numbers = parts[::2]
+    operations = ["plus"] + parts[1::2]
+
+    # Validation. The operators are known good since they were taken from
+    # the operators dict. The part between the operators need validation.
+    for number in numbers:
+        if any(i.isalpha() for i in number.split()):
+            raise ValueError("unknown operation")
+        if not NUM_RE.fullmatch(number):
             raise ValueError("syntax error")
-        raise ValueError("unknown operation")
 
-    # Parse the first two works, "What is ..."
-    if not question[position:].startswith("What "):
-        raise ValueError("unknown operation")
-    position += len("What ")
-    if not question[position:].startswith("is "):
-        raise ValueError("syntax error")
-    position += len("is ")
-
-    # The first operator is an implicit "add".
-    yield operator.add, read_int()
-    # While there is more question, parse operator, int pairs.
-    while position < end:
-        yield read_op(), read_int()
+    # Map operators to callables and numbers to integers.
+    # Pair them up and return.
+    return list(zip((OPS[oper] for oper in operations), (int(i) for i in numbers)))
 
 
 def answer(question: str) -> int:
