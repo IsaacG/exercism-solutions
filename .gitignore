@@ -1,6 +1,5 @@
 __pycache__
 haskell
-**/*.md
 python/*/*_test.py
 .exercism
 .articles
