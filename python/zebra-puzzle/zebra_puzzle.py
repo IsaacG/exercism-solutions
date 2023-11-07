@@ -144,24 +144,23 @@ def solve_puzzle() -> Street:
     # JAPANESE: 15
     # UKRAINIAN: 11
     # NORWEGIAN: 32
-    # Combinations: 11*9*15*11*32 = 522720
 
     # Find (unordered) house combinations where all values are present.
-    house_combos = (
+    house_combos = [
         houses
+        # Combinations: 11*9*15*11*32 = 522720
         for houses in itertools.product(*options.values())
         if [set(v) for v in zip(*houses)] == ALL_VALUES
-    )
+    ]
     # 456 combinations of possible (unordered) house collections.
 
+    found = []
     # For each valid combination of houses, they can be laid out in many (5! = 120) orders.
     # 456 combinations with 5! orderings = 54720 possibilities.
-    found = [
-        street
-        for houses in house_combos
-        for street in itertools.permutations(houses)
-        if valid_street(street)
-    ]
+    for houses in house_combos:
+        for street in itertools.permutations(houses):
+            if valid_street(street):
+                found.append(street)
 
     assert len(found) == 1, len(found)
     return found[0]
