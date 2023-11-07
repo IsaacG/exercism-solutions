@@ -9,10 +9,8 @@ class Results(enum.Enum):
 
 # Possible sublist categories.
 # Change the values as you see fit.
-SUBLIST = Results.SUBLIST
-SUPERLIST = Results.SUPERLIST
-EQUAL = Results.EQUAL
-UNEQUAL = Results.UNEQUAL
+for result in Results:
+    globals()[result.name] = result
 
 
 def sublist(list_one, list_two):
