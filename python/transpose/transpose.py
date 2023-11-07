@@ -1,44 +1,4 @@
 """Transpose a block of text."""
-import string
-import time
-
-def benchmark():
-    lines = "\n".join([string.ascii_uppercase * 50_000_000] * 2)
-    print(test_it(pad_one, lines, 1))
-    print(test_it(pad_two, lines, 1))
-
-
-def test_it(func, lines, n):
-    start = time.clock_gettime_ns(time.CLOCK_MONOTONIC_RAW)
-    for i in range(n):
-        func(lines)
-    end = time.clock_gettime_ns(time.CLOCK_MONOTONIC_RAW)
-    return end - start
-
-def pad_one(lines):
-    space_padded: list[str] = []
-    width = 0
-    for row in reversed(lines.splitlines()):
-        width = max(len(row), width)
-        space_padded.append(row.ljust(width))
-    space_padded.reverse()
-    return space_padded
-
-
-def pad_two(lines):
-    widths = []
-    width = 0
-    for row in reversed(lines.splitlines()):
-        width = max(len(row), width)
-        widths.append(width)
-    # widths.reverse()
-
-    space_padded: list[str] = []
-    for width, row in zip(widths, lines.splitlines()):
-        space_padded.append(row.ljust(width))
-
-    return space_padded
-
 
 def transpose(lines: str) -> str:
     """Transpose a string.
@@ -62,8 +22,6 @@ def transpose(lines: str) -> str:
         width = max(len(row), width)
         space_padded.append(row.ljust(width))
     space_padded.reverse()
-
-    space_padded = pad_two(lines)
 
     # Build a "matrix" which is rectangular to aid in lookups.
     input_matrix: list[list[str]] = []
