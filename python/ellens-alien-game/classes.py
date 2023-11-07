@@ -31,7 +31,6 @@ class Alien:
     def collision_detection(self, other: object) -> None:
         """Detect collision."""
 
-
 def new_aliens_collection(positions: list[tuple[int, int]]) -> list[Alien]:
     """Return a list of Aliens for a given list of positions."""
     return [Alien(*coordinate) for coordinate in positions]
