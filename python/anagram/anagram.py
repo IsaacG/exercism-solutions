@@ -1,18 +1,9 @@
-from collections import defaultdict
+from collections import Counter
 
 
-def count(word):
-  m = defaultdict(int)
-  for c in word.lower():
-    m[c] += 1
-  return m
-
-
-def find_anagrams(word, candidates):
-  wcount = count(word)
-
-  return [c for c in candidates
-          if c.lower() != word.lower() and wcount == count(c)]
-
-
-# vim:ts=2:sw=2:expandtab
+def find_anagrams(word: str, candidates: list[str]) -> list[str]:
+    word_count = Counter(word.lower())
+    return [
+        c for c in candidates
+        if c.lower() != word.lower() and word_count == Counter(c.lower())
+    ]
