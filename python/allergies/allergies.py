@@ -16,6 +16,3 @@ class Allergies(object):
     @property
     def lst(self):
         return self._lst
-
-
-# vim:ts=2:sw=2:expandtab

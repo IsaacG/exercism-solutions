@@ -24,3 +24,4 @@ def get_efficiency(power_factor: int) -> float:
 def get_cost(watts: int, power_factor: int, price: float) -> float:
     """Calculate the cost of a given kWh value, efficiency and price."""
     return price * get_kwh_amount(watts) / get_efficiency(power_factor)
+

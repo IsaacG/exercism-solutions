@@ -19,5 +19,3 @@ class Garden:
 
   def lookup(self, r, c):
     return _PLANTS[self.rows[r][c]]
-
-# vim:ts=2:sw=2:expandtab
