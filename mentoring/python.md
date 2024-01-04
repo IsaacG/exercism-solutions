@@ -16,7 +16,7 @@
 General
 -------
 ```text
-Hi! I'm excited to be your mentor for this code review. Reviewing code and providing feedback takes a lot of time and energy but I usually find it very rewarding when I get to work with someone to help them improve their solution! Code reviews are an iterative process. The reviewer looks over the code provides feedback/recommendations and the code author (that's you) responds, asking follow up questions, getting clarification and/or updating the code. Then the process starts over and repeates until everyone is happy with the final, collaboratively developed result. I'm looking forward to working with you on this!
+Hi! I'm excited to be your mentor for this code review. Reviewing code and providing feedback takes a lot of time and energy but I usually find it very rewarding when I get to work with someone to help them improve their solution! Code reviews are an iterative process. The reviewer looks over the code provides feedback/recommendations and the code author (that's you) responds, asking follow up questions, getting clarification and/or ***updating the code*** by submitting a new iteration. Then the process starts over and repeats until everyone is happy with the final, collaboratively developed result. I'm looking forward to working with you on this!
 There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
 Using a data type as part of the variable name is typically considered an anti-pattern. Prefer describing what the variable represents or is used for.
 That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
