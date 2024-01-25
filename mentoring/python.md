@@ -34,6 +34,7 @@ In boolean logic (and Python), `var == True` is the same as `var` and `var == Fa
 In languages were strings are immutable (like Python and Go), string concatenations are relatively expensive and should generally not be done in loops. Instead, string building techniques should be used, like collecting string pieces in a list then making use of `str.join()`.
 Function definitions should be separated from other expressions by exactly two blank lines.
 Regular variables are usually named using `snake_case` and module constants use `ALL_CAPS`.
+The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
 
 Formatting:
 Functions should be separated from other statements by exactly two blank lines.
