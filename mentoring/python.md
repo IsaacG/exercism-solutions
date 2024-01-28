@@ -35,6 +35,8 @@ In languages were strings are immutable (like Python and Go), string concatenati
 Function definitions should be separated from other expressions by exactly two blank lines.
 Regular variables are usually named using `snake_case` and module constants use `ALL_CAPS`.
 The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
+[PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
+[PEP-257](https://peps.python.org/pep-0257/) says docstrings which are multiple lines should start with a one line summary. The summary should be followed by a blank line then the rest of the docstring.
 
 Formatting:
 Functions should be separated from other statements by exactly two blank lines.
