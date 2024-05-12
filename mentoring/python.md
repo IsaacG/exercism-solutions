@@ -17,6 +17,8 @@ General
 -------
 ```text
 Hi! I'm excited to be your mentor for this code review. Reviewing code and providing feedback takes a lot of time and energy but I usually find it very rewarding when I get to work with someone to help them improve their solution! Code reviews are an iterative process. The reviewer looks over the code provides feedback/recommendations and the code author (that's you) responds, asking follow up questions, getting clarification and/or ***updating the code*** by submitting a new iteration. Then the process starts over and repeats until everyone is happy with the final, collaboratively developed result. I'm looking forward to working with you on this!
+I am looking forward to seeing your next iteration of this solution and working with you to continue improving your code, one iteration at a time! (Hint, hint: please update your code and submit a new iteration.)
+
 There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
 Using a data type as part of the variable name is typically considered an anti-pattern. Prefer describing what the variable represents or is used for.
 That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
@@ -37,11 +39,11 @@ Regular variables are usually named using `snake_case` and module constants use 
 The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings which are multiple lines should start with a one line summary. The summary should be followed by a blank line then the rest of the docstring.
+Commas (`,`) should be followed by a space, just line in this sentence!
 
 Formatting:
 Functions should be separated from other statements by exactly two blank lines.
 Operators like `=` should be space padded.
-I am looking forward to seeing your next iteration of this solution and working with you to continue improving your code, one iteration at a time! (Hint, hint: please update your code and submit a new iteration.)
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
 
 The following is a common anti-pattern:
