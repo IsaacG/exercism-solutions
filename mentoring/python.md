@@ -45,6 +45,7 @@ Formatting:
 Functions should be separated from other statements by exactly two blank lines.
 Operators like `=` should be space padded.
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
+[PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 
 The following is a common anti-pattern:
 
