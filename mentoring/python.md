@@ -30,6 +30,7 @@ Single character variable names are usually not recommended, especially for any 
 In languages were strings are immutable (like Python and Go), string concatenations are relatively expensive and should generally not be done in loops. Instead, string building techniques should be used, like collecting string pieces in a list then making use of `str.join()`.
 The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
 
+[PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings which are multiple lines should start with a one line summary. The summary should be followed by a blank line then the rest of the docstring.
 Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
@@ -38,7 +39,6 @@ Operators like `=` should be space padded.
 Function definitions should be separated from other expressions by exactly two blank lines.
 
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
-[PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 
 Can you [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting)?
 Can you avoid [magic values](https://en.wikipedia.org/wiki/Magic_string) in your code?
