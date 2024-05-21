@@ -17,39 +17,37 @@ General
 -------
 ```text
 Hi! I'm excited to be your mentor for this code review. Reviewing code and providing feedback takes a lot of time and energy but I usually find it very rewarding when I get to work with someone to help them improve their solution! Code reviews are an iterative process. The reviewer looks over the code provides feedback/recommendations and the code author (that's you) responds, asking follow up questions, getting clarification and/or ***updating the code*** by submitting a new iteration. Then the process starts over and repeats until everyone is happy with the final, collaboratively developed result. I'm looking forward to working with you on this!
+
 I am looking forward to seeing your next iteration of this solution and working with you to continue improving your code, one iteration at a time! (Hint, hint: please update your code and submit a new iteration.)
 
-There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
+Don't worry about your response time and how long it takes you to update your solution. I mentor enough that I have multiple solutions in my inbox most days and it doesn't matter to me if your solution pops up in my inbox tomorrow or next week.
+
 Using a data type as part of the variable name is typically considered an anti-pattern. Prefer describing what the variable represents or is used for.
 That data dict is a good candidate for a module-level constant. There is not need to have it recreated every time the function is called.
 This code uses both double quotes and single quotes. Either is fine, but avoid mixing and matching! Consistent code is good code.
 Single character variable names are usually not recommended, especially for any scope larger than one or two lines.
-For type annotation, the `list` should be `list[int]` (for Py 3.9+) or `from typing import List; List[int]`
-Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
-Submitting the test file is not necessary ... and makes reviewing your solution more difficult.
-`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
-Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
-Type checking is best done with the builtin `isinstance()` method.
 `[f(a) for a in b]` iterates through `b` to create a list. You are then iterating over this list to compute a return value. You can avoid that extra middle step of building and storing a list by passing a generator to the function instead and having the function process the elements of that iterator directly! You can do this by doing `func(f(a) for a in b)`.
-In Python, the `is` operator checks if two objects are the *same object* while `==` checks if two objects have the same *value*. `[1, 2] == [1, 2] -> True` but `[1, 2] is [1, 2] -> False`. You generally want to use `==` and only want `is` in very specific conditions.
-In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
 In languages were strings are immutable (like Python and Go), string concatenations are relatively expensive and should generally not be done in loops. Instead, string building techniques should be used, like collecting string pieces in a list then making use of `str.join()`.
-Function definitions should be separated from other expressions by exactly two blank lines.
-Regular variables are usually named using `snake_case` and module constants use `ALL_CAPS`.
 The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
+
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings which are multiple lines should start with a one line summary. The summary should be followed by a blank line then the rest of the docstring.
+Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
 Commas (`,`) should be followed by a space, just line in this sentence!
-
-Formatting:
-Functions should be separated from other statements by exactly two blank lines.
 Operators like `=` should be space padded.
+Function definitions should be separated from other expressions by exactly two blank lines.
+
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
 [PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 
+Can you [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting)?
+Can you avoid [magic values](https://en.wikipedia.org/wiki/Magic_string) in your code?
+Can you [avoid repeating yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)?
+
+In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
 The following is a common anti-pattern:
 
-\`\`\`python
+``python
 # Avoid this pattern.
 if condition:
     return True
@@ -57,17 +55,18 @@ return False
 
 # That should be replaces with this.
 return condition
-\`\`\`
+``
 
-```
+Regular variables are usually named using `snake_case` and module constants use `ALL_CAPS`.
+There's no need to comment just to say you submitted a new iteration; Exercism notifies mentors of new iterations.
+For type annotation, the `list` should be `list[int]` (for Py 3.9+) or `from typing import List; List[int]`
+Submitting the test file is not necessary ... and makes reviewing your solution more difficult.
+`Exception` is a base exception class and is very generic. It conveys the least amount of information of (almost) all the exceptions. Avoid using this directly and always prefer [a more specific exception](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
+Exception messages should start with an uppercase letter and end with a period (just like docstrings). When possible, prove as much detail as possible in the message so the user can figure out what went wrong (like, the bad value or the type of the data). That makes acting on the error much easier.
+Type checking is best done with the builtin `isinstance()` method.
+In Python, the `is` operator checks if two objects are the *same object* while `==` checks if two objects have the same *value*. `[1, 2] == [1, 2] -> True` but `[1, 2] is [1, 2] -> False`. You generally want to use `==` and only want `is` in very specific conditions.
 
-### Common links
-
-```text
 [Guard clauses](https://en.wikipedia.org/wiki/Guard_(computer_science)) are used to check for conditions and prevent code from running if the conditons are not met. This allows you to handle boundary conditions once and then have the rest of the code [not nested or wrapped](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting) or have to worry about those conditions.
-Can you [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting) here? Reorganizing code and/or returning early can reduce how much nesting there is in code and make it much simpler to read.
-Can you avoid [magic strings](https://en.wikipedia.org/wiki/Magic_string) in your code?
-Can you [avoid repeating yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)?
 [Python's built-in functions](https://docs.python.org/3/library/functions.html)
 [Python's built-in types](https://docs.python.org/3/library/stdtypes.html)
 [Built-in string methods](https://docs.python.org/3/library/stdtypes.html#string-methods)
