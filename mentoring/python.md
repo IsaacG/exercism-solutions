@@ -29,6 +29,7 @@ Single character variable names are usually not recommended, especially for any 
 `[f(a) for a in b]` iterates through `b` to create a list. You are then iterating over this list to compute a return value. You can avoid that extra middle step of building and storing a list by passing a generator to the function instead and having the function process the elements of that iterator directly! You can do this by doing `func(f(a) for a in b)`.
 In languages were strings are immutable (like Python and Go), string concatenations are relatively expensive and should generally not be done in loops. Instead, string building techniques should be used, like collecting string pieces in a list then making use of `str.join()`.
 The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#214-truefalse-evaluations) recommends "Use the “implicit” false if at all possible".
+The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#22-imports) recommends "Use `import` statements for packages and modules only, not for individual types, classes, or functions.".
 
 [PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
