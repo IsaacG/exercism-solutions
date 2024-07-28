@@ -1,42 +1,56 @@
-"""Parse resistor colors."""
+colors_resistors = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"]
 
-COLORS = "black brown red orange yellow green blue violet grey white".split()
-TOLERANCES = {
-    "grey": 0.05,
-    "violet": 0.1,
-    "blue": 0.25,
-    "green": 0.5,
-    "brown": 1,
-    "red": 2,
-    "gold": 5,
-    "silver": 10,
+tolerances = {
+    "grey": " ±0.05%",
+    "violet": " ±0.1%",
+    "blue": " ±0.25%",
+    "green": " ±0.5%",
+    "brown": " ±1%",
+    "red": " ±2%",
+    "gold": " ±5%",
+    "silver": " ±10%"
 }
-UNITS = ["ohms", "kiloohms", "megaohms"]
 
-
-def resistor_label(colors: list[str]) -> str:
-    """Return the value of a resistor color."""
-    # Unpack or set up variables.
-    if len(colors) > 3:
-        *values, multiplier, tolerance = colors
+def scale(resistor_value, multiply):
+    print(f"scale({resistor_value}, {multiply})")
+    if multiply <= 1:
+        return f"{resistor_value} ohms"
+    elif multiply >= 2 and multiply <= 5:
+        result = resistor_value / 1000
+        if result.is_integer():
+            return f"{int(result)} kiloohms"
+        else:
+            return f"{result:.2f} kiloohms"  # Format to two decimal places
+    elif multiply == 6 and resistor_value > 1000:
+        return f"{resistor_value/1e6:.2f} megaohms"  # Format to two decimal places
+    elif multiply == 9:
+        return f"{resistor_value} gigaohms"
     else:
-        values, multiplier, tolerance = colors, COLORS[0], None
+        return f"{resistor_value} ohms"
 
-    # Add the bands, apply the multiplier.
-    val = 0.0
-    for value in values:
-        val = val * 10 + COLORS.index(value)
-    val *= 10 ** COLORS.index(multiplier)
+def listvalues(bands):
+    values = []
+    for color in bands:
+        for idx, resistor in enumerate(colors_resistors):
+            if resistor == color:
+                values.append(str(idx))
+    return values
 
-    # Shift numbers over to get the proper prefix.
-    power = 0
-    while val > 1000:
-        val /= 1000
-        power += 1
+def resistorInfo(values,multiply,tolerance):
+    resistor_value = int("".join(values)) * (10 ** multiply)
+    return scale(resistor_value, multiply) + tolerances[tolerance]
 
-    # Add a tolerance, if one is supplied.
-    result = f"{val:n} {UNITS[power]}"
-    if tolerance:
-        result += f" ±{TOLERANCES[tolerance]}%"
-
-    return result
+def resistor_label(colors):
+    multiply = colors_resistors.index(colors[-2])
+    tolerance = colors[-1]
+    if len(colors) == 4:
+        bands = colors[:2]
+        values = listvalues(bands)
+        return resistorInfo(values,multiply,tolerance)
+    elif len(colors) == 5:
+        bands = colors[:3]
+        values = listvalues(bands)
+        resistor_value = int("".join(values)) * (10 ** multiply)
+        value = scale(resistor_value, multiply)
+        result = scale(resistor_value, multiply) + tolerances[tolerance.lower()]
+        return result

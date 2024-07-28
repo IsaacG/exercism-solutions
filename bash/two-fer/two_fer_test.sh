@@ -19,6 +19,7 @@
   #     $ BATS_RUN_SKIPPED=true bats two_fer_test.sh
 
   run bash two_fer.sh
+  printf 'Status [%s] Output [%s]\n' "$status" "$output"
   (( status == 0 ))
   [[ $output == "One for you, one for me." ]]
 }

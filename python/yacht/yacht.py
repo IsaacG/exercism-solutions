@@ -1,24 +1,41 @@
 """Score a game of Yacht."""
 import collections
-import typing
 
 
-ONES = lambda count: 1 * count[1]
-TWOS = lambda count: 2 * count[2]
-THREES = lambda count: 3 * count[3]
-FOURS = lambda count: 4 * count[4]
-FIVES = lambda count: 5 * count[5]
-SIXES = lambda count: 6 * count[6]
-LITTLE_STRAIGHT = lambda count: 30 if set(count) == {1, 2, 3, 4, 5} else 0
-BIG_STRAIGHT = lambda count: 30 if set(count) == {2, 3, 4, 5, 6} else 0
-FULL_HOUSE = lambda count: CHOICE(count) if set(count.values()) == {2, 3} else 0
-FOUR_OF_A_KIND = lambda count: 4 * count.most_common(1)[0][0] if count.most_common(1)[0][1] >= 4 else 0
-YACHT = lambda count: 50 if len(set(count)) == 1 else 0
-CHOICE = lambda count: sum(face * times for face, times in count.items())
+def sum_count(count: collections.Counter) -> int:
+    return sum(val * num for val, num in count.items())
 
 
-def score(dice: list[int], category: typing.Callable[[dict[int, int]], int]) -> int:
+def face(val: int, count: collections.Counter) -> int:
+    return val * count[val]
+
+
+CATEGORIES = [
+    ("ONES", None, lambda count: face(1, count)),
+    ("TWOS", None, lambda count: face(2, count)),
+    ("THREES", None, lambda count: face(3, count)),
+    ("FOURS", None, lambda count: face(4, count)),
+    ("FIVES", None, lambda count: face(5, count)),
+    ("SIXES", None, lambda count: face(6, count)),
+    ("LITTLE_STRAIGHT", (lambda count: set(count) == {1, 2, 3, 4, 5}), 30),
+    ("BIG_STRAIGHT", (lambda count: set(count) == {2, 3, 4, 5, 6}), 30),
+    ("FULL_HOUSE", (lambda count: set(count.values()) == {2, 3}), sum_count),
+    (
+        "FOUR_OF_A_KIND",
+        (lambda count: count.most_common(1)[0][1] >= 4),
+        (lambda count: 4 * count.most_common(1)[0][0]),
+    ),
+    ("YACHT", (lambda count: len(set(count)) == 1), 50),
+    ("CHOICE", None, sum_count),
+]
+for name, condition, value in CATEGORIES:
+    globals()[name] = (condition, value)
+
+
+def score(dice: list[int], category) -> int:
     """Return the score of a "hand" in Yacht."""
-    return category(collections.Counter(dice))
-
-# vim:ts=4:sw=4:expandtab
+    counter = collections.Counter(dice)
+    condition, value = category
+    if condition is None or condition(counter):
+        return value(counter) if callable(value) else value
+    return 0

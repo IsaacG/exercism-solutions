@@ -49,3 +49,13 @@ def clean_up(combined_record_group):
     data = [(d[0],) + (d[2:]) for d in combined_record_group]
     out = "\n".join("(" + ", ".join(repr(i) for i in d) + ")" for d in data)
     return out + "\n"
+
+
+def clean_up(combined_record_group):
+    report = []
+    for records in combined_record_group:
+        record = list(records)
+        del record[1]
+        report.append(record)
+    return """ """.join(str(report))
+

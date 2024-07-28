@@ -27,7 +27,7 @@ def convert(input_grid: list[str]) -> str:
         raise ValueError("Number of input columns is not a multiple of three")
 
     output = []
-    # Process grind one "line" of text at a time.
+    # Process grid one "line" of text at a time.
     for line_offset in range(0, len(input_grid), 4):
         line_len = len(input_grid[line_offset])
         # Break the "line" into 3x4 blocks.
@@ -42,6 +42,3 @@ def convert(input_grid: list[str]) -> str:
         vals = [DIGITS.get(block, "?") for block in blocks]
         output.append("".join(vals))
     return ",".join(output)
-
-
-convert([" _ ", "| |", "|_|", "   "])

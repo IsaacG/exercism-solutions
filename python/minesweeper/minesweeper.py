@@ -1,50 +1,32 @@
 """Minesweeper."""
 
-from typing import Generator
-
-
-def neighbors(cell: complex) -> Generator[complex, None, None]:
-    """Yield all eight neighboring cells."""
-    for x in (-1, 0, 1):
-        for y in (-1, 0, 1):
-            if offset := x + y * 1j:
-                yield cell + offset
-
-
-class Minefield:
-    """Minefield helper."""
-
-    def __init__(self, data: list[str]):
-        """Initialize."""
-        self.height = len(data)
-        self.width = len(data[0]) if data else 0
-
-        if not all(len(row) == self.width for row in data):
-            raise ValueError("The board is invalid with current input.")
-
-        self.data = {}
-        for y, line in enumerate(data):
-            for x, val in enumerate(line):
-                self.data[x + y * 1j] = val
-        if not all(v in (" ", "*") for v in self.data.values()):
-            raise ValueError("The board is invalid with current input.")
-
-    def val(self, x: int, y: int) -> str:
-        """Return the value for one square."""
-        cur = x + y * 1j
-        if self.data[cur] == "*":
-            return "*"
-        count = sum(self.data.get(neighbor, "") == "*" for neighbor in neighbors(cur))
-        return str(count) if count else " "
-
-    def convert(self) -> list[str]:
-        """Convert the minefield."""
-        return [
-            "".join(self.val(x, y) for x in range(self.width))
-            for y in range(self.height)
-        ]
+ADJACENT = [complex(x, y) for x in (-1, 0, 1) for y in (-1, 0, 1) if x or y]
 
 
 def annotate(minefield: list[str]) -> list[str]:
     """Annotate a minefield."""
-    return Minefield(minefield).convert()
+    height = len(minefield)
+    width = len(minefield[0]) if minefield else 0
+
+    if not all(len(row) == width for row in minefield):
+        raise ValueError("The board is invalid with current input.")
+
+    mines = set()
+    for y, line in enumerate(minefield):
+        for x, val in enumerate(line):
+            if val == "*":
+                mines.add(complex(x, y))
+            elif val != " ":
+                raise ValueError("The board is invalid with current input.")
+
+    def cell_value(point: complex) -> str:
+        """Return the value for one square."""
+        if point in mines:
+            return "*"
+        count = sum(point + offset in mines for offset in ADJACENT)
+        return str(count) if count else " "
+
+    return [
+        "".join(cell_value(complex(x, y)) for x in range(width))
+        for y in range(height)
+    ]

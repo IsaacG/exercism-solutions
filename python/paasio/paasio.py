@@ -22,10 +22,6 @@ class MeteredFile(io.BufferedRandom):
         """Enter context."""
         return self
 
-    def __exit__(self, *args, **kwargs) -> Optional[bool]:
-        """Exit context."""
-        return super().__exit__(*args, **kwargs)
-
     def __iter__(self) -> MeteredFile:
         """Return an iterator."""
         return self

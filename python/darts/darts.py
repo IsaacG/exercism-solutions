@@ -1,12 +1,14 @@
-"""Compute points for a game of darts."""
 import math
 
-BANDS = [(1, 10), (5, 5), (10, 1), (math.inf, 0)]
+def score(x, y):
+    diag = math.sqrt(x*x + y*y)
+    if diag <= 1:
+      return 10
+    if diag <= 5:
+      return 5
+    if diag <= 10:
+      return 1
+    return 0
 
-def score(x: int, y: int) -> int:
-    """Return the score for a throw."""
-    distance = math.sqrt(x * x + y * y)
-    for band, points in BANDS:
-        if distance <= band:
-            return points
-    raise RuntimeError
+
+# vim:ts=2:sw=2:expandtab
