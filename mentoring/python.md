@@ -245,7 +245,7 @@ Do you need to call `lower()` once for every character in the `sentence`? Functi
 Is it always necessary to loop through every letter to determine whether a sentence is a pangram?
 Python has an [`any()`](https://docs.python.org/3/library/functions.html#all) and [`all()`](https://docs.python.org/3/library/functions.html#all) that might be helpful here.
 Rather than calling `.lower()` a whole lot of times inside the loop, can you call it just once?
-Is this sentence a pangram? "The quick brown fox jumped over the lazy dog." What steps did you take to determine that? Did you have to do any counting to accomplish that?
+Given a sentence, can you, yourself without a program, determine if it is a pangram? Consider this sentence; can you determine if it is a pangram -- and pay attention to how you do it! `"The five smart wizards jump quickly."`. Actually check that sentence before reading on! Now ... most people figure out if a sentence is a pangram without doing any counting. If you solved it without counting, can your program do the same thing?
 Python works quite well with strings and characters. It has methods like `str.isalpha()` and defined objects such as [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase). Is type conversion necessary?
 The counting approach works fairly well and is an acceptable solution ... but isn't the approach that people tend to take when solving for a pangram in their head. It also is `O(n)` which is slower for large inputs.
 Python has an [`all()`](https://docs.python.org/3/library/functions.html#all) that is designed specifically to clean up patterns like this one.
