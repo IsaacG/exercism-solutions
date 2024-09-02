@@ -239,6 +239,7 @@ Pangram
 <details><summary>Notes</summary>
 
 ```text
+Take a look at the following sentence. Can you tell -- without using a computer or paper/pen, if it is a pangram? "When zombies arrive, quickly call Judge Pat." Most people can tell if that is a pangram without needing to do any counting. Can you tell without counting? Can your program avoid counting?
 [`string.ascii_lowercase`](https://docs.python.org/3/library/string.html#string.ascii_lowercase) might be useful here.
 Suppose the input sentence is 100,000 characters long. Is it necessary to loop through each character to solve this?
 Do you need to call `lower()` once for every character in the `sentence`? Function calls are cheap but not free.
