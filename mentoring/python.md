@@ -68,7 +68,7 @@ Type checking is best done with the builtin `isinstance()` method.
 In Python, the `is` operator checks if two objects are the *same object* while `==` checks if two objects have the same *value*. `[1, 2] == [1, 2] -> True` but `[1, 2] is [1, 2] -> False`. You generally want to use `==` and only want `is` in very specific conditions.
 
 [Guard clauses](https://en.wikipedia.org/wiki/Guard_(computer_science)) are used to check for conditions and prevent code from running if the conditons are not met. This allows you to handle boundary conditions once and then have the rest of the code [not nested or wrapped](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting) or have to worry about those conditions.
-[built-in `()` function](https://docs.python.org/3/library/functions.html)
+Can you use the [built-in `()` function](https://docs.python.org/3/library/functions.html) here?
 [Python's built-in types](https://docs.python.org/3/library/stdtypes.html)
 [Built-in string methods](https://docs.python.org/3/library/stdtypes.html#string-methods)
 [Avoid using mutable values for argument default values!](https://docs.python-guide.org/writing/gotchas/)
