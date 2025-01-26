@@ -73,6 +73,7 @@ Can you use the [built-in `()` function](https://docs.python.org/3/library/funct
 [Built-in string methods](https://docs.python.org/3/library/stdtypes.html#string-methods)
 [Avoid using mutable values for argument default values!](https://docs.python-guide.org/writing/gotchas/)
 
+Disclaimer: I have tons of experience coding and mentoring but I am a bit rusty when it comes to Go. I'm jumping in here to help with Go mentoring as the mentoring request queue is getting rather long.
 ```
 
 ### Extra Credit
