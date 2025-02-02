@@ -83,6 +83,16 @@ If you want to go the extra step, type annotation is worth adding to your code! 
 Docstrings aren't required here but they are nice to have - both for the module and functions.
 ```
 
+### Long Queue
+
+```text
+Hello! I have tons of experience coding and mentoring but I am a bit rusty when it comes to Go. I'm jumping in here to help with Go mentoring as the mentoring request queue is getting rather long.
+
+Since this request is more than a month old, I would first like to make sure you still want to have mentoring. If that's the case, great! I'll try to help as best as I can. If, on the other hand, mentoring is no longer desired, you can free up your mentoring slot by closing this discussion.
+
+I am sorry that it took so long to get an answer to your request. Some languages have fewer active mentors.
+```
+
 ### Less common
 
 ```text
