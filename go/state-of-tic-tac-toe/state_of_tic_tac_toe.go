@@ -71,7 +71,7 @@ func StateOfTicTacToe(board []string) (State, error) {
 	for _, line := range board {
 		pieces = append(pieces, strings.Split(line, ""))
 	}
-	if x, o := count(pieces); o > x || x - o > 1 {
+	if x, o := count(pieces); o > x || x-o > 1 {
 		return "", errors.New("Invalid move count")
 	}
 	if isWin(pieces, X) && isWin(pieces, O) {
