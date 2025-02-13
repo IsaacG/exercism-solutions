@@ -1,0 +1,20 @@
+function last with name do
+  set out to ""
+  for each letter in name do
+    if letter == " " do
+      change out to ""
+    else do
+      change out to join(out, letter)
+    end
+  end
+  return out
+end
+
+function on_guest_list with list, person do
+  for each guest in list do
+    if last(guest) == last(person) do
+      return true
+    end
+  end
+  return false
+end

@@ -1,0 +1,15 @@
+function dna_to_rna with proteins do
+  set result to ""
+  for each letter in proteins do
+    if letter == "G" do
+      change result to join(result, "C")
+    else if letter == "C" do
+      change result to join(result, "G")
+    else if letter == "T" do
+      change result to join(result, "A")
+    else if letter == "A" do
+      change result to join(result, "U")
+    end
+  end
+  return result
+end

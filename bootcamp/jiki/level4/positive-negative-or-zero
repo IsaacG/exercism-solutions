@@ -1,0 +1,11 @@
+// Receives a number as its input
+// Should return "Positive", "Negative" or "Zero"
+function positive_negative_or_zero with number do
+  if number == 0 do
+    return "Zero"
+  else if number > 0 do
+    return "Positive"
+  else do
+    return "Negative"
+  end
+end

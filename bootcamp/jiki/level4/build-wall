@@ -1,0 +1,27 @@
+//variables
+set width to 20
+set height to 10
+set top to 100
+set left to -30
+
+//make_a_line function
+function make_a_line with left do
+  repeat 6 times do
+    change left to left + 20
+  end
+end
+
+//exercise
+repeat 10 times do
+  change top to top - 10   
+  
+  make_a_line(left)
+  
+  if left >= 100 do
+    change left to left - 100
+  end
+  
+fill_color_hex("#AA4A44")
+rectangle(left, top, width, height)
+  
+end

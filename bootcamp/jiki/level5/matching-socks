@@ -1,0 +1,48 @@
+function split with str do
+  set count to 1
+  set words to []
+  set word to ""
+  for each letter in str do
+    if letter == " " do
+      change count to count + 1
+      change words to push(words, word)
+      change word to ""
+    else do
+      change word to join(word, letter)
+    end
+  end
+  return [count, push(words, word)]
+end
+
+function contains with list, value do
+  for each item in list do
+    if item == value do
+      return true
+    end
+  end
+  return false
+end
+
+function matching_socks with clean_list, dirty_list do
+  set left to []
+  set right to []
+  set splits to []
+  for each list in [clean_list, dirty_list] do
+    for each item in list do
+      change splits to split(item)
+      if splits[1] == 3 and splits[2][1] == "right" and splits[2][3] == "sock" do
+        change right to push(right, splits[2][2])
+      else if splits[1] == 3 and splits[2][1] == "left" and splits[2][3] == "sock" do
+        change left to push(left, splits[2][2])
+      end
+    end
+  end
+
+  set out to []
+  for each color in right do
+    if contains(left, color) and not contains(out, join(color, " socks")) do
+      change out to push(out, join(color, " socks"))
+    end
+  end
+  return out
+end

@@ -1,0 +1,9 @@
+// TODO: Set the variables
+set x to 1
+set hue to 0
+
+repeat 100 times do
+  fill_color_hsl(x * 4, 50, 50)
+  rectangle(x, 0, 2, 100)
+  change x to x + 1
+end

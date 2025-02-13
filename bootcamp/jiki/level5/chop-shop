@@ -1,0 +1,15 @@
+function cuttime with cut do
+  set cuts to [["Mohawk", 20], ["Slicked-Back Pixie", 15], ["Bob", 25], ["Shave and Polish", 15], ["Afro Trim", 45], ["Up-do", 30]]
+  for each style_time in cuts do
+    if style_time[1] == cut do
+      return style_time[2]
+    end
+  end
+end
+
+function can_fit_in with queue, haircut, time do
+  for each cut in queue do
+    change time to time - cuttime(cut)
+  end
+  return time >= cuttime(haircut)
+end

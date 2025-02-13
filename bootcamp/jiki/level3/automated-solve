@@ -1,0 +1,13 @@
+repeat_until_game_over do
+  if can_turn_left() do
+    turn_left()
+  else do
+    if not can_move() do
+      turn_right()
+    end
+    if not can_move() do
+      turn_right()
+    end
+  end
+  move()
+end

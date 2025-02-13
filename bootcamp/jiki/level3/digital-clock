@@ -1,0 +1,12 @@
+set hours to current_time_hour()
+set minutes to current_time_minute()
+
+if hours==0 do
+  display_time(hours+12,minutes,"am")
+else if hours>=1 and hours<=11 do
+  display_time(hours,minutes,"am")
+else if hours==12 do
+  display_time(hours,minutes,"pm")
+else if hours>13 and hours <=23 do
+  display_time(hours-12,minutes,"pm")
+end

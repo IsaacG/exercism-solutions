@@ -1,0 +1,8 @@
+function on_guest_list with list, guest do
+  for each person in list do
+    if person == guest do
+      return true
+    end
+  end
+  return false
+end

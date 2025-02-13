@@ -1,0 +1,9 @@
+// Write a function called even_or_odd that...
+// Receives a number as its input
+// Should return "Even" or "Odd"
+function even_or_odd with number do
+  if number % 2 == 0 do
+    return "Even"
+  end
+  return "Odd"
+end

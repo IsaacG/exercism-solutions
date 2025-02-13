@@ -1,0 +1,11 @@
+function hamming_distance with one, two do
+  set index to 0  
+  set count to 0
+  for each a in one do
+    change index to index + 1
+    if a != two[index] do
+      change count to count + 1
+    end
+  end
+  return count
+end

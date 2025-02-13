@@ -1,0 +1,34 @@
+// TODO Set variables here
+
+set x to 50
+set y to 10
+set radius to 5
+
+set hue to 210
+
+set red to 2
+repeat 100 times do
+
+  // TODO: Update the variables here.
+  change radius to radius + 0.2
+  change y to y + 1
+
+  change hue to hue + 0.2
+
+  change red to red + 5
+  // The sky
+  fill_color_hsl(hue, 70, 60)
+  rectangle(0,0,100,100)
+
+  // The Sun
+  fill_color_rgb(red, 237, 0)
+  circle(x, y, radius)
+  
+  // The sea
+  fill_color_hex("#0308ce")
+  rectangle(0,85,100,5)
+  
+  // The sand
+  fill_color_hex("#C2B280")
+  rectangle(0,90,100,10)
+end

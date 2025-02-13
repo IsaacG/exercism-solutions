@@ -1,0 +1,25 @@
+// TODO: Set any initial variables here
+
+// TODO: Change this to repeat_until_game_over once you've
+// progressed some of the way towards a solution.
+
+set x to 1
+set direction to 1
+
+repeat_until_game_over do
+  if is_alien_above() do
+    shoot()
+  end
+  if x == 1 do
+    change direction to 1
+  else if x == 11 do
+    change direction to -1
+  end
+  if direction == 1 do
+    move_right()
+  else do
+    move_left()
+  end
+  change x to x + direction
+end
+

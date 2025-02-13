@@ -1,0 +1,4 @@
+function is_leap_year with number do
+  return number % 4 == 0 and (number % 400 == 0 or number % 100 != 0)
+end
+    

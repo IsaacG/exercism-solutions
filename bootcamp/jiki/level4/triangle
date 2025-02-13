@@ -1,0 +1,24 @@
+ function valid_triangle with a, b, c do
+  if a + b > c and b + c > a and a + c > b do
+    return true
+  end
+  if a > 0 and b > 0 and c > 0 do
+    return true
+  else do
+    return false
+  end
+end
+
+function determine_triangle_type with a, b, c do
+  if valid_triangle(a, b, c) == false do
+    return "invalid"
+  end
+
+  if a == b and b == c do
+    return "equilateral"
+  else if a == b or a == c or b == c do
+    return "isosceles"
+  else do
+    return "scalene"
+  end
+end 

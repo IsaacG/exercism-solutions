@@ -1,0 +1,77 @@
+set ground_top to 90
+//Flower
+set first_flower_radius to 0
+set flower_radius to first_flower_radius
+set flower_growth_speed to 0.4
+set flower_y to 90
+set flower_x to 50
+set flower_ascend_speed to 1
+
+//Pisitl
+set pistil_radius to 0
+set pistil_growth_speed to 0.1
+
+//Stem
+set stem_top to 0
+set stem_left to 0
+set stem_width to 0.1
+set stem_height to 1
+set stem_right to 0
+
+//Leaves
+set leaf_y to 0
+set leaf_x_radius to 0
+set leaf_y_radius to 0
+set right_leaf_x to 0
+set left_leaf_x to 0
+  // Sky
+
+repeat 60 times do
+  // TODO: Update your variables here
+  
+    //Flower
+  change flower_radius to flower_radius + flower_growth_speed
+  change flower_y to flower_y - flower_ascend_speed
+  change pistil_radius to pistil_radius + pistil_growth_speed
+  
+     //Stem
+  change stem_top to flower_y
+  change stem_height to ground_top - stem_top
+  change stem_width to stem_height / 10
+  change stem_left to flower_x - (stem_width / 2)
+  change stem_right to flower_x + (stem_width / 2)
+    
+    //Leaves
+  change leaf_y to stem_top + (stem_height / 2)
+  change leaf_x_radius to flower_radius * 0.5
+  change leaf_y_radius to flower_radius * 0.2
+  change right_leaf_x to stem_right + leaf_x_radius
+  change left_leaf_x to stem_left - leaf_x_radius
+  
+    //Draw
+    // Sky
+    fill_color_hex("#ADD8E6") 
+    rectangle(0, 0, 100, 90)
+    
+    // Ground
+    fill_color_hex("green")
+    rectangle(0, ground_top, 100, 10)
+  
+    //Stem
+    fill_color_hex("green")
+    rectangle(stem_left, stem_top, stem_width, stem_height)
+  
+    //Leaves
+    fill_color_hex ("green")
+    ellipse (left_leaf_x, leaf_y,leaf_x_radius, leaf_y_radius)
+    ellipse (right_leaf_x, leaf_y,leaf_x_radius, leaf_y_radius)
+    
+  //Flower
+    fill_color_hex("pink")
+    circle (flower_x, flower_y, flower_radius)
+  
+    //Pistil
+    fill_color_hex("yellow")
+    circle (flower_x, flower_y, pistil_radius)
+
+end

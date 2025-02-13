@@ -1,0 +1,23 @@
+function ignore with letter do
+  for each alpha in to_upper_case("abcdefghijklmnopqrstuvwxyz -") do
+    if letter == alpha do
+      return false
+    end
+  end
+  return true
+end
+
+function acronym with input do
+  set result to ""
+  set boundary to true
+  for each letter in to_upper_case(input) do
+    if ignore(letter) do
+    else if boundary and (letter != " " and letter != "-") do
+      change boundary to false
+      change result to join(result, letter)
+    else if not boundary and (letter == " " or letter == "-") do
+      change boundary to true
+    end 
+  end
+  return result
+end

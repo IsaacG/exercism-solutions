@@ -1,0 +1,18 @@
+function contains with list, item do
+  for each element in list do
+    if element == item do
+      return true
+    end
+  end
+  return false
+end
+
+function shopping_list with fridge, recipe do
+  set buy to []
+  for each item in recipe do
+    if not contains(fridge, item) do
+      change buy to push(buy, item)
+    end
+  end
+  return buy
+end

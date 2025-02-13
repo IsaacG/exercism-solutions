@@ -1,0 +1,22 @@
+set alien_row to 0
+set aliens to 0
+set x to 0
+
+repeat_until_game_over do
+  change x to 0
+  change alien_row to alien_row + 1
+  change aliens to get_starting_aliens_in_row(alien_row)
+  repeat 11 times do
+    change x to x + 1
+    if aliens[x] do
+      shoot()
+    end
+    if x < 11 do
+      move_right()
+    end
+  end
+  repeat 10 times do
+    move_left()
+  end
+end
+fire_fireworks()

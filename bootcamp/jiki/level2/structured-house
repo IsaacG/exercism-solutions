@@ -1,0 +1,74 @@
+set sky_color to "#add8e6"
+set grass_color to "#add8e6"
+set roof_color to "#add8e6"
+set frame_color to "#add8e6"
+set door_color to "#add8e6"
+set window_color to "#add8e6"
+set knob_color to "#add8e6"
+
+
+set sky_left to 0
+set sky_top to 0
+set sky_width to 100
+set sky_height to 100
+
+set grass_start to 80
+
+// House Frame variables
+set house_left to 20
+set house_top to 50
+set frame_width to 60
+set frame_height to 40
+
+// Roof variables
+set roof_overhang to 4
+set roof_left to house_left - roof_overhang
+set roof_right to house_left + frame_width + roof_overhang
+set roof_height to house_top - 20
+
+set window_inset_x to 10
+set window_inset_y to 5
+set window_w to 12
+set window_h to 13
+
+// The door is 14 wide and 18 tall, and sits at the bottom of the house in the center.
+set door_w to 14
+set door_h to 18
+set door_x to house_left + (frame_width - door_w) / 2
+set door_y to house_top + frame_height - door_h
+
+set knob_r to 1
+set knob_inset to 1
+
+
+// The sky
+fill_color_hex(sky_color)
+rectangle(sky_left, sky_top, sky_width, sky_height)
+
+// The grass
+fill_color_hex(grass_color)
+rectangle(sky_left, grass_start, sky_width, sky_height - grass_start)
+
+// The frame of the house
+fill_color_hex(frame_color)
+rectangle(house_left,house_top,frame_width,frame_height)
+
+// The roof
+fill_color_hex(roof_color)
+triangle(roof_left, house_top, (roof_right + roof_left) / 2, roof_height, roof_right,house_top)
+
+// The left window
+fill_color_hex(window_color)
+rectangle(house_left + window_inset_x, house_top + window_inset_y,window_w,window_h)
+
+// The second window
+fill_color_hex(window_color)
+rectangle(house_left + frame_width - window_inset_x - window_w, house_top + window_inset_y,window_w,window_h)
+
+// The door
+fill_color_hex(door_color)
+rectangle(door_x, door_y, door_w, door_h)
+
+// The door knob
+fill_color_hex(knob_color)
+circle(door_x + door_w - knob_r - knob_inset, door_y + door_h / 2,knob_r)

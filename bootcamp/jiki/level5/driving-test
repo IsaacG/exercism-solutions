@@ -1,0 +1,12 @@
+function did_they_pass with score do
+  set minor to 0
+  set major to 0
+  for each char in score do
+    if char == "💥" do
+      change major to major + 1
+    else if char == "❌" do
+      change minor to minor + 1
+    end
+  end
+  return major < 1 and minor < 5
+end

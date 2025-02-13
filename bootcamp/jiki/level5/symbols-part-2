@@ -1,0 +1,72 @@
+function sunshine do
+  // Draw the sky
+  fill_color_hex("#ADD8E6") 
+  rectangle(0, 0, 100, 100)
+  
+  // Draw the sun
+  fill_color_hex("#ffed06")
+  circle(50,50,25)
+end
+
+function sun do
+  // Sun
+  fill_color_hex("yellow")
+  circle(75, 30, 15)
+end
+
+function cloud do
+  fill_color_hex("white")
+  rectangle(25, 40, 50, 20)
+  circle(25, 50, 10)
+  circle(75, 50, 10)
+  circle(40, 40, 15)
+  circle(55, 40, 20)
+end
+
+function rain do
+  fill_color_hex("#0000ee")
+  ellipse(30, 70, 3, 5)
+  ellipse(50, 70, 3, 5)
+  ellipse(70, 70, 3, 5)
+  ellipse(40, 80, 3, 5)
+  ellipse(60, 80, 3, 5)
+end
+
+function snow do
+  fill_color_hex("white")
+  circle(30, 70, 5)
+  circle(50, 70, 5)
+  circle(70, 70, 5)
+  circle(40, 80, 5)
+  circle(60, 80, 5)
+end
+
+function description_to_elements with description do
+  set data to [["sunny", ["sunshine"]], ["dull", ["cloud"]], ["miserable", ["cloud", "rain"]], ["hopeful", ["sun", "cloud"]], ["rainbow-territory", ["sun", "cloud", "rain"]], ["exciting", ["cloud", "snow"]], ["snowboarding-time", ["sun", "cloud", "snow"]]]
+  for each pair in data do
+    if description == pair[1] do
+      return pair[2]
+    end
+  end
+end
+
+function draw_weather with description do
+  for each element in description_to_elements(description) do
+    if element == "sunshine" do
+      sunshine()
+    end
+    if element == "sun" do
+      sun()
+    end
+    if element == "cloud" do
+      cloud()
+    end
+    if element == "rain" do
+      rain()
+    end
+    if element == "snow" do
+      snow()
+    end
+  end
+end
+

@@ -1,0 +1,7 @@
+function two_fer with name do
+  set foo to []
+  if name == "" do
+    change name to "you"
+  end
+  return concatenate("One for ", name, ", one for me.")
+end

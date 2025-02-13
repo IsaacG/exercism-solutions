@@ -1,0 +1,8 @@
+function description_to_elements with description do
+  set data to [["sunny", ["sun"]], ["dull", ["cloud"]], ["miserable", ["cloud", "rain"]], ["hopeful", ["sun", "cloud"]], ["rainbow-territory", ["sun", "cloud", "rain"]], ["exciting", ["cloud", "snow"]], ["snowboarding-time", ["sun", "cloud", "snow"]]]
+  for each pair in data do
+    if description == pair[1] do
+      return pair[2]
+    end
+  end
+end

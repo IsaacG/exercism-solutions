@@ -1,0 +1,35 @@
+// TODO: Create your variables
+// Remember that if the variables are updated at the 
+// start of the repeat loop, then need to start lower here.
+// set x to ...
+// set y to ...
+// set hue to ...
+set hue to 99
+set x to 3
+set y to 4
+//set speed to 0.5
+// TODO: You'll need to increase this to cover the canvas!
+repeat 120 times do
+  //change y to y + 1
+  //fill_color_hsl(hue,88, 50)
+  
+  change hue to hue + 1
+  change x to x + 2
+  change y to y + 1
+
+  if x == 95  do
+    change x to x - 2
+  end
+  if y == 95 do
+    change y to y - 1
+  end
+  if hue == 255 do
+    change hue to hue - 1
+  end
+
+  // TODO: Update variables
+
+  // Draw the circle
+fill_color_hsl(hue, 80, 50)
+circle(x, y, 10)
+end

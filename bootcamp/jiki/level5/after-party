@@ -1,0 +1,31 @@
+function length with str do
+  set len to 0
+  for each letter in str do
+    change len to len + 1
+  end
+  return len
+end
+
+function on_guest_list with list, guest do
+  set idx to 0
+  set match to false
+  for each person in list do
+    if guest == person do
+      return true
+    end
+    if length(person) > length(guest) do
+      change match to true
+      change idx to 0
+      for each letter in guest do
+        change idx to idx + 1
+        if letter != person[idx] do
+          change match to false
+        end
+      end
+    end
+    if match and person[idx + 1] == " " do
+      return true
+    end
+  end
+  return false
+end

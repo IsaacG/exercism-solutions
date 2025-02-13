@@ -1,0 +1,28 @@
+// Configuración inicial
+set tee_position to 30
+set ball_x to tee_position - 1 // Se incrementa antes de usarlo.
+set ball_y to 75
+set ball_radius to 3
+set shot to get_shot_length() // El tiro actual
+set hole_deep to 84 - ball_y
+
+// Configurar el color de la pelota
+fill_color_hex("orange")
+
+
+repeat shot + 1 times do
+  change ball_x to ball_x + 1
+  clear()
+  circle(ball_x, ball_y, ball_radius)
+end
+
+if shot >= 56 and shot <= 63 do
+  repeat hole_deep times do
+    change ball_y to ball_y + 1
+    clear()
+    circle(ball_x, ball_y, ball_radius)
+  end
+  
+  // Fuegos artificiales
+  fire_fireworks()
+end

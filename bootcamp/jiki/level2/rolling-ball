@@ -1,0 +1,16 @@
+// TODO: Change the initial position
+// Remember that if you update the position at the 
+// *start* of the repeat block, it'll be one greater than
+// whatever you set this to when the first circle is drawn.
+set x to 27
+
+// TODO: Set your fill color
+fill_color_hex("white")
+
+// TODO: Change this to only repeat as many times as
+// needed for the ball to reach the hole
+repeat 88 - x times do
+  change x to x + 1
+  clear()
+  circle(x, 75, 3)
+end

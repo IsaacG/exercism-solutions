@@ -1,0 +1,7 @@
+fill_color_hex("#AA4A44")
+
+set brick to 0
+repeat 5 times do
+  rectangle(20 * brick, 0, 20, 10)
+  change brick to brick + 1
+end
