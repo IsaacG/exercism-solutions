@@ -1,8 +1,9 @@
-function split with str do
+// Split a string on spaces into words. Return the word count and words.
+function split with string do
   set count to 1
   set words to []
   set word to ""
-  for each letter in str do
+  for each letter in string do
     if letter == " " do
       change count to count + 1
       change words to push(words, word)
@@ -14,6 +15,7 @@ function split with str do
   return [count, push(words, word)]
 end
 
+// Return if a value is contained within a list.
 function contains with list, value do
   for each item in list do
     if item == value do
@@ -23,26 +25,41 @@ function contains with list, value do
   return false
 end
 
-function matching_socks with clean_list, dirty_list do
-  set left to []
-  set right to []
+// Find socks that match one side or the other.
+function get_socks_for_side with list, side do
   set splits to []
-  for each list in [clean_list, dirty_list] do
-    for each item in list do
-      change splits to split(item)
-      if splits[1] == 3 and splits[2][1] == "right" and splits[2][3] == "sock" do
-        change right to push(right, splits[2][2])
-      else if splits[1] == 3 and splits[2][1] == "left" and splits[2][3] == "sock" do
-        change left to push(left, splits[2][2])
-      end
+  set socks to []
+  for each item in list do
+    // Split the item into words with a count.
+    change splits to split(item)
+    // Find items which are 
+    // 1. three words and 
+    // 2. the first word is the correct side and
+    // 3. the third word is sock and
+    // 4. we did not already add this color.
+    // Add the color to socks.
+    if splits[1] == 3 and splits[2][1] == side and splits[2][3] == "sock" and not contains(socks, splits[2][2]) do
+      change socks to push(socks, splits[2][2])
     end
   end
+  return socks
+end
 
-  set out to []
+// Find pairs of socks where we have both right and left socks.
+function pairs with right, left do
+  set pairs to []
   for each color in right do
-    if contains(left, color) and not contains(out, join(color, " socks")) do
-      change out to push(out, join(color, " socks"))
+    if contains(left, color) do
+      change pairs to push(pairs, join(color, " socks"))
     end
   end
-  return out
+  return pairs
+end
+
+function matching_socks with clean_list, dirty_list do
+  // Find socks and put the colors into either the right or left list.
+  set left to get_socks_for_side(concat(clean_list, dirty_list), "left")
+  set right to get_socks_for_side(concat(clean_list, dirty_list), "right")
+  // Return matching pairs.
+  return pairs(left, right)
 end
