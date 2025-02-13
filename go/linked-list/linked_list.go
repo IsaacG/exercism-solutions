@@ -3,54 +3,55 @@ package linkedlist
 
 import (
 	"errors"
-	"fmt"
 )
 
-// Element is an item in the List.
-type Element struct {
-	Value  interface{}
-	prev *Element
-	next *Element
+// Node is an item in the List.
+type Node struct {
+	Value any
+	prev  *Node
+	next  *Node
 }
 
-// List is a linked list of Elements.
+// List is a linked list of Node.
 type List struct {
-	head *Element
-	tail *Element
-}
-
-func (e Element) String() string {
-	return fmt.Sprintf("%s", e.Value)
-}
-
-func (l List) String() string {
-	if l.isEmpty() {
-		return "(empty)"
-	}
-	e := l.head
-	s := e.String()
-	for e := l.head.next; e != nil; e = e.next {
-		s += " - " + e.String()
-	}
-	return s
+	head *Node
+	tail *Node
 }
 
 // ErrEmptyList is the error when an empty list is used.
 var ErrEmptyList = errors.New("err empty list")
 
 // Next returns the next element.
-func (e *Element) Next() *Element {
+func (e *Node) Next() *Node {
+	if e.next == nil || e.next.next == nil {
+		return nil
+	}
 	return e.next
 }
 
 // Prev returns the previous element.
-func (e *Element) Prev() *Element {
+func (e *Node) Prev() *Node {
+	if e.prev == nil || e.prev.prev == nil {
+		return nil
+	}
 	return e.prev
 }
 
+func (e *Node) link() {
+	e.next.prev = e
+	e.prev.next = e
+}
+
+func (e *Node) unlink() any {
+	e.next.prev, e.prev.next = e.prev, e.next
+	return e.Value
+}
+
 // NewList returns a new list, populated with the values provided.
-func NewList(args ...interface{}) *List {
-	l := &List{}
+func NewList(args ...any) *List {
+	l := &List{&Node{}, &Node{}}
+	l.head.next = l.tail
+	l.tail.prev = l.head
 	for _, e := range args {
 		l.Push(e)
 	}
@@ -58,61 +59,29 @@ func NewList(args ...interface{}) *List {
 }
 
 // PushFront pushes an element to the front of the list.
-func (l *List) Unshift(v interface{}) {
-	e := &Element{Value: v}
-	if l.isEmpty() {
-		l.head = e
-		l.tail = e
-		return
-	}
-	e.next = l.head
-	l.head.prev = e
-	l.head = e
+func (l *List) Unshift(v any) {
+	(&Node{Value: v, prev: l.head, next: l.head.next}).link()
 }
 
 // Push pushes an element to the back of the list.
-func (l *List) Push(v interface{}) {
-	e := &Element{Value: v}
-	if l.isEmpty() {
-		l.head = e
-		l.tail = e
-		return
-	}
-	e.prev = l.tail
-	l.tail.next = e
-	l.tail = e
+func (l *List) Push(v any) {
+	(&Node{Value: v, prev: l.tail.prev, next: l.tail}).link()
 }
 
 // PopFront pops an element from the front of the list.
-func (l *List) Shift() (interface{}, error) {
+func (l *List) Shift() (any, error) {
 	if l.isEmpty() {
-		// Unit tests expect int(0) for the default here.
-		return int(0), ErrEmptyList
+		return nil, ErrEmptyList
 	}
-	v := l.head.Value
-	l.head = l.head.next
-	if l.head == nil {
-		l.tail = nil
-	} else {
-		l.head.prev = nil
-	}
-	return v, nil
+	return l.First().unlink(), nil
 }
 
 // PopBack pops an element from the back of the list.
-func (l *List) Pop() (interface{}, error) {
+func (l *List) Pop() (any, error) {
 	if l.isEmpty() {
-		// Unit tests expect int(0) for the default here.
-		return int(0), ErrEmptyList
+		return nil, ErrEmptyList
 	}
-	v := l.tail.Value
-	l.tail = l.tail.prev
-	if l.tail == nil {
-		l.head = nil
-	} else {
-		l.tail.next = nil
-	}
-	return v, nil
+	return l.Last().unlink(), nil
 }
 
 // Reverse returns a new list, reversed.
@@ -125,15 +94,21 @@ func (l *List) Reverse() *List {
 }
 
 // First returns the first element of a list.
-func (l *List) First() *Element {
-	return l.head
+func (l *List) First() *Node {
+	if l.isEmpty() {
+		return nil
+	}
+	return l.head.next
 }
 
 // Last returns the last element of a list.
-func (l *List) Last() *Element {
-	return l.tail
+func (l *List) Last() *Node {
+	if l.isEmpty() {
+		return nil
+	}
+	return l.tail.prev
 }
 
 func (l *List) isEmpty() bool {
-	return l.head == nil
+	return l.head.next == l.tail
 }
