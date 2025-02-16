@@ -1,18 +1,43 @@
-function last with name do
+function substr with str, start do
+  set idx to 0
   set out to ""
-  for each letter in name do
-    if letter == " " do
-      change out to ""
-    else do
+  for each letter in str do
+    change idx to idx + 1
+    if idx >= start do
       change out to join(out, letter)
     end
   end
   return out
 end
 
+function index with str, char do
+  set idx to 0
+  for each letter in str do
+    change idx to idx + 1
+    if letter == char do
+      return idx
+    end
+  end
+end
+
+function matches_last with full_name, surname do
+  if full_name == surname do
+    return true
+  end
+  set idx to 0
+  for each letter in full_name do
+    change idx to idx + 1
+    if letter == " " and surname == substr(full_name, idx + 1) do
+      return true
+    end
+  end
+  return false
+end
+
 function on_guest_list with list, person do
+  set last_name to substr(person, index(person, " ") + 1)
   for each guest in list do
-    if last(guest) == last(person) do
+    if matches_last(guest, last_name) do
       return true
     end
   end
