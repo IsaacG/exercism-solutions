@@ -1,0 +1,40 @@
+function upper with letter do
+  set upper to "QWERTYUIOPASDFGHJKLZXCVBNM"
+  set lower to "qwertyuiopasdfghjklzxcvbnm"
+  for each char in lower indexed by idx do
+    if letter == char do
+      change letter to upper[idx]
+      break
+    end
+  end
+  return letter
+end
+
+
+function letter_values do
+  set values to [
+    ["AEIOULNRST", 1],
+    ["DG", 2],
+    ["BCMP", 3],
+    ["FHVWY", 4],
+    ["K", 5],
+    ["JX", 8],
+    ["QZ", 10]
+  ]
+  set out to {}
+  for each pair in values do
+    for each letter in pair[1] do
+      change out[letter] to pair[2]
+    end
+  end
+  return out
+end
+
+function scrabble_score with word do
+  set score to 0
+  set values to letter_values()
+  for each letter in word do
+    change score to score + values[upper(letter)]
+  end
+  return score
+end

@@ -1,0 +1,10 @@
+function count_nucleotides with str do
+  set count to {"A": 0, "C": 0, "G": 0, "T": 0}
+  for each i in str do
+    if i != "A" and i != "C" and i != "G" and i != "T" do
+      return false
+    end
+    change count[i] to count[i] + 1
+  end
+  return count
+end

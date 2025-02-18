@@ -1,0 +1,49 @@
+// Add your code here...
+
+function can_turn with direction do
+  set got to look(direction)
+  return got != "🔥" and  got != "💩" and got != "🧱"
+end
+
+function can_pick_up do
+  set got to look("down")
+  return got != "⭐" and got != "🏁" and got != "⬜"
+end
+
+function can_turn_left do
+  return can_turn("left")
+end
+
+function can_turn_right do
+   return can_turn("right")
+end
+
+function can_move do
+  return can_turn("ahead")
+end
+
+set collection to {}
+set emoji to ""
+repeat_until_game_over do
+  if can_turn_left() do
+    turn_left()
+    move()
+  else do
+    repeat 2 times do
+      if not can_move() do
+        turn_right()
+      end
+    end
+    move()
+  end
+  if can_pick_up() do
+    change emoji to look("down")
+    remove_emoji()
+    if not has_key(collection, emoji) do
+      change collection[emoji] to 0
+    end
+    change collection[emoji] to collection[emoji] + 1
+  end
+end
+
+announce_emojis(collection)

@@ -1,0 +1,40 @@
+function part_of_word with letter do
+  set word_chars to "abcdefghijklmnopqrstuvwxyz'1234567890"
+  for each char in word_chars do
+    if letter == char do
+      return true
+    end
+  end
+  return false
+end
+
+// Split a string on spaces into words.
+function split with string do
+  set words to []
+  set word to ""
+  for each letter in string do
+    if not part_of_word(letter) do
+      if word != "" do
+        change words to push(words, word)
+      end
+      change word to ""
+    else do
+      change word to join(word, letter)
+    end
+  end
+  if word != "" do
+    change words to push(words, word)
+  end
+  return words
+end
+
+function count_words with str do
+  set counter to {}
+  for each word in split(to_lower_case(str)) do
+    change counter[word] to 0
+  end
+  for each word in split(to_lower_case(str)) do
+    change counter[word] to counter[word] + 1
+  end
+  return counter
+end

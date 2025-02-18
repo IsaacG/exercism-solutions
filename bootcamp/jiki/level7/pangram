@@ -1,0 +1,34 @@
+function lower with str do
+  set out to ""
+  set upper to "QWERTYUIOPASDFGHJKLZXCVBNM"
+  set lower to "qwertyuiopasdfghjklzxcvbnm"
+  for each letter in str do
+    for each up in upper indexed by idx do
+      if letter == up do
+        change letter to lower[idx]
+        break
+      end
+    end
+    change out to join(out, letter)
+  end
+  return out
+end
+
+function contains with str, i do
+  for each j in str do
+    if i == j do
+      return true
+    end
+  end
+  return false
+end
+
+function is_pangram with str do
+  change str to lower(str)
+  for each letter in "abcdefghijklmnopqrstuvwxyz" do
+    if not contains(str, letter) do
+      return false
+    end
+  end
+  return true
+end

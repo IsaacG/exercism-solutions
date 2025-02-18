@@ -1,0 +1,44 @@
+function split with string do
+  set words to []
+  set word to ""
+  for each letter in string indexed by idx do
+    change word to join(word, letter)
+    if idx % 3 == 0 do
+      change words to push(words, word)
+      change word to ""
+    end
+  end
+  return words
+end
+
+function translate_rna with str do
+  set map to {
+    "AUG": "Methionine",
+    "UUU": "Phenylalanine",
+    "UUC": "Phenylalanine",
+    "UUA": "Leucine",
+    "UUG": "Leucine",
+    "UCU": "Serine",
+    "UCC": "Serine",
+    "UCA": "Serine",
+    "UCG": "Serine",
+    "UAC": "Tyrosine",
+    "UAU": "Tyrosine",
+    "UGU": "Cysteine",
+    "UGC": "Cysteine",
+    "UGG": "Tryptophan",
+    "UAA": "STOP",
+    "UAG": "STOP",
+    "UGA": "STOP"
+  }
+  set out to []
+  set acid to ""
+  for each word in split(str) do
+    change acid to map[word]
+    if acid == "STOP" do
+      break
+    end
+    change out to push(out, acid)
+  end
+  return out
+end
