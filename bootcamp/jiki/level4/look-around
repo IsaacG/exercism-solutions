@@ -1,45 +1,16 @@
-// Add your code here...
+function can_move_in with direction do
+  set found to look(direction)
+  return found == "start" or found == "target" or found == "empty"
+end
 
 function can_turn_left do
-  if(look("left") == "empty") do
-    return "true"
-  else do
-    return "false"
-  end
+  return can_move_in("left")
 end
 
 function can_turn_right do
-   if(look("right") == "empty") do
-    return "true"
-  else do
-    return "false"
-  end
+  return can_move_in("right")
 end
 
 function can_move do
-  if(look("ahead") == "empty") do
-    return "true"
-  else do
-    return "false"
-  end
-end
-
-function turn_around do
-  turn_right()
-  turn_right()
-end
-
-repeat_until_game_over do
-  if can_turn_left() == true do
-    turn_left()
-    move()
-  else if can_move() == true do
-    move()
-  else if can_turn_right() == true do
-    turn_right()
-    move()
-  else do
-    turn_around()
-    move()
-  end
+  return can_move_in("ahead")
 end
