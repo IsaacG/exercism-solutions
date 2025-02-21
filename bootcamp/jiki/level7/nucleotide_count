@@ -1,7 +1,17 @@
+function contains with dict, val do
+  for each key in keys(dict) do
+    if val == key do
+      return true
+      break
+    end
+  end
+  return false
+end
+
 function count_nucleotides with str do
   set count to {"A": 0, "C": 0, "G": 0, "T": 0}
   for each i in str do
-    if i != "A" and i != "C" and i != "G" and i != "T" do
+    if not contains(count, i) do
       return false
     end
     change count[i] to count[i] + 1
