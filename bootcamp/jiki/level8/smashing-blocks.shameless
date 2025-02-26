@@ -1,0 +1,54 @@
+set ball to new Ball()
+set blocks to []
+repeat 5 times indexed by idx do
+  change blocks to push(blocks, new Block(8 + (idx - 1) * 17, 31))
+end
+
+set steps to [
+  ["move", 47],
+  ["bounce_x", 1],
+  ["move", 9],
+  ["smash", 1],
+  ["bounce_y", 1],
+  ["move", 56],
+  ["bounce_y", -1],
+  ["move", 29],
+  ["bounce_x", -1],
+  ["move", 27],
+  ["smash", 4],
+  ["bounce_y", 1],
+  ["move", 56],
+  ["bounce_y", -1],
+  ["move", 11],
+  ["bounce_x", 1],
+  ["move", 45],
+  ["smash", 3],
+  ["bounce_y", 1],
+  ["move", 49],
+  ["bounce_x", -1],
+  ["move", 7],
+  ["bounce_y", -1],
+  ["move", 56],
+  ["smash", 2],
+  ["bounce_y", 1],
+  ["move", 31],
+  ["bounce_x", 1],
+  ["move", 25],
+  ["bounce_y", -1],
+  ["move", 56],
+  ["smash", 5]
+]
+for each step in steps indexed by idx do
+  log idx
+  if step[1] == "move" do
+    repeat step[2] times do
+      move_ball(ball)
+    end
+  else if step[1] == "bounce_x" do
+    change ball.x_velocity to step[2]
+  else if step[1] == "bounce_y" do
+    change ball.y_velocity to step[2]
+  else if step[1] == "smash" do
+    change blocks[step[2]].smashed to true
+  end
+end
