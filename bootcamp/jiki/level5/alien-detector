@@ -15,8 +15,11 @@ repeat_until_game_over do
       move_right()
     end
   end
-  repeat 10 times do
-    move_left()
+  if alien_row == 3 do
+    fire_fireworks()
+  else do
+    repeat 10 times do
+      move_left()
+    end
   end
 end
-fire_fireworks()
