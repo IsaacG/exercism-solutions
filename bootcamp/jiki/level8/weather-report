@@ -1,0 +1,91 @@
+function sky with scale, left, top do
+  fill_color_hex("#ADD8E6")
+  rectangle(left, top, 100 * scale, 100 * scale)
+end
+
+function sunshine with scale, left, top do
+  fill_color_hex("#ffed06")
+  circle(left + scale * 50, top + scale * 50, scale * 25)
+end
+
+function sun with scale, left, top do
+  fill_color_hex("yellow")
+  circle(left + scale * 75, top + scale * 30, scale * 15)
+end
+
+function cloud with scale, left, top do
+  fill_color_hex("white")
+  rectangle(left + scale * 25, top + scale * 50, scale * 50, scale * 10)
+  for each coords in [[25, 50, 10], [75, 50, 10], [40, 40, 15], [55, 40, 20]] do
+    circle(left + scale * coords[1], top + scale * coords[2], scale * coords[3])
+  end
+end
+
+function rain with scale, left, top do
+  fill_color_hex("#0000ee")
+  for each coords in [[30, 70], [50, 70], [70, 70], [40, 80], [60, 80]] do
+    ellipse(left + scale * coords[1], top + scale * coords[2], scale * 3, scale * 5)
+  end
+end
+
+function snow with scale, left, top do
+  fill_color_hex("white")
+  for each coords in [[30, 70], [50, 70], [70, 70], [40, 80], [60, 80]] do
+    circle(left + scale * coords[1], top + scale * coords[2], scale * 5)
+  end
+end
+
+function description_to_elements with description do
+  set data to [
+    ["sunny", ["sunshine"]],
+    ["dull", ["cloud"]],
+    ["miserable", ["cloud", "rain"]],
+    ["hopeful", ["sun", "cloud"]],
+    ["rainbow-territory", ["sun", "cloud", "rain"]],
+    ["exciting", ["cloud", "snow"]],
+    ["snowboarding-time", ["sun", "cloud", "snow"]]
+  ]
+  for each pair in data do
+    if description == pair[1] do
+      return pair[2]
+    end
+  end
+end
+
+function draw_elements with description, scale, left, top do
+  sky(scale, left, top)
+  for each element in description_to_elements(description) do
+    if element == "sunshine" do
+      sunshine(scale, left, top)
+    else if element == "sun" do
+      sun(scale, left, top)
+    else if element == "cloud" do
+      cloud(scale, left, top)
+    else if element == "rain" do
+      rain(scale, left, top)
+    else if element == "snow" do
+      snow(scale, left, top)
+    end
+  end
+end
+
+function weather_at_time with summary, time do
+  for each pair in summary do
+    if pair["time"] == time do
+      return pair["description"]
+    end
+  end
+end
+
+function draw_weather with description do
+  set summary to description["meteorological"]["2025"]["02"]["25"]["weather"]["summary"]
+  for each data in [
+    ["06:00", 0.50, 25,  4],
+    ["07:00", 0.30,  1, 66],
+    ["08:00", 0.30, 35, 66],
+    ["09:00", 0.30, 69, 66]
+  ] do
+    draw_elements(weather_at_time(summary, data[1]), data[2], data[3], data[4])
+  end
+end
+

@@ -1,0 +1,48 @@
+// Return if you can turn in a given direction.
+function can_turn with direction do
+  set got to look(direction)
+  return got.in_maze and not got.is_wall and got.contents != "🔥" and  got.contents != "💩"
+end
+
+// Make progress towards the exit.
+function progress do
+  if can_turn("left") do
+    turn_left()
+    move()
+  else do
+    repeat 2 times do
+      if not can_turn("ahead") do
+        turn_right()
+      end
+    end
+    move()
+  end
+end
+
+// Maybe add an emoji to the collection.
+function pick_up with collection do
+  set got to look("down")
+  if got.contents == "" or got.is_finish or got.is_start do
+    return collection
+  end
+
+  if not has_key(collection, got.contents) do
+    change collection[got.contents] to 0
+  end
+  change collection[got.contents] to collection[got.contents] + 1
+
+  remove_emoji()
+  return collection
+end
+
+// Solve the maze.
+function solve_maze do
+  set collection to {}
+  repeat_until_game_over do
+    progress()
+    change collection to pick_up(collection)
+  end
+  announce_emojis(collection)
+end
+
+solve_maze()

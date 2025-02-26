@@ -1,0 +1,11 @@
+set ball to new Ball()
+
+repeat 4 * (100 - 6) times do
+  move_ball(ball)
+  if ball.cx == 3 or ball.cx == 97 do
+    change ball.x_velocity to -ball.x_velocity
+  end
+  if ball.cy == 3 or ball.cy == 97 do
+    change ball.y_velocity to -ball.y_velocity
+  end
+end

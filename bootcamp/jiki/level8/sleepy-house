@@ -1,0 +1,27 @@
+// 1. Create objects.
+set sky to new Sky(0)
+set frame to new Frame(20, 50, 60, 40, 10)
+set ground to new Ground(20, 8)
+set roof to new Roof(50, 30, 68, 20, 10)
+set win_l to new Window(30, 55, 12, 13, 11)
+set win_r to new Window(58, 55, 12, 13, 11)
+set door to new Door(43, 72, 14, 18, 11)
+set sun to new Sun(80, 20, 10, 2)
+
+// 2. Move the sun.
+repeat 70 times do
+  change sun.cx to sun.cx - 1.2
+  change sun.cy to sun.cy + 1
+end
+
+// 3. Turn on lights in windows.
+change win_l.lights to true
+change win_r.lights to true
+
+// Reduce brightness and change sky hue.
+repeat 81 times indexed by idx do
+  change sky.hue to min(310, sky.hue + 2)
+  for each thing in [sky, roof, frame, door, ground] do
+    change thing.brightness to 101 - idx
+  end
+end
