@@ -1,0 +1,18 @@
+function is_valid_isbn with number do
+  set total to 0
+  set multiplier to 10
+  for each char in number do
+    if my#is_digit(char) do
+      change total to total + multiplier * string_to_number(char)
+      change multiplier to multiplier - 1
+    else if char == "X" and multiplier == 1 do
+      change total to total + 10
+      change multiplier to multiplier - 1
+    else if char == "-" do
+      continue
+    else do
+      return false
+    end
+  end
+  return multiplier == 0 and total % 11 == 0
+end

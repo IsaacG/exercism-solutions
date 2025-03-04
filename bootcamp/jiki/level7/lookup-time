@@ -1,0 +1,7 @@
+function get_time with city do
+  set got to fetch("https://timeapi.io/api/time/current/city", {"city": city})
+  if my#has_key(got, "error") do
+    return "Could not determine the time."
+  end
+  return concatenate("The time on this ", got["dayOfWeek"], " in ", city, " is ", got["time"])
+end

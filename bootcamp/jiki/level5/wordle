@@ -1,0 +1,23 @@
+function process_guess with target, guess do
+  set result to []
+  for each letter in guess indexed by idx do
+    if letter == target[idx] do
+      change result to push(result, "correct")
+    else if my#contains(target, letter) do
+      change result to push(result, "present")
+    else do
+      change result to push(result, "absent")
+    end
+  end
+  return result
+end
+
+function process_first_guess with target, guess do
+  color_row(1, process_guess(target, guess))
+end
+
+function process_game with target, guesses do
+  for each guess in guesses indexed by idx do
+    color_row(idx, process_guess(target, guess))
+  end
+end

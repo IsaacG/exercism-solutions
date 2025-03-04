@@ -1,0 +1,13 @@
+function favorite_artists with user do
+  set got to fetch(concatenate("https://api.spotify.com/v1/users/", user), {})
+  if my#has_key(got, "error") do
+    return "Error: Unknown user"
+  end
+  set songs to []
+  set info to ""
+  for each item in got["items"] do
+    change info to fetch(item["urls"]["spotify_api"], {})
+    change songs to push(songs, info["name"])
+  end
+  return concatenate(user, "'s most listened to artists are: ", my#to_sentence(songs, true), "!")
+end

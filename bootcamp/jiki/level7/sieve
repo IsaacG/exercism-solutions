@@ -1,0 +1,24 @@
+function sieve with limit do
+  set primes to []
+  set not_prime to 1
+  set candidates to []
+  repeat limit times do
+    change candidates to push(candidates, true)
+  end
+
+  repeat limit times indexed by num do
+    if num == 1 or not candidates[num] do
+      continue
+    end
+    change primes to push(primes, num)
+    change not_prime to num
+    repeat limit / num times do
+      change not_prime to not_prime + num
+      if not_prime > limit do
+        break
+      end
+      change candidates[not_prime] to false
+    end
+  end
+  return primes
+end
