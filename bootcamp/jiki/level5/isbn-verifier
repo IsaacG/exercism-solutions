@@ -1,18 +1,17 @@
 function is_valid_isbn with number do
   set total to 0
-  set multiplier to 10
-  for each char in number do
-    if my#is_digit(char) do
-      change total to total + multiplier * string_to_number(char)
-      change multiplier to multiplier - 1
-    else if char == "X" and multiplier == 1 do
-      change total to total + 10
-      change multiplier to multiplier - 1
-    else if char == "-" do
-      continue
-    else do
+  set no_dash to my#filter_out(number, "-")
+  if my#length(no_dash) != 10 do
+    return false
+  end
+  if no_dash[10] == "X" do
+    change no_dash[10] to "10"
+  end
+  for each char in no_dash indexed by idx do
+    if not my#is_digit(char) do
       return false
     end
+    change total to total + (11 - idx) * string_to_number(char)
   end
-  return multiplier == 0 and total % 11 == 0
+  return total % 11 == 0
 end

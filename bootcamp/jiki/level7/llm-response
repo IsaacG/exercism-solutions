@@ -1,13 +1,3 @@
-function to_int with iterable do
-  set out to 0
-  for each char in iterable do
-    if my#is_digit(char) do
-      change out to out * 10 + string_to_number(char)
-    end
-  end
-  return out
-end
-
 function ask_llm with question do
   set got to fetch("https://myllm.com/api/v2/qanda", {"question": question})
   set best to 0
@@ -18,5 +8,8 @@ function ask_llm with question do
       change best to string_to_number(answer["certainty"])
     end
   end
-  return concatenate("The answer to '", question, "' is '", result, "' (", number_to_string(100 * best), "% certainty in ", number_to_string(to_int(got["meta"]["time"]) / 1000), "s).")
+  set out to concatenate("The answer to '", question, "' is '", result, "'")
+  change out to concatenate(out, " (", number_to_string(100 * best), "% certainty ")
+  change out to concatenate(out, "in ", number_to_string(my#to_int(got["meta"]["time"]) / 1000), "s).")
+  return out
 end
