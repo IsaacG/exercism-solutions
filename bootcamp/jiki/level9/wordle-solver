@@ -1,0 +1,79 @@
+function process_guess with target, guess do
+  set result to []
+  for each letter in guess indexed by idx do
+    if letter == target[idx] do
+      change result to push(result, "correct")
+    else if my#contains(target, letter) do
+      change result to push(result, "present")
+    else do
+      change result to push(result, "absent")
+    end
+  end
+  return result
+end
+
+function process_first_guess with target, guess do
+  color_top_row(process_guess(target, guess))
+end
+
+function process_game do
+  set game to new WordleGame()
+  game.draw_board()
+  
+  set common to common_words()
+  set letters to "abcdefghijklmnopqrstuvwxyz"
+  set guess to ""
+  set got to []
+  set correct to ["", "", "", "", ""]
+  set absent to []
+  set present to ""
+  set guess_idx to 0
+  set valid_guess to true
+  set done to true
+  log common
+  
+  repeat 6 times indexed by step do
+    
+    repeat 100 times do
+      change guess_idx to guess_idx + 1
+      change guess to common[guess_idx]
+      change valid_guess to true
+      log guess
+      for each letter in correct indexed by idx do
+        if letter != "" and guess[idx] != letter do
+          change valid_guess to false
+        end
+      end
+      log absent
+      log valid_guess
+      for each letter in absent do
+        if my#contains(guess, letter) do
+          change valid_guess to false
+        end
+      end
+      log valid_guess
+      if valid_guess do
+        break
+      end
+    end
+    
+    change got to process_guess(game.target_word, guess)
+    for each result in got indexed by idx do
+      if result == "correct" do
+        change correct[idx] to guess[idx]
+      else if result == "absent" and not my#contains(absent, guess[idx]) do
+        change absent to push(absent, guess[idx])
+      end
+    end
+    game.add_word(step, guess, got)
+    change done to true
+    for each item in got do
+      if item != "correct" do
+        change done to false
+      end
+    end
+    if done do
+      break
+    end
+  end
+end

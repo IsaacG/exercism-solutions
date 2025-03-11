@@ -1,0 +1,23 @@
+function build_url with description do
+  set parts to my#split(description, " ")
+  set year to my#to_int(parts[4])
+  if year >= 2025 do
+    set version to "v4"
+  else do
+    set version to "v3"
+  end
+  return my#join(["https://api.school.com", version, "grades", parts[4], my#join(["class", parts[2]], "-")], "/")
+end
+
+function grades_to_pattern with description do
+  set got to fetch(build_url(description), {})
+  set grades to got["data"]["grades"]
+  for each part in my#split(got["data"]["teacher"], " ") indexed by idx do
+    if idx == 2 do
+      set teacher to my#capitalize(part)
+    else if idx > 2 do
+      change teacher to concatenate(teacher, " ", my#capitalize(part))
+    end
+  end
+  return {"teacher": teacher, "grades": my#sort_string(my#join(grades, ""))}
+end

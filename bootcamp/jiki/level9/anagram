@@ -1,0 +1,13 @@
+function find_anagrams with word, candidates do
+  set lower to my#to_lowercase(word)
+  set letters to my#sort_string(lower)
+  set lower_cand to ""
+  set out to []
+  for each candidate in candidates do
+    change lower_cand to my#to_lowercase(candidate)
+    if lower_cand != lower and letters == my#sort_string(lower_cand) do
+      change out to push(out, candidate)
+    end
+  end
+  return my#bubble_sort_strings(out)
+end
