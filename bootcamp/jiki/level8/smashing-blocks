@@ -1,25 +1,25 @@
 // Create the ball and blocks.
-set ball_radius to 3
 set ball to new Ball()
 
+set blocks_remaining to 5
 set block_width to 16
-set block_height to 7
 set block_top to 31
 set blocks to []
-repeat 5 times indexed by idx do
+repeat blocks_remaining times indexed by idx do
   change blocks to push(blocks, new Block(8 + (idx - 1) * (block_width + 1), block_top))
 end
+set block_height to blocks[1].height
 
-set blocks_remaining to 5
+
 repeat_forever do
   move_ball(ball)
-  if ball.cx == ball_radius or ball.cx == 100 - ball_radius do
+  if ball.cx == ball.radius or ball.cx == 100 - ball.radius do
     change ball.x_velocity to -ball.x_velocity
   end
-  if ball.cy == ball_radius or ball.cy == 100 - ball_radius do
+  if ball.cy == ball.radius or ball.cy == 100 - ball.radius do
     change ball.y_velocity to -ball.y_velocity
   end
-  if ball.cy == block_top + block_height + ball_radius do
+  if ball.cy == block_top + block_height + ball.radius do
     for each block in blocks do
       if ball.cx >= block.left and ball.cx <= block.left + block_width and not block.smashed do
         change block.smashed to true
