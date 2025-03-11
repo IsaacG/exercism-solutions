@@ -1,0 +1,12 @@
+function my#transpose with string, from, to_ do
+  set out to ""
+  set idx to 0
+  for each letter in string do
+    change idx to my#index_of(from, letter)
+    if idx != -1 do
+      change letter to to_[idx]
+    end
+    change out to concatenate(out, letter)
+  end
+  return out
+end

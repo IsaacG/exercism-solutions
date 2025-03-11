@@ -1,0 +1,3 @@
+function my#starts_with with string, prefix do
+  return my#substr(string, 1, my#length(prefix)) == prefix  
+end

@@ -1,0 +1,9 @@
+function my#filter_out with iterable, value do
+  set out to []
+  for each item in iterable do
+    if item != value do
+      change out to push(out, item)
+    end
+  end
+  return out
+end

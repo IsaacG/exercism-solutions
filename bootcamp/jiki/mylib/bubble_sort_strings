@@ -1,0 +1,16 @@
+function my#bubble_sort_strings with strings do
+  set count to my#length(strings)
+  set tmp to ""
+  repeat count times indexed by outer do
+    repeat count - outer times indexed by idx do
+      log strings[idx]
+      log strings[idx + 1]
+      if my#char_code(strings[idx]) > my#char_code(strings[idx + 1]) do
+        change tmp to strings[idx]
+        change strings[idx] to strings[idx + 1]
+        change strings[idx + 1] to tmp
+      end
+    end
+  end
+  return strings
+end

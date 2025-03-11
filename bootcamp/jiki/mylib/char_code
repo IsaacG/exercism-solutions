@@ -1,0 +1,16 @@
+function my#char_code with char do
+  set sets to [
+    [64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
+    [96, "abcdefghijklmnopqrstuvwxyz"],
+    [47, "0123456789"],
+    [31, " "]
+  ]
+  for each pair in sets do
+    for each letter in pair[2] indexed by idx do
+      if char == letter do
+        return idx + pair[1]
+      end
+    end
+  end
+  return -1
+end

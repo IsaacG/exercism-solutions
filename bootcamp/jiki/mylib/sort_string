@@ -1,5 +1,5 @@
 function my#sort_string with unsorted do
-  set order to "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  set order to "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
   set count to {}
   for each char in unsorted do
     if not my#has_key(count, char) do

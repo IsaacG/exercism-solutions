@@ -1,0 +1,3 @@
+function my#contains with iterable, item do
+  return my#index_of(iterable, item) != -1
+end

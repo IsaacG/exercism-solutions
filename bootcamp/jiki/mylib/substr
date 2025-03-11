@@ -1,0 +1,14 @@
+function my#substr with string, start, length do
+  set out to ""
+  set stop to start + length - 1
+  for each letter in string indexed by idx do
+    if idx < start do
+      continue
+    end
+    change out to concatenate(out, letter)
+    if length > 0 and idx == stop do
+      return out
+    end
+  end
+  return out
+end

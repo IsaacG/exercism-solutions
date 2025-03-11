@@ -1,0 +1,8 @@
+function my#is_digit with string do
+  for each char in string do
+    if my#index_of("1234567890", char) == -1 do
+      return false
+    end
+  end
+  return true
+end
