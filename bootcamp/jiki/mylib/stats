@@ -1,0 +1,96 @@
+== bubble_sort_strings ==
+Line count: 16
+Dependencies:
+- char_code
+- length
+
+== capitalize ==
+Line count: 6
+Dependencies:
+- substr
+- to_lowercase
+- to_uppercase
+
+== char_code ==
+Line count: 16
+
+== contains ==
+Line count: 3
+Dependencies:
+- index_of
+
+== filter_out ==
+Line count: 9
+
+== has_key ==
+Line count: 8
+
+== index_of ==
+Line count: 8
+
+== is_digit ==
+Line count: 8
+Dependencies:
+- index_of
+
+== join ==
+Line count: 11
+
+== length ==
+Line count: 7
+
+== sort_string ==
+Line count: 19
+Dependencies:
+- has_key
+
+== split ==
+Line count: 13
+
+== starts_with ==
+Line count: 3
+Dependencies:
+- length
+- substr
+
+== stats ==
+Line count: 43
+
+== str_cmp ==
+Line count: 11
+Dependencies:
+- char_code
+
+== substr ==
+Line count: 14
+
+== to_int ==
+Line count: 11
+Dependencies:
+- index_of
+
+== to_lowercase ==
+Line count: 3
+Dependencies:
+- transpose
+
+== to_sentence ==
+Line count: 20
+Dependencies:
+- length
+
+== to_unique ==
+Line count: 9
+Dependencies:
+- contains
+
+== to_uppercase ==
+Line count: 3
+Dependencies:
+- transpose
+
+== transpose ==
+Line count: 12
+Dependencies:
+- index_of
+
