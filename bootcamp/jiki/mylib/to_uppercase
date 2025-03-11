@@ -1,0 +1,15 @@
+function my#to_uppercase with string do
+  set upper to "QWERTYUIOPASDFGHJKLZXCVBNM"
+  set lower to "qwertyuiopasdfghjklzxcvbnm"
+  set out to ""
+  for each char in string do
+    for each lo in lower indexed by idx do
+      if char == lo do
+        change char to upper[idx]
+        break
+      end
+    end
+    change out to concatenate(out, char)
+  end
+  return out
+end

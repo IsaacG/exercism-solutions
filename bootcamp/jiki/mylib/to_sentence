@@ -1,0 +1,20 @@
+function my#to_sentence with list, oxford_comma do
+  set length to my#length(list)
+  set out to ""
+  if length > 0 do
+    change out to list[1]
+  end
+  if length > 2 do
+    repeat my#length(list) - 2 times indexed by idx do
+      change out to concatenate(out, ", ", list[idx + 1])
+    end
+  end
+  if length > 1 do
+    if oxford_comma do
+      change out to  concatenate(out, ", and ", list[length])
+    else do
+      change out to concatenate(out, " and ", list[length])
+    end
+  end
+  return out
+end

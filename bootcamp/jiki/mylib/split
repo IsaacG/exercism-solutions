@@ -1,0 +1,13 @@
+function my#split with string, delimiter do
+  set words to []
+  set word to ""
+  for each char in string do
+    if char == delimiter do
+      change words to push(words, word)
+      change word to ""
+    else do
+      change word to concatenate(word, char)
+    end
+  end
+  return push(words, word)
+end

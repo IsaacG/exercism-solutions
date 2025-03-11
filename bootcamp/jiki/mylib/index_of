@@ -1,0 +1,8 @@
+function my#index_of with list, target do
+  for each item in list indexed by idx do
+    if item == target do
+      return idx
+    end
+  end
+  return -1
+end

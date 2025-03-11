@@ -1,0 +1,9 @@
+function my#to_unique with list do
+  set out to []
+  for each item in list do
+    if not my#contains(out, item) do
+      change out to push(out, item)
+    end
+  end
+  return out
+end

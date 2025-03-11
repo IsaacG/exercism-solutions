@@ -1,0 +1,11 @@
+function my#join with things, delimeter do
+  set out to ""
+  for each item in things indexed by idx do
+    if idx == 1 do
+      change out to item
+    else do
+      change out to concatenate(out, delimeter, item)
+    end
+  end
+  return out
+end

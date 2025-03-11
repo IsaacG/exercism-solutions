@@ -1,0 +1,11 @@
+function my#capitalize with string do
+  set out to ""
+  for each char in string indexed by idx do
+    if idx == 1 do
+      change out to concatenate(out, my#to_uppercase(char))
+    else do
+      change out to concatenate(out, my#to_lowercase(char))
+    end
+  end
+  return out
+end
