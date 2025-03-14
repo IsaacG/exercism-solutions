@@ -1,5 +1,6 @@
+// Return how "close" a guess is to the target.
 function process_guess with target, guess do
-  set result to ["absent", "absent", "absent", "absent", "absent"]
+  // Count how often each letter is in the target, ie available to "count".
   set available to {}
   for each letter in target do
     if not my#has_key(available, letter) do
@@ -7,6 +8,9 @@ function process_guess with target, guess do
     end
     change available[letter] to available[letter] + 1
   end
+
+  // Initialize the result to all-absent the color in correct then present.
+  set result to ["absent", "absent", "absent", "absent", "absent"]
   for each letter in guess indexed by idx do
     if letter == target[idx] do
       change result[idx] to "correct"
@@ -22,17 +26,21 @@ function process_guess with target, guess do
   return result
 end
 
+// Return whether a guess is valid or not based on prior results.
 function valid_choice with guess, correct, absent, present do
+  // Make sure all known correct letters match.
   for each letter in correct indexed by idx do
     if letter != "" and guess[idx] != letter do
       return false
     end
   end
+  // Make sure no known absent letters get used.
   for each letter, _ in absent do
     if my#contains(guess, letter) do
       return false
     end
   end
+  // Make sure all present letters are used -- but in a new location.
   for each letter, positions in present do
     if not my#contains(guess, letter) do
       return false
@@ -46,26 +54,25 @@ function valid_choice with guess, correct, absent, present do
   return true
 end
 
-function process_first_guess with target, guess do
-  color_top_row(process_guess(target, guess))
-end
-
+// Play the game!
 function process_game do
+  // Setup
   set game to new WordleGame()
   game.draw_board()
   
+  // Initialize variables we will use.
   set common to common_words()
-  set letters to "abcdefghijklmnopqrstuvwxyz"
   set guess to ""
+  set present_letters to {}            // letters present/correct in the current guess -- don't add to absent.
   set got to []
-  set correct to ["", "", "", "", ""]
-  set absent to {}
-  set present to {}
-  set present_letters to {}
   set guess_idx to 0
   set valid_guess to true
   set done to true
   set correct_count to 0
+  // State tracking.
+  set correct to ["", "", "", "", ""]  // known correct letters in fixed locations
+  set absent to {}                     // known absent letters
+  set present to {}                    // known present -- and what position they are _not_ in.
   
   repeat 6 times indexed by step do
     // Pick the next guess.
