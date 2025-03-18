@@ -1,24 +1,19 @@
 class Blocks do
   public property width
-  private property height
   public property remaining
   public property top
   public property bottom
 
-  constructor with width, top do
+  constructor with width, top, game do
     set this.width to width
     set this.top to top
     set this.remaining to 5
-    set this.height to 0
-    set this.bottom to 0
-  end
 
-  public method setup with game do
     repeat this.remaining times indexed by idx do
-      game.add_block(new Block(8 + (idx - 1) * (this.width + 1), this.top))
+      game.add_block(new Block(8 + (idx - 1) * (width + 1), top))
     end
-    set this.height to game.blocks[1].height
-    set this.bottom to this.top + this.height
+    set height to game.blocks[1].height
+    set this.bottom to this.top + height
   end
 end
 
@@ -42,17 +37,17 @@ class MyGame do
   public property paddle_target
   private property ball_bounds
 
-  constructor with blocks do
-    set this.game to new Game()
+  constructor with game, blocks do
+    set this.game to game
     set this.blocks to blocks
     set this.ball_bounds to new BallBounds(this.game)
     this.set_paddle_target()
-    blocks.setup(this.game)
   end
 
-  // Smash a brick if the ball hits one. Return if a brick got smashed.
+  // Smash a brick if there is a collision.
   private method smash_brick do
     set ball to this.game.ball
+    // Guard clause -- check the ball is at the right height to hit a block.
     if ball.y_velocity == -1 and ball.cy != this.blocks.bottom + ball.radius do
       return
     else if ball.y_velocity == 1 and ball.cy != this.blocks.top - ball.radius do
@@ -69,7 +64,7 @@ class MyGame do
     end
   end
   
-  // Move the ball. Return true if the y_velocity changes.
+  // Move the ball, bouncing as needed.
   private method move_ball do
     set ball to this.game.ball
     ball.move()
@@ -78,11 +73,12 @@ class MyGame do
     end
     if ball.cy == this.ball_bounds.top or ball.cy == this.ball_bounds.bottom do
       change ball.y_velocity to -ball.y_velocity
+      // Update the paddle target on y-bounce.
       this.set_paddle_target()
     end
   end
   
-  // Return roughly where the ball is expected to hit the paddle (x value).
+  // Set the paddle's target center x.
   private method set_paddle_target do
     // Distance from the ball to the paddle.
     log this.ball_bounds.bottom
@@ -101,7 +97,7 @@ class MyGame do
     change this.paddle_target to dest
   end
   
-  // Move the paddle towards the target.
+  // Move the paddle towards the target center x.
   private method move_paddle do
     set paddle to this.game.paddle
     set paddle_right to paddle.cx + (paddle.width / 2)
@@ -128,6 +124,7 @@ class MyGame do
   end
 end
 
-set blocks to new Blocks(16, 28)
-set game to new MyGame(blocks)
-game.play_ball()
+set game to new Game()
+set blocks to new Blocks(16, 28, game)
+set emulator to new MyGame(game, blocks)
+emulator.play_ball()
