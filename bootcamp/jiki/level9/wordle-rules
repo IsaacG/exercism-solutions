@@ -1,0 +1,35 @@
+function process_guess with target, guess do
+  // Count how often each letter is in the target, ie available to "count".
+  set available to {}
+  for each letter in target do
+    if not my#has_key(available, letter) do
+      change available[letter] to 0
+    end
+    change available[letter] to available[letter] + 1
+  end
+
+  // Initialize the result to all-absent the color in correct then present.
+  set result to ["absent", "absent", "absent", "absent", "absent"]
+  for each letter in guess indexed by idx do
+    if letter == target[idx] do
+      change result[idx] to "correct"
+      change available[letter] to available[letter] - 1
+    end
+  end
+  for each letter in guess indexed by idx do
+    if result[idx] == "absent" and my#has_key(available, letter) and available[letter] > 0 do
+      change result[idx] to "present"
+      change available[letter] to available[letter] - 1
+    end
+  end
+  return result
+end
+
+function process_game with target, guesses do
+  // Setup
+  set game to new WordleGame()
+  game.draw_board()
+  for each guess in guesses indexed by idx do
+    game.add_word(idx, guess, process_guess(target, guess))
+  end
+end
