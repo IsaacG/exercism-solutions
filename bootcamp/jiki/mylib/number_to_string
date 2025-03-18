@@ -1,0 +1,13 @@
+function my#number_to_string with number do
+  set digits to "0123456789"
+  set out to ""
+  set remainder to 0
+  repeat_forever do
+    change remainder to number % 10
+    change out to concatenate(digits[remainder + 1], out)
+    change number to (number - remainder) / 10
+    if number == 0 do
+      return out
+    end
+  end
+end

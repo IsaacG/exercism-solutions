@@ -1,0 +1,93 @@
+// Smash a brick if the ball hits one. Return if a brick got smashed.
+function smash_brick with game, block_top, block_height, block_width do
+  set ball to game.ball
+  if ball.y_velocity == -1 and ball.cy != block_top + block_height + ball.radius do
+    return false
+  else if ball.y_velocity == 1 and ball.cy != block_top - ball.radius do
+    return false
+  end
+  for each block in game.blocks do
+    if ball.cx >= block.left and ball.cx <= block.left + block_width and not block.smashed do
+      change block.smashed to true
+      change ball.y_velocity to -ball.y_velocity
+      return true
+    end
+  end
+  return false
+end
+
+// Move the ball. Return true if the y_velocity changes.
+function move_ball with game do
+  set ball to game.ball
+  ball.move()
+  if ball.cx == ball.radius or ball.cx == 100 - ball.radius do
+    change ball.x_velocity to -ball.x_velocity
+  end
+  if ball.cy == ball.radius or ball.cy == 100 - ball.radius - game.paddle.height - 1 do
+    change ball.y_velocity to -ball.y_velocity
+    return true
+  end
+  return false
+end
+
+// Return roughly where the ball is expected to hit the paddle (x value).
+function ball_destination with game do
+  set distance to (100 - game.ball.cy - game.ball.radius - game.paddle.height)
+  if game.ball.y_velocity == -1 do
+    change distance to distance + 2 * (game.ball.cy - game.ball.radius)
+  end
+  set dest to game.ball.cx + distance * game.ball.x_velocity
+  if dest < 0 do
+    change dest to -dest
+  end
+  if dest > 100 do
+    change dest to 200 - dest
+  end
+  return dest
+end
+
+// Move the paddle towards the target.
+function move_paddle with paddle, paddle_target do
+  if paddle.cx + 2 < paddle_target and paddle.cx + (paddle.width / 2) < 99 do
+    paddle.move_right()
+  else if paddle.cx - 2 > paddle_target and paddle.cx - (paddle.width / 2) > 1 do
+    paddle.move_left()
+  end
+end
+
+// Play ball!
+function play_ball with game do
+  // Create the blocks.
+  set blocks_remaining to 5
+  set block_width to 16
+  set block_top to 28
+  repeat blocks_remaining times indexed by idx do
+    game.add_block(new Block(8 + (idx - 1) * (block_width + 1), block_top))
+  end
+
+  // Set some variables.
+  set blocks to game.blocks
+  set ball to game.ball
+  set block_height to blocks[1].height
+  set paddle to game.paddle
+  set paddle_target to ball_destination(game)
+  
+  // Move the ball. Smash bricks. Move the paddle.
+  // If the ball reverses y-direction (hits a brick or bounces off the paddle), recompute the ball destination.
+  repeat_forever do
+    if move_ball(game) do
+      change paddle_target to ball_destination(game)
+    end
+    if smash_brick(game, block_top, block_height, block_width) do
+      change paddle_target to ball_destination(game)
+      change blocks_remaining to blocks_remaining - 1
+      if blocks_remaining == 0 do
+        game.game_over("win")
+        return
+      end
+    end
+    move_paddle(paddle, paddle_target)
+  end
+end
+
+play_ball(new Game())
