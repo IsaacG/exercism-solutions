@@ -1,0 +1,133 @@
+class Blocks do
+  public property width
+  private property height
+  public property remaining
+  public property top
+  public property bottom
+
+  constructor with width, top do
+    set this.width to width
+    set this.top to top
+    set this.remaining to 5
+    set this.height to 0
+    set this.bottom to 0
+  end
+
+  public method setup with game do
+    repeat this.remaining times indexed by idx do
+      game.add_block(new Block(8 + (idx - 1) * (this.width + 1), this.top))
+    end
+    set this.height to game.blocks[1].height
+    set this.bottom to this.top + this.height
+  end
+end
+
+class BallBounds do
+  public property left
+  public property right
+  public property top
+  public property bottom
+
+  constructor with game do
+    set this.left to game.ball.radius
+    set this.right to 100 - game.ball.radius
+    set this.top to game.ball.radius
+    set this.bottom to game.paddle.cy - (game.paddle.height / 2) - game.ball.radius
+  end
+end
+
+class MyGame do
+  private property game
+  private property blocks
+  public property paddle_target
+  private property ball_bounds
+
+  constructor with blocks do
+    set this.game to new Game()
+    set this.blocks to blocks
+    set this.ball_bounds to new BallBounds(this.game)
+    this.set_paddle_target()
+    blocks.setup(this.game)
+  end
+
+  // Smash a brick if the ball hits one. Return if a brick got smashed.
+  private method smash_brick do
+    set ball to this.game.ball
+    if ball.y_velocity == -1 and ball.cy != this.blocks.bottom + ball.radius do
+      return
+    else if ball.y_velocity == 1 and ball.cy != this.blocks.top - ball.radius do
+      return
+    end
+    for each block in this.game.blocks do
+      if ball.cx >= block.left and ball.cx <= block.left + this.blocks.width and not block.smashed do
+        change block.smashed to true
+        change ball.y_velocity to -ball.y_velocity
+        this.set_paddle_target()
+        change this.blocks.remaining to this.blocks.remaining - 1
+        return
+      end
+    end
+  end
+  
+  // Move the ball. Return true if the y_velocity changes.
+  private method move_ball do
+    set ball to this.game.ball
+    ball.move()
+    if ball.cx == this.ball_bounds.left or ball.cx == this.ball_bounds.right do
+      change ball.x_velocity to -ball.x_velocity
+    end
+    if ball.cy == this.ball_bounds.top or ball.cy == this.ball_bounds.bottom do
+      change ball.y_velocity to -ball.y_velocity
+      this.set_paddle_target()
+    end
+  end
+  
+  // Return roughly where the ball is expected to hit the paddle (x value).
+  private method set_paddle_target do
+    // Distance from the ball to the paddle.
+    log this.ball_bounds.bottom
+    log this.game.ball.cy
+    set distance to this.ball_bounds.bottom - this.game.ball.cy
+    if this.game.ball.y_velocity == -1 do
+      change distance to distance + 2 * (this.game.ball.cy - this.ball_bounds.top)
+    end
+    set dest to this.game.ball.cx + distance * this.game.ball.x_velocity
+    if dest < 0 do
+      change dest to -dest
+    end
+    if dest > 100 do
+      change dest to 200 - dest
+    end
+    change this.paddle_target to dest
+  end
+  
+  // Move the paddle towards the target.
+  private method move_paddle do
+    set paddle to this.game.paddle
+    set paddle_right to paddle.cx + (paddle.width / 2)
+    set paddle_left to paddle.cx - (paddle.width / 2)
+    if paddle.cx + 2 < this.paddle_target and paddle_right < 99 do
+      paddle.move_right()
+    else if paddle.cx - 2 > this.paddle_target and paddle_left > 1 do
+      paddle.move_left()
+    end
+  end
+
+  // Play ball!
+  public method play_ball do
+    // Move the ball. Smash bricks. Move the paddle.
+    repeat_forever do
+      this.move_ball()
+      this.smash_brick()
+      if this.blocks.remaining == 0 do
+        this.game.game_over("win")
+        return
+      end
+      this.move_paddle()
+    end
+  end
+end
+
+set blocks to new Blocks(16, 28)
+set game to new MyGame(blocks)
+game.play_ball()
