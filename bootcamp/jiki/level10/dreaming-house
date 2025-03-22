@@ -1,0 +1,79 @@
+class Sky do
+  private property hue
+  private property drawing
+  constructor do
+    set this.hue to 190
+    set this.drawing to new Rectangle(0, 0, 100, 100, new HSLColor(this.hue, 60, 50), 1)
+  end
+  public method increase_hue_by with x do
+    change this.hue to this.hue + x
+    change this.drawing.hsl to new HSLColor(this.hue, 60, 50)
+  end
+  public method change_brightness with x do
+    change this.drawing.brightness to x
+  end
+end
+
+class Sun do  
+  private property drawing
+  constructor with cx, cy do
+    set this.drawing to new Circle(cx, cy, 10, "#FFFF00", 2)
+  end
+  public method move_by with x, y do
+    change this.drawing.cx to this.drawing.cx + x
+    change this.drawing.cy to this.drawing.cy + y
+  end
+end
+
+class Ground do
+  private property drawing
+  constructor with height do
+    set this.drawing to new Rectangle(0, 100 - height, 100, 100, new HSLColor(111, 100, 50), 3)
+  end
+  public method change_brightness with x do
+    change this.drawing.brightness to x
+  end
+end
+
+class Frame do
+  private property drawing
+  constructor with left, top, width, height do
+    set this.drawing to new Rectangle(left, top, width, height, new HSLColor(35, 50, 70), 4)
+  end
+  public method change_brightness with x do
+    change this.drawing.brightness to x
+  end
+end
+
+class Roof do
+  private property drawing
+  constructor with width, height do
+    set this.drawing to new Triangle(50 - width / 2, 50, 50, 50 - height, 50 + width / 2, 50, "#551133", 4)
+  end
+  public method change_brightness with x do
+    change this.drawing.brightness to x
+  end
+end
+
+class Window do
+  private property drawing
+  constructor with left, top do
+    set this.drawing to new Rectangle(left, top, 12, 13, new HSLColor(1, 2, 3), 5)
+  end
+  public method turn_lights_on do
+    change this.drawing.hsl to new HSLColor(56, 100, 50)
+  end
+end
+
+class Door do
+  private property drawing
+  private property knob
+  constructor with left, top do
+    set this.drawing to new Rectangle(left, top, 14, 18, new HSLColor(30, 40, 50), 5)
+    set this.knob to new Circle(left + 12, top + 9, 1, "#110011", 6)
+  end
+  public method change_brightness with x do
+    change this.drawing.brightness to x
+    change this.knob.brightness to x
+  end
+end

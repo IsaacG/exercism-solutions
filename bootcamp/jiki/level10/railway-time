@@ -1,0 +1,21 @@
+class Clock do
+  private property hour
+  private property minute
+  constructor with hour, minute do
+    set this.hour to hour
+    set this.minute to minute
+  end
+
+  public method get_railway_time do
+    return concatenate(my#number_to_string(this.hour), ":", my#number_to_string(this.minute))
+  end
+
+  public method get_duodecimal_time do
+    if this.hour >= 12 do
+      set suffix to "pm"
+    else do
+      set suffix to "am"
+    end
+    return concatenate(my#number_to_string(((this.hour - 1) % 12) + 1), ":", my#number_to_string(this.minute), suffix)
+  end
+end
