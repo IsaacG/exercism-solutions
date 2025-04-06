@@ -42,7 +42,8 @@ Function definitions should be separated from other expressions by exactly two b
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
 
 Can you [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting)?
-Can you avoid [magic values](https://en.wikipedia.org/wiki/Magic_string) in your code?
+Can you avoid [magic strings](https://en.wikipedia.org/wiki/Magic_string) in your code?
+Can you avoid [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)) in your code?
 Can you [avoid repeating yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)?
 
 In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
