@@ -1,27 +1,12 @@
-//variables
-set width to 20
-set height to 10
-set top to 100
-set left to -30
+fill_color_hex("#AA4A44")
 
-//make_a_line function
-function make_a_line with left do
-  repeat 6 times do
-    change left to left + 20
-  end
+function brick with x, y do
+  set offset to y % 2
+  rectangle(x * 20 - offset * 10, y * 10, 20, 10)
 end
 
-//exercise
-repeat 10 times do
-  change top to top - 10   
-  
-  make_a_line(left)
-  
-  if left >= 100 do
-    change left to left - 100
+repeat 10 times indexed by row do
+  repeat 6 times indexed by column do
+    brick(column - 1, row - 1)
   end
-  
-fill_color_hex("#AA4A44")
-rectangle(left, top, width, height)
-  
 end
