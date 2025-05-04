@@ -1,0 +1,14 @@
+.exercism
+.gitignore
+.npmrc
+HELP.md
+HINTS.md
+LICENSE
+README.md
+babel.config.js
+eslint.config.mjs
+global.d.ts
+jest.config.js
+node_modules
+package.json
+pnpm-lock.yaml
