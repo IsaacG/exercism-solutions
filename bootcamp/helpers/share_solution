@@ -1,0 +1,10 @@
+#!/bin/bash
+
+{
+    ext=${1##*.}
+    printf '[spoiler]\n```%s\n' "$ext"
+    cat $1
+    printf '```\n
+    [/spoiler]\n'
+} | xclip -i
+
