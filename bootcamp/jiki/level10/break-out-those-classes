@@ -1,0 +1,219 @@
+class Block do
+  public property smashed
+  private property rect
+
+  constructor with x, y, w, h do
+    set this.smashed to false
+    set this.rect to new RoundedRectangle(x, y, w, h, 3, "#ff0000")
+  end
+
+  public method smash do
+    change this.rect.opacity to 0
+    change this.smashed to true
+  end
+
+  public method hits with x do
+    return this.rect.left <= x and x <= this.rect.left + this.rect.width and not this.smashed
+  end
+end
+
+class Paddle do
+  public property cx
+  public property cy
+  public property width
+  public property height
+  private property rect
+  private property speed
+
+  public property target
+
+  constructor do
+    set this.cx to 50
+    set this.cy to 97
+    set this.width to 20
+    set this.height to 4
+    set this.rect to new RoundedRectangle(this.cx - this.width / 2, this.cy - this.height / 2, this.width, this.height, 5, "#00ff00")
+    set this.target to this.cx
+    set this.speed to 1.5
+  end
+
+  // Move the paddle towards the target center x.
+  public method move do
+    set paddle_right to this.rect.left + this.width
+    set paddle_left to this.rect.left
+    if this.cx + this.speed <= this.target and paddle_right + this.speed <= 100 do
+      change this.rect.left to this.rect.left + this.speed
+      change this.cx to this.cx + this.speed
+    else if this.cx - this.speed > this.target and paddle_left >= this.speed do
+      change this.rect.left to this.rect.left - this.speed
+      change this.cx to this.cx - this.speed
+    end
+  end
+
+end
+
+class Blocks do
+  public property width
+  public property height
+  public property remaining
+  public property top
+  public property bottom
+  public property bricks
+
+  constructor with count, width, height, y do
+    set this.width to width
+    set this.height to height
+    set this.bottom to y + height
+    set this.top to y
+    set this.remaining to count
+    set this.bricks to []
+
+    repeat this.remaining times indexed by idx do
+      change this.bricks to push(this.bricks, new Block(8 + (idx - 1) * (width + 1), this.top, this.width, this.height))
+    end
+  end
+end
+
+class Ball do
+  public property left
+  public property right
+  public property top
+  public property bottom
+
+  public property radius
+  public property cx
+  public property cy
+
+  public property x_velocity
+  public property y_velocity
+
+  private property circle
+
+  constructor do
+    set this.radius to 2
+    set this.left to this.radius
+    set this.right to 100 - this.radius
+    set this.top to this.radius
+    set this.bottom to 100 - 5 - this.radius
+    set this.cx to 50
+    set this.cy to this.bottom
+    set this.y_velocity to -1
+    set this.x_velocity to -1
+
+    set this.circle to new Circle(this.cx, this.cy, this.radius, "#0000ff")
+  end
+
+  public method move do
+    change this.cx to this.cx + this.x_velocity
+    change this.cy to this.cy + this.y_velocity
+    change this.circle.cx to this.cx
+    change this.circle.cy to this.cy
+  end
+end
+
+class Game do
+  private property blocks
+  private property paddle
+  private property ball
+
+  constructor do
+    set this.blocks to 0
+    set this.ball to new Ball()
+    set this.paddle to new Paddle()
+    this.set_paddle_target()
+    return this
+  end
+
+  // Smash a brick if there is a collision.
+  public method handle_block_collision do
+    set ball to this.game.ball
+    // Guard clause -- check the ball is at the right height to hit a block.
+    if ball.y_velocity == -1 and ball.cy != this.blocks.bottom + ball.radius do
+      return
+    else if ball.y_velocity == 1 and ball.cy != this.blocks.top - ball.radius do
+      return
+    end
+    for each block in this.game.blocks do
+      if block.hits(ball.cx) do
+        block.smash()
+        change ball.y_velocity to -ball.y_velocity
+        this.set_paddle_target()
+        change this.blocks.remaining to this.blocks.remaining - 1
+        return
+     end
+    end
+  end
+
+  public method move_ball do
+    this.ball.move()
+  end
+
+  public method move_paddle do
+    this.paddle.move()
+  end
+
+  // Set the paddle's target center x.
+  private method set_paddle_target do
+    // Distance from the ball to the paddle.
+    log this.ball.bottom
+    log this.ball.cy
+    set distance to this.ball.bottom - this.ball.cy
+    if this.ball.y_velocity == -1 do
+      change distance to distance + 2 * (this.ball.cy - this.ball.top)
+    end
+    set dest to this.ball.cx + distance * this.ball.x_velocity
+    if dest < 0 do
+      change dest to -dest
+    end
+    if dest > 100 do
+      change dest to 200 - dest
+    end
+    change this.paddle.target to dest
+  end
+
+
+  public method handle_wall_collision do
+    if this.ball.cx == this.ball.left or this.ball.cx == this.ball.right do
+      change this.ball.x_velocity to -this.ball.x_velocity
+    end
+  end
+
+  public method handle_block_collision do
+    set ball to this.ball
+    // Guard clause -- check the ball is at the right height to hit a block.
+    if ball.y_velocity == -1 and ball.cy != this.blocks.bottom + ball.radius do
+      return
+    else if ball.y_velocity == 1 and ball.cy != this.blocks.top - ball.radius do
+      return
+    end
+    for each block in this.blocks.bricks do
+      if block.hits(ball.cx) do
+        block.smash()
+        change ball.y_velocity to -ball.y_velocity
+        this.set_paddle_target()
+        change this.blocks.remaining to this.blocks.remaining - 1
+        return
+      end
+    end
+  end
+
+  public method handle_paddle_collision do
+    if this.ball.cy == this.ball.top or this.ball.cy == this.ball.bottom do
+      change this.ball.y_velocity to -this.ball.y_velocity
+      // Update the paddle target on y-bounce.
+      this.set_paddle_target()
+    end
+  end
+
+  public method check_finished do
+    if this.blocks.remaining == 0 do
+      game_over("win")
+    end
+  end
+
+  public method add_block_row with count, width, height, y do
+    change this.blocks to new Blocks(count, width, height, y)
+  end
+end
+
+// vim: set ts=2 ; set sw=2 ; set expandtabs ; syntax=javascript

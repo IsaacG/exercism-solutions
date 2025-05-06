@@ -1,0 +1,43 @@
+#card {
+  background-image: url(/bootcamp/images/paper-texture.jpg);
+  background-position: top left;
+  background-size: cover;
+  border: 3px double rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  margin: 5%;
+  padding: 5%
+}
+
+#text {
+  background-image: url(/bootcamp/images/candle.png);
+  background-position: bottom right;
+  background-size: 20%;
+  background-repeat: no-repeat;
+}
+
+h1 {
+  font-size: 27px;
+  color: #5b3a29;
+}
+
+.main {
+  color: #8c6e54;
+}
+
+#byline {
+  font-style: italic;
+  margin-top: 1%;
+  font-size: 16px;
+}
+
+.contacts {
+  margin-top: 8%
+}
+
+.icon {
+  margin-right: 1%
+}
+
+.contact {
+  margin-top: 2%;
+}

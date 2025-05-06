@@ -1,0 +1,20 @@
+/* Write your CSS here */
+#frame-wood{
+  padding: 20px;
+  background: #4e342e;
+}
+
+#frame-glass{
+  padding: 10px;
+  background: white;
+}
+
+#frame-rim{
+  padding: 5px;
+  background: #d4af37;
+}
+
+#frame-canvas{
+  padding: 20px;
+  background: #f5f5dc;
+}

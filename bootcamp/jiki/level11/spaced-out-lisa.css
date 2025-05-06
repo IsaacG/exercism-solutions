@@ -1,0 +1,23 @@
+#frame-wood{
+  margin: 0px;
+  background: #4e342e;
+}
+
+#frame-glass{
+  margin: 20px;
+  background: white;
+}
+
+#frame-rim{
+  margin: 10px;
+  background: #d4af37;
+}
+
+#frame-canvas{
+  margin: 5px;
+  background: #f5f5dc;
+}
+
+img{
+  margin: 20px;
+}
