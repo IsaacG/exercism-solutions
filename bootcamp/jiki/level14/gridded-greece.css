@@ -1,0 +1,25 @@
+#flag {
+  display: grid;
+  grid-template-rows: 5fr 4fr;
+  background: white;
+
+  #top {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    #topleft {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      aspect-ratio: 1;
+      gap: 20%;
+      div { background: #0D5EAF; }
+    }
+    #topright {
+      display: grid;
+      :nth-child(odd) { background: #0D5EAF; }
+    }
+  }
+  #bottom {
+    display: grid;
+    :nth-child(even) { background: #0D5EAF; }
+  }
+}

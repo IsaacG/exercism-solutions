@@ -1,0 +1,23 @@
+#flag {
+  display: grid;
+  grid-template-columns: 7fr 4% 10% 4% 16fr;
+  grid-template-rows: 1fr 6% 15% 6% 1fr;
+  background: white;
+  .red {
+    background: #BA0C2F;
+  }
+  .top { grid-column: 1/2; }
+  .left { grid-row: 1/2}
+  .bottom { grid-column: 5/6; }
+  .right { grid-row: 5/6}
+  .blue { background: #00205B; }
+  #h {
+    grid-column: 1/6;
+    grid-row: 3/4;
+  }
+  #v {
+    grid-column: 3/4;
+    grid-row: 1/6;
+  }
+
+}

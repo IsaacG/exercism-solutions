@@ -1,0 +1,7 @@
+#flag {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  :nth-child(1) { background: #002B7F; }
+  :nth-child(2) { background: #FCD116; }
+  :nth-child(3) { background: #CE1126; }
+}

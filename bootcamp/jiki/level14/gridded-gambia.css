@@ -1,0 +1,8 @@
+#flag {
+  display: grid;
+  grid-template-rows: 6fr 1fr 4fr 1fr 6fr;
+  background: white;
+  :nth-child(1) { background: #CE1126; }
+  :nth-child(3) { background: #0C1C8C; }
+  :nth-child(5) { background: #3A7728; }
+}
