@@ -1,0 +1,11 @@
+section {
+  display: flex;
+  background: white;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+div { background: #c8102e; }
+div:nth-child(odd) { flex-basis: 30%; }
+div:nth-child(even) { flex-basis: 60%; }

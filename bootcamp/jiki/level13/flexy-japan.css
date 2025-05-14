@@ -1,0 +1,13 @@
+section {
+  display: flex;
+  background: white;
+  align-items: center;
+  justify-content: center;
+}
+
+div {
+  background: #BC002D;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  flex-basis: 40%;
+}

@@ -1,0 +1,23 @@
+section, #center {
+  display: flex;
+}
+#center {
+  align-items: center;
+  justify-content: center;
+}
+svg {
+  width: 50%;
+}
+div {
+  flex-grow: 1;
+  flex-basis: 10%;
+}
+div:nth-child(2) {
+  background: #CC1424;
+}
+div:nth-child(1) {
+  background: #007a5e;
+}
+div:nth-child(3) {
+  background: #FCD414;
+}

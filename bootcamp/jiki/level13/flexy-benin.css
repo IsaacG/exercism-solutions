@@ -1,0 +1,13 @@
+section, #inner {
+  display: flex;
+}
+#inner {
+  flex-direction: column;
+  flex-basis: 20%;
+}
+div {
+  flex-grow: 1;
+}
+#green { background: #008751; }
+#yellow { background: #fcd116; }
+#red { background: #e8112d; }

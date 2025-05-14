@@ -1,0 +1,10 @@
+#outer { display: flex; background: #006a4e; }
+#left { display: flex; justify-content: center; align-items: center; }
+
+#left { flex-basis: 90%; }
+#circle {
+  background: #f42a41;
+  border-radius: 50%;
+  flex-basis: 50%;
+  aspect-ratio: 1;
+}

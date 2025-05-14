@@ -1,0 +1,30 @@
+/* --- Highest level: three bands --- */
+/* Use flexboxes for the "bands" (top, middle and bottom bands of the flag) and "stripes" (box holding stripe elements). */
+.band, .cols, #starbox { display: flex; }
+.band { flex-basis: 0; }
+.cols {
+  background: white;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Set the band/band sizes. */
+#b1, #b3 { flex-grow: 5; }
+#b2 { flex-grow: 1; }
+
+/* --- Inner containers: stripes div with stripe elements --- */
+.stripe {
+  flex-grow: 1;
+  &:nth-child(odd) { background: #bf0a30; }
+}
+
+/* Blue box that the star goes into. */
+#starbox {
+  background: #002868;
+  aspect-ratio: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  width: 30%;
+}
+svg { width: 60%; }

@@ -1,0 +1,15 @@
+section {
+  display: flex;
+}
+div {
+  flex-grow: 1;  
+}
+div:nth-child(1) {
+  background: #CC1424;
+}
+div:nth-child(3) {
+  background: #049464;
+}
+div:nth-child(2) {
+  background: #FCD414;
+}
