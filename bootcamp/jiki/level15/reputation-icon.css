@@ -1,0 +1,34 @@
+; * { outline: 1px red solid;}
+#page {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  #box {
+    display: flex;
+    position: absolute;
+    border: 2px solid rgb(136, 0, 254);
+    border-radius: 20px;
+    background: #130b43;
+    padding: 5px 20px 5px 20px;
+    #inside {
+      flex-basis: 100%;
+      display: flex;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      img { width: 25px;}
+    }
+    #red {
+      width: 15px;
+      position: absolute;
+      aspect-ratio: 1;
+      top: -7px; right: -7px;
+      background: #eb5757;
+      border: 3px solid white;
+      border-radius: 100%;
+    }
+  }
+}

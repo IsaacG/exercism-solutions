@@ -1,0 +1,51 @@
+#flag {
+  #stripes {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 170%;
+    height: 170%;
+    top: -50%;
+    left: -20%;
+    .wide  { flex-basis: 40%; }
+    .med   { flex-basis: 15%; }
+    .small { flex-grow: 1; }
+    .blue  { background: #002f6c; }
+    .red   { background: #c8102e;  }
+    .green { background: #009a44; }
+    .white { background: white; }
+    transform-origin: 50% 50%;
+    transform: rotate(-35deg);
+  }
+  #emblem {
+    background: black;
+    position: absolute;
+    left: 90px;
+    top: 80px;
+    #sun {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      background: #ffcd00;
+      border-radius: 100%;
+      transform: translate(-50%, -50%);
+    }
+    .triangle {
+      position: absolute;
+      height: 20px;
+      width: 30px;
+      &#tr_a { transform: translate(-15px, -10px) rotate(  0deg) translateY(-40px)  }
+      &#tr_b { transform: translate(-15px, -10px) rotate( 30deg) translateY(-40px) }
+      &#tr_c { transform: translate(-15px, -10px) rotate( 60deg) translateY(-40px) }
+      &#tr_d { transform: translate(-15px, -10px) rotate( 90deg) translateY(-40px)  }
+      &#tr_e { transform: translate(-15px, -10px) rotate(120deg) translateY(-40px) }
+      &#tr_f { transform: translate(-15px, -10px) rotate(150deg) translateY(-40px) }
+      &#tr_g { transform: translate(-15px, -10px) rotate(180deg) translateY(-40px)  }
+      &#tr_h { transform: translate(-15px, -10px) rotate(210deg) translateY(-40px) }
+      &#tr_i { transform: translate(-15px, -10px) rotate(240deg) translateY(-40px) }
+      &#tr_j { transform: translate(-15px, -10px) rotate(270deg) translateY(-40px)  }
+      &#tr_k { transform: translate(-15px, -10px) rotate(300deg) translateY(-40px) }
+      &#tr_l { transform: translate(-15px, -10px) rotate(330deg) translateY(-40px) }
+    }
+  }
+}

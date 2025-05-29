@@ -1,0 +1,55 @@
+; * { outline: 1px red solid;}
+#screen {
+  background: #eee;
+  #card {
+    background: #fff;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 20px;
+    #text {
+      font-size: 16px;
+      #percent { color: #604FCD;}
+      margin: 0px;
+    }
+    #bar {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      min-height: 0px;
+      margin-top: 3px;
+      height: 40px;
+      #prog_done {
+        background: linear-gradient(to right, #2200ff 0%, #9e00ff 100%);
+        flex-grow: 1;
+        height: 15px;
+        border-radius: 10px 0px 0px 10px;
+      }
+      #prog_todo {
+        background: #E1EBFF;
+        flex-grow: 4;
+        height: 15px;
+      }
+      #logo {  height: 35px; }
+    }
+    #dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+      div { width: 20px; aspect-ratio: 1; border-radius: 100%; }
+      .done {
+        background: url("/bootcamp/images/check-circle.svg");
+        background-size: contain;
+      }
+      .prog {
+        background: #6A93FF;
+        border: 1px solid #2E57E8;
+      }
+      .todo {
+        border: 1px solid #aaa;
+      }
+    }
+  }
+}

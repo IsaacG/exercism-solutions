@@ -1,0 +1,38 @@
+#game {
+  background: rgb(10, 18, 21);
+  display: grid;
+  grid-template-rows: 0px 1fr 25px;
+  justify-content: center;
+  #bricks {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(5, 90px);
+    margin-top: 25px;
+    .brick  { height: 15px; border-radius: 5px; }
+    .red    { background: rgb(198,  44, 52); }
+    .orange { background: rgb(179,  75, 37); }
+    .yellow { background: rgb(184, 138, 12); }
+    .green  { background: rgb( 46, 133, 44); }
+    .blue   { background: rgb( 39, 25, 205); }
+  }
+  #bottom {
+    display: flex;
+    justify-content: center;
+    #paddle {
+      width: 80px;
+      height: 10px;
+      background: rgb(188, 198, 200);
+      border-radius: 10px;
+    }
+  }
+  #ball {
+    position: absolute;
+    background: white;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 25px;
+  }
+}

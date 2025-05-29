@@ -1,0 +1,12 @@
+#flag {
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  #lhs { background: #060; }
+  #rhs { background: #f00; position: static; }
+  #arms {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    height: 60%;
+  }
+}

@@ -1,0 +1,23 @@
+#screen {
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  #game {
+    background: rgb(10, 18, 21);
+    width: 80vmin;
+    height: 80vmin;
+    #ball {
+      background: white;
+      position: relative;
+      width: 4%;
+      height: 4%;
+      border-radius: 100%;
+      left: 50%;
+      top: 100%;
+      transform: translate(-50%, -100%);
+    }
+  }
+}

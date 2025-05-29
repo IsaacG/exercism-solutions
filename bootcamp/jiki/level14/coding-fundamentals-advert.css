@@ -1,0 +1,41 @@
+;* { outline: solid red 1px;}
+#ad {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  #text{
+    margin-bottom: 0px;
+    h1 { font-size: 22px; }
+    h2 { font-size: 15px; margin-bottom: 10px; }
+    p { margin-top: 5px; }
+  }
+  #imgs {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    .imgbox {
+      flex-grow: 1;
+      flex-basis: 0%;
+      min-width: 0px;
+      border: 1px solid rgb(96, 79, 205);
+      border-radius: 5px;
+      display: flex;
+      img { border: 1px solid white; border-radius: 5px; width: 85px;}
+    }
+
+  }
+  #button {
+    background: rgb(96, 79, 205);
+    display: flex;
+    justify-content: center;
+    border: 1px  solid rgb(19, 11, 67);
+    border-radius: 5px;
+    p {
+      color: white;
+      font-weight: 600;
+      margin: 10px;
+      flex-grow: 0;
+    }
+  }
+}

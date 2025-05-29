@@ -1,0 +1,31 @@
+#page {
+  * {
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    width: 40px;
+  }
+  &, * {
+    display: grid;
+    place-items: center;
+  }
+  height: 100%;
+  #box {
+    background: #fff4e3;
+    img { width: 25px;}
+    p {
+      top: 0px;
+      right: 0px;
+      width: 25px;
+      transform: translate(50%, -50%);
+      background: #eb5757;
+      border-radius: 100%;
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+    }
+  }
+  #shadow {
+    box-shadow: 0px 4px 24px rgb(156, 130, 38);
+  }
+}

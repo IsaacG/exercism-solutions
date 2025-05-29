@@ -1,0 +1,12 @@
+#flag {
+  background: #da1a35;
+  #stripes {
+    display: grid;
+    grid-template-columns: 20px 15% 20px;
+    transform-origin: 0 0;
+    transform: rotate(-45deg);
+    height: 200%;
+    .white { background: white; }
+    .black { background: black; }
+  }
+}

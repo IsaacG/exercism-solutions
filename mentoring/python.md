@@ -45,6 +45,7 @@ Can you [reduce nesting](https://github.com/uber-go/guide/blob/master/style.md#r
 Can you avoid [magic strings](https://en.wikipedia.org/wiki/Magic_string) in your code?
 Can you avoid [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)) in your code?
 Can you [avoid repeating yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) (DRY)?
+This code contains [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)). Can you use a module constant, similar to `EXPECTED_BAKE_TIME`, to avoid magic numbers in your code?
 
 In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
 The following is a common anti-pattern:

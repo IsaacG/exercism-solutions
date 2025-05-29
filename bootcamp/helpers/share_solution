@@ -2,9 +2,14 @@
 
 {
     ext=${1##*.}
-    printf '[spoiler]\n```%s\n' "$ext"
-    cat $1
-    printf '```\n
-    [/spoiler]\n'
+    f=${1%.$ext}
+    printf '[spoiler]\n'
+    for i in html css js; do
+        [[ -e $f.$i ]] || continue
+        printf '```%s\n' "$i"
+        cat $f.$i
+        printf '```\n'
+    done
+    printf '[/spoiler]\n'
 } | xclip -i
 

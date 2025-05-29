@@ -1,0 +1,28 @@
+#screen {
+  display: flex;
+  background: black;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  .snake {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:  4vmin;
+    height: 4vmin;
+    border-radius: 20%;
+    div {
+      height: 70%;
+      width: 70%;
+      background: rgba(150, 150, 150, 0.3);
+      border-radius: 30%;
+    }
+  }
+  #game {
+    margin: 10vmin;
+    height: 80vmin;
+    width: 80vmin;
+    background: darkgray;
+  }
+}

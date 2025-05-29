@@ -1,0 +1,49 @@
+; * { outline: solid red 1px;}
+#card {
+  background: rgb(230, 237, 254);
+  margin: 10px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  #l {
+    height: 65px;
+    margin: 15px;
+  }
+    #r { height: 20px; margin: 15px;}
+  #c {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 5px;
+    height: 80px;
+    #track {
+      color: #130b43;
+      font-weight: 600;
+      font-size: 19px;
+      flex-grow: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    #bar {
+      display: flex;
+      flex-basis: 10px;
+      width: 250px;
+      #done {
+        background: blue;
+        flex-basis: 20%; 
+        border-radius: 5px 0px 0px 5px;
+      }
+      #todo {
+        background: white;
+        flex-grow: 1;
+        border-radius: 0px 5px 5px 0px;
+      }
+    }
+    #status {
+      color: #5c5589;
+      font-size: 16px;
+      flex-grow: 1;
+    }
+  }
+}
