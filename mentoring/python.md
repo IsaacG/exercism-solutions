@@ -85,6 +85,18 @@ If you want to go the extra step, type annotation is worth adding to your code! 
 Docstrings aren't required here but they are nice to have - both for the module and functions.
 ```
 
+### Data types
+
+```text
+`[1, 2, 3]` is a list. `(1, 2, 3)` is a tuple. `{1, 2, 3}` is a set.
+
+Sets are not ordered and cannot contain duplicate values. If you don't care about the order and don't want duplicate entries, use a set.
+
+Tuples are usually used when there is a very specific number of elements and the order is meaningful. For example, when storing a 2D coordinate (two values, the first is the X and the second is the Y) or a RGB color (three values, red, green, blue). Tuples may have mixed data types, eg a person's name and age (str and int eg `("Bob", 25)`). Tuples are immutable so you can't append to them; the number of items is fixed.
+
+Lists are used when the number of elements doesn't have special meaning (though the order might matter, ie sorted data). The elements should all be similar data types.
+```
+
 ### Long Queue
 
 ```text
