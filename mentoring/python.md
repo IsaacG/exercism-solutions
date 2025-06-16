@@ -71,6 +71,7 @@ In Python, the `is` operator checks if two objects are the *same object* while `
 
 [Guard clauses](https://en.wikipedia.org/wiki/Guard_(computer_science)) are used to check for conditions and prevent code from running if the conditons are not met. This allows you to handle boundary conditions once and then have the rest of the code [not nested or wrapped](https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting) or have to worry about those conditions.
 Can you use the [built-in `()` function](https://docs.python.org/3/library/functions.html) here?
+The [built-in `any()` and `all()` functions](https://docs.python.org/3/library/functions.html) are useful for this pattern.
 [Python's built-in types](https://docs.python.org/3/library/stdtypes.html)
 [Built-in string methods](https://docs.python.org/3/library/stdtypes.html#string-methods)
 [Avoid using mutable values for argument default values!](https://docs.python-guide.org/writing/gotchas/)
