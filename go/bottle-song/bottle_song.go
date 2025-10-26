@@ -21,11 +21,15 @@ func bottles(num int) string {
 func Recite(startBottles, takeDown int) []string {
 	verses := make([]string, 0, takeDown*5)
 	for i := startBottles; i > startBottles-takeDown; i-- {
-		verses = append(verses, fmt.Sprintf("%s hanging on the wall,", bottles(i)))
-		verses = append(verses, fmt.Sprintf("%s hanging on the wall,", bottles(i)))
-		verses = append(verses, "And if one green bottle should accidentally fall,")
-		verses = append(verses, fmt.Sprintf("There'll be %s hanging on the wall.", strings.ToLower(bottles(i-1))))
-		verses = append(verses, "")
+		lines := []string {
+			fmt.Sprintf("%s hanging on the wall,", bottles(i)),
+			fmt.Sprintf("%s hanging on the wall,", bottles(i)),
+			"And if one green bottle should accidentally fall,",
+			fmt.Sprintf("There'll be %s hanging on the wall.", strings.ToLower(bottles(i-1))),
+			"",
+		}
+
+		verses = append(verses, lines...)
 	}
 	return verses[:takeDown*5-1]
 }
