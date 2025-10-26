@@ -37,6 +37,8 @@ class Bucket:
 
 def measure(one: int, two: int, goal: int, start: str) -> tuple[int, str, int]:
     """Pour from source to dest bucket until we have the goal volume."""
+    if not one or not two or not goal or start not in ["one", "two"]:
+        raise ValueError("invalid inputs")
     # Create and name the two buckets.
     source = Bucket(one, "one")
     dest = Bucket(two, "two")
@@ -56,6 +58,8 @@ def measure(one: int, two: int, goal: int, start: str) -> tuple[int, str, int]:
         # In order to transfer, the source needs water and the dest needs space.
         source.fill_if_empty()
         dest.empty_if_full()
+        if source.volume == source.capacity and dest.volume == 0 and dest.moves:
+            raise ValueError("not possible")
         source.transfer_to(dest)
 
     # Figure out which bucket has what. One is at the "target" volume.

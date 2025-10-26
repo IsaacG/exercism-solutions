@@ -4,11 +4,8 @@ class Luhn:
 
   def valid(self):
     num = self._num
-    # Input must be longer than 1 char.
-    if len(num) <= 1:
-      return False
-    # Input must only contain digits.
-    if not num.isnumeric():
+    # Input must be longer than 1 char and must only contain digits.
+    if len(num) <= 1 or not num.isnumeric():
       return False
     # Add all the odd-positioned numbers.
     total = sum(int(n) for n in num[-1::-2])
