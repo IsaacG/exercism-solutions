@@ -6,4 +6,5 @@ HINTS.md
 .exercism
 .articles
 go.mod
+*_test.go
 users/
