@@ -19,7 +19,7 @@ function split with string do
       end
       change word to ""
     else do
-      change word to join(word, letter)
+      change word to concatenate(word, letter)
     end
   end
   if word != "" do

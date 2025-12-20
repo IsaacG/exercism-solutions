@@ -9,7 +9,7 @@ function split with string do
       change words to push(words, word)
       change word to ""
     else do
-      change word to join(word, letter)
+      change word to concatenate(word, letter)
     end
   end
   return [count, push(words, word)]
@@ -50,7 +50,7 @@ function pairs with right, left do
   set pairs to []
   for each color in right do
     if contains(left, color) do
-      change pairs to push(pairs, join(color, " socks"))
+      change pairs to push(pairs, concatenate(color, " socks"))
     end
   end
   return pairs

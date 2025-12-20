@@ -4,7 +4,7 @@ function substr with str, start do
   for each letter in str do
     change idx to idx + 1
     if idx >= start do
-      change out to join(out, letter)
+      change out to concatenate(out, letter)
     end
   end
   return out

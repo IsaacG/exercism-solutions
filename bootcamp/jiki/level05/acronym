@@ -14,7 +14,7 @@ function acronym with input do
     if ignore(letter) do
     else if boundary and (letter != " " and letter != "-") do
       change boundary to false
-      change result to join(result, letter)
+      change result to concatenate(result, letter)
     else if not boundary and (letter == " " or letter == "-") do
       change boundary to true
     end 

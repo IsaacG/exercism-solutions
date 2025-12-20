@@ -2,7 +2,7 @@ function dna_to_rna with proteins do
   set result to ""
   set map to {"G": "C", "C": "G", "T": "A", "A": "U"}
   for each letter in proteins do
-    change result to join(result, map[letter])
+    change result to concatenate(result, map[letter])
   end
   return result
 end

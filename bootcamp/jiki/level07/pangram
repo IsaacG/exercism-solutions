@@ -9,7 +9,7 @@ function lower with str do
         break
       end
     end
-    change out to join(out, letter)
+    change out to concatenate(out, letter)
   end
   return out
 end
