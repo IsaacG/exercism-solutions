@@ -37,7 +37,7 @@ The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#22-imp
 Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
 Commas (`,`) should be followed by a space, just like in this sentence!
 Operators like `=` should be space padded.
-Function definitions should be separated from other expressions by exactly two blank lines.
+Function definitions should be separated from other statements by exactly two blank lines.
 
 Please note, the mentoring sessions that people find the most valuable typically involve multiple rounds of comments and code improvements. This allows you to make improvements to your code, get additional feedback and adjust the code until it is really good. The initial round of comments is usually just the tip of the iceberg when it comes to what you can learn from a code review! (Plus, mentors can get burned out if they take the time to leave helpful comments and don't see any interaction with that feedback; it often makes them feel like the student isn't actually interested in improving the code or what they have to share.)
 
