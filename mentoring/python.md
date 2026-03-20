@@ -34,6 +34,7 @@ The [Google Style Guide](https://google.github.io/styleguide/pyguide.html#22-imp
 [PEP-257](https://peps.python.org/pep-0257/) says, "There’s no blank line either before or after the docstring."
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings should begin with a single line summary which should be a complete sentence, ending in a period.
 [PEP-257](https://peps.python.org/pep-0257/) says docstrings which are multiple lines should start with a one line summary. The summary should be followed by a blank line then the rest of the docstring.
+Completed code should not have any `TODO` items. Those items should be _done_ and the comments cleaned up. If the comments are not cleaned up, they are confusing and make the code harder to read.
 Docstrings should be imperative ("Do something ..." or "Return ...") vs descriptive ("Does sometime ..." or "Returns ...").
 Commas (`,`) should be followed by a space, just like in this sentence!
 Operators like `=` should be space padded.
@@ -47,6 +48,7 @@ Can you avoid [magic strings](https://en.wikipedia.org/wiki/Magic_string) in you
 Can you avoid [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)) in your code?
 Can you [avoid repeating yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) (DRY)?
 This code contains [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)). Can you use a module constant, similar to `EXPECTED_BAKE_TIME`, to avoid magic numbers in your code?
+Completed code should not have any TODO items. Those to do items should be done and the reminder removed.
 
 In boolean logic (and Python), `var == True` is the same as `var` and `var == False` can be written `not var`.
 The following is a common anti-pattern:
